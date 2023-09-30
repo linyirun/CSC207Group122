@@ -1,0 +1,177 @@
+Response Code: 200
+{
+  "kind": "youtube#searchListResponse",
+  "etag": "z-HSkBjZ9ZhqCLd4CKvq69seT7g",
+  "nextPageToken": "CAUQAA",
+  "regionCode": "CA",
+  "pageInfo": {
+    "totalResults": 1000000,
+    "resultsPerPage": 5
+  },
+  "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "s9x6st7pHdChB049UAzqEAGZIy0",
+      "id": {
+        "kind": "youtube#channel",
+        "channelId": "UC0WP5P-ufpRfjbNrmOWwLBQ"
+      },
+      "snippet": {
+        "publishedAt": "2011-02-25T00:18:20Z",
+        "channelId": "UC0WP5P-ufpRfjbNrmOWwLBQ",
+        "title": "The Weeknd",
+        "description": "Official YouTube channel for The Weeknd. dawn FM - theweeknd.co/dawnfm.",
+        "thumbnails": {
+          "default": {
+            "url": "https://yt3.ggpht.com/QiI-c4cFyRPD0qVwTQooC3dlgJqHA_t6CpEAv818om-mqL9bqNDL4L_qXQVXx_eY76D_7cLD=s88-c-k-c0xffffffff-no-rj-mo"
+          },
+          "medium": {
+            "url": "https://yt3.ggpht.com/QiI-c4cFyRPD0qVwTQooC3dlgJqHA_t6CpEAv818om-mqL9bqNDL4L_qXQVXx_eY76D_7cLD=s240-c-k-c0xffffffff-no-rj-mo"
+          },
+          "high": {
+            "url": "https://yt3.ggpht.com/QiI-c4cFyRPD0qVwTQooC3dlgJqHA_t6CpEAv818om-mqL9bqNDL4L_qXQVXx_eY76D_7cLD=s800-c-k-c0xffffffff-no-rj-mo"
+          }
+        },
+        "channelTitle": "The Weeknd",
+        "liveBroadcastContent": "none",
+        "publishTime": "2011-02-25T00:18:20Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "xftFjKBr9kJjTLKHokM3VszwHsA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "YQ-qToZUybM"
+      },
+      "snippet": {
+        "publishedAt": "2023-02-24T05:00:18Z",
+        "channelId": "UCF_fDSgPpBQuh1MsUTgIARQ",
+        "title": "The Weeknd, Ariana Grande - Die For You (Remix / Lyric Video)",
+        "description": "The official lyric video for the \"Die For You (Remix)\" by The Weeknd & Ariana Grande. Listen & download here: ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/YQ-qToZUybM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/YQ-qToZUybM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/YQ-qToZUybM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "TheWeekndVEVO",
+        "liveBroadcastContent": "none",
+        "publishTime": "2023-02-24T05:00:18Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "8Lx9AV5LxuazPorZ5c-yOYtg0GA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "f1r0XZLNlGQ"
+      },
+      "snippet": {
+        "publishedAt": "2023-06-23T04:00:31Z",
+        "channelId": "UC0WP5P-ufpRfjbNrmOWwLBQ",
+        "title": "The Weeknd, JENNIE &amp; Lily Rose Depp - One Of The Girls (Official Audio)",
+        "description": "Official audio for \"One Of The Girl\", available everywhere now: http://theweeknd.co/TheIdolEpisode4 ▻Follow The Weeknd: ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/f1r0XZLNlGQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/f1r0XZLNlGQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/f1r0XZLNlGQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "The Weeknd",
+        "liveBroadcastContent": "none",
+        "publishTime": "2023-06-23T04:00:31Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Ck3FUg5XkY_0OyfXlERaDZ6SlX4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "xnvkStb2jT0"
+      },
+      "snippet": {
+        "publishedAt": "2023-06-02T04:00:34Z",
+        "channelId": "UC0WP5P-ufpRfjbNrmOWwLBQ",
+        "title": "The Weeknd, Madonna, Playboi Carti - Popular (Visualizer)",
+        "description": "Follow The Weeknd: https://twitter.com/theweeknd https://instagram.com/theweeknd https://facebook.com/theweeknd ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/xnvkStb2jT0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/xnvkStb2jT0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/xnvkStb2jT0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "The Weeknd",
+        "liveBroadcastContent": "none",
+        "publishTime": "2023-06-02T04:00:34Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "p8CAnjpFNJUIjQ896Vbq-gMsgzA",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "dMoFcvfd5t4"
+      },
+      "snippet": {
+        "publishedAt": "2023-04-21T04:00:15Z",
+        "channelId": "UCF_fDSgPpBQuh1MsUTgIARQ",
+        "title": "The Weeknd ft. Future - Double Fantasy (Official Music Video)",
+        "description": "Music video by The Weeknd performing Double Fantasy. © 2023 The Weeknd XO, Inc., manufactured and marketed by Republic ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/dMoFcvfd5t4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/dMoFcvfd5t4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/dMoFcvfd5t4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "TheWeekndVEVO",
+        "liveBroadcastContent": "none",
+        "publishTime": "2023-04-21T04:00:15Z"
+      }
+    }
+  ]
+}
