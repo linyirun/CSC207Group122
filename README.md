@@ -9,3 +9,6 @@ Here is an example of a call to the YouTube API using Postman
 
 Here is a screenshot of the output from an API call using Java (the full output is in ApiCallOutput.txt)
 <img width="1399" alt="Screen Shot 2023-09-30 at 6 23 35 PM" src="https://github.com/linyirun/CSC207Group122/assets/15753733/03632aac-38c4-405c-8f8a-7644c9eca996">
+
+Technical issues:
+- We tried installing the packages in Java so we could directly use the functions given by the YouTube API, but it was very difficult and there wasn't many resources online to refer to in order to install it. So we decided to just use HTTPURLConnection and use the URLs given by Postman to get the response.
