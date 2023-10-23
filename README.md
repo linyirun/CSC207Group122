@@ -1,15 +1,18 @@
 # Tune Transit | CSC207 group 122
 
-- My name is Mani Our problem domain is Music, specifically around the management of songs and playlists.
-- 
+## About
+Our problem domain is Music, specifically around the management of songs and playlists. TuneTransit is a Spotify helper app that adds features regarding the management of songs and playlists on Spotify. These features are not on the base Spotify app. 
 
+## What TuneTransit can do
+* Authorize your personal Spotify account and sign you in on our program
+* Copy playlists from YouTube and convert them to Spotify playlists
+* Download songs onto your local device without Spotify premium [tentative]
+* Create a playlist based on a selection of artists
+* Get lyrics for a song and download them onto your device, and that can be opened through the program for offline sing-alongs
+* Sort playlists by release date
+* Split a large playlist into multiple smaller playlists based on custom filters: [TODO: what are the filters]
+* Create playlists based on [TODO add these parameters] from personal songs or from any song in the Spotify database
 
-
- Here is an example of a call to the YouTube API using Postman
- <img width="1077" alt="Screen Shot 2023-09-29 at 2 09 52 PM" src="https://github.com/linyirun/CSC207Group122/assets/38443000/47c7965d-aa60-459b-8e90-5d4f26107225">
-
- Here is a screenshot of the output from an API call using Java (the full output is in ApiCallOutput.txt, Java file is in src/Main.java)
- <img width="1399" alt="Screen Shot 2023-09-30 at 6 23 35 PM" src="https://github.com/linyirun/CSC207Group122/assets/15753733/03632aac-38c4-405c-8f8a-7644c9eca996">
-
- Technical issues:
- - We tried installing the packages in Java so we could directly use the functions given by the YouTube API, but it was very difficult and there wasn't many resources online to refer to in order to install it. So we decided to just use HTTPURLConnection and use the URLs given by Postman to get the response.
+## API Usage
+* Spotify API is used for data on songs and playlists.
+* YouTube API is used for access to YouTube playlists for the conversion to Spotify playlist feature
