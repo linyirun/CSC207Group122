@@ -12,6 +12,7 @@ Our problem domain is Music, specifically around the management of songs and pla
 * Sort playlists by release date
 * Split a large playlist into multiple smaller playlists based on custom filters: [TODO: what are the filters]
 * Create playlists based on [TODO add these parameters] from personal songs or from any song in the Spotify database
+* Merge playlists together in Spotify and YouTube
 
 ## API Usage
 * Spotify API is used for data on songs and playlists.
