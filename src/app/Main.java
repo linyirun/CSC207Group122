@@ -1,33 +1,36 @@
-package src;
+package app;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import interface_adapter.ViewManagerModel;
+import view.View;
+import view.ViewManager;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        try {
-            URL url = new URL("https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=the+weeknd&key=AIzaSyAvLijvxJDqRfGcE6OttWGWc_xaT6ayyK0");
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
+        // Build the main program window, the main panel containing the
+        // various cards, and the layout, and stitch them together.
 
-            int status = con.getResponseCode();
+        // The main application window.
+        JFrame application = new JFrame("Login Example");
+        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-            System.out.println("Response Code: " + status);
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        CardLayout cardLayout = new CardLayout();
 
-            String input;
-            StringBuilder response = new StringBuilder();
-            while ((input = in.readLine()) != null) {
-                response.append(input);
-                response.append("\n");
-            }
-            in.close();
-            System.out.println(response);
-        } catch (Exception e) {
+        // The various View objects. Only one view is visible at a time.
+        JPanel views = new JPanel(cardLayout);
+        application.add(views);
 
-        }
+        // This keeps track of and manages which view is currently showing.
+        ViewManagerModel viewManagerModel = new ViewManagerModel();
+        new ViewManager(views, cardLayout, viewManagerModel);
+
+        viewManagerModel.firePropertyChanged();
+
+        application.pack();
+        application.setVisible(true);
     }
 }
-//Raymond added a comment

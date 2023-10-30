@@ -1,4 +1,4 @@
-package src.use_case.merge_playlist;
+package use_case.merge_playlist;
 
 public interface MergeOutputBoundary {
 

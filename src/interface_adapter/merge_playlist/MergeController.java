@@ -1,6 +1,6 @@
-package src.interface_adapter.merge_playlist;
+package interface_adapter.merge_playlist;
 
-import src.use_case.merge_playlist.MergeInputBoundary;
+import use_case.merge_playlist.MergeInputBoundary;
 
 import java.util.List;
 
