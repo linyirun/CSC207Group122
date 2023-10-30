@@ -9,8 +9,6 @@ import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
 import use_case.clear_users.*;
 import use_case.signup.SignupUserDataAccessInterface;
-import entity.CommonUserFactory;
-import entity.UserFactory;
 import interface_adapter.*;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
