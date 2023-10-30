@@ -9,7 +9,7 @@ Our problem domain is Music, specifically around the management of songs and pla
 * Download songs onto your local device without Spotify premium [tentative]
 * Create a playlist based on a selection of artists
 * Get lyrics for a song and download them onto your device, and that can be opened through the program for offline sing-alongs
-* Sort playlists by release date
+* Merge playlists
 * Split a large playlist into multiple smaller playlists based on custom filters: [TODO: what are the filters]
 * Create playlists based on [TODO add these parameters] from personal songs or from any song in the Spotify database
 
