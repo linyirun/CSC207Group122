@@ -1,7 +1,7 @@
-package src.interface_adapter.merge_playlist;
+package interface_adapter.merge_playlists;
 
-import src.use_case.merge_playlist.MergeOutputBoundary;
-import src.use_case.merge_playlist.MergeOutputData;
+import use_case.merge_playlists.MergeOutputBoundary;
+import use_case.merge_playlists.MergeOutputData;
 
 
 public class MergePresenter implements MergeOutputBoundary {
