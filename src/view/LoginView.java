@@ -51,12 +51,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(logInSpotify)) {
-                            try {
-                                SpotifyAuth.getAuthorization();
-                            }
-                            catch (IOException e) {
-                                System.out.println("IOException");
-                            }
+                            loginController.execute();
                         }
                     }
                 }

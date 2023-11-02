@@ -11,8 +11,10 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.login.LoginViewModel;
 import data_access.FileUserDataAccessObject;
 import entity.UserFactory;
+import interface_adapter.loginOAuth.LoginOAuthViewModel;
 import view.ViewManager;
 import view.LoginView;
+import view.LoginOAuthView;
 
 public class Main {
     public static void main(String[] args) {
@@ -38,6 +40,7 @@ public class Main {
         // results from the use case. The ViewModels are observable, and will
         // be observed by the Views.
         LoginViewModel loginViewModel = new LoginViewModel();
+        LoginOAuthViewModel loginOAuthViewModel = new LoginOAuthViewModel();
 
         FileUserDataAccessObject userDataAccessObject;
         try {
@@ -46,9 +49,10 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        LoginView loginView = LoginUseCaseFactory.create(viewManagerModel, loginViewModel, userDataAccessObject);
+        LoginView loginView = LoginUseCaseFactory.create(viewManagerModel, loginViewModel, loginOAuthViewModel,userDataAccessObject);
         views.add(loginView, loginView.viewName);
-
+        LoginOAuthView loginOAuthView = LoginOAuthUseCaseFactory.create(viewManagerModel, loginOAuthViewModel, userDataAccessObject);
+        views.add(loginOAuthView, loginOAuthView.viewName);
 
         viewManagerModel.setActiveView(loginView.viewName);
         viewManagerModel.firePropertyChanged();

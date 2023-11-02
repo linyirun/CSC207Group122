@@ -4,12 +4,13 @@ import java.util.*;
 import entity.User;
 import entity.UserFactory;
 import use_case.login.LoginUserDataAccessInterface;
+import use_case.loginOAuth.LoginOAuthUserDataAccessInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class FileUserDataAccessObject implements LoginUserDataAccessInterface {
+public class FileUserDataAccessObject implements LoginUserDataAccessInterface, LoginOAuthUserDataAccessInterface {
 
     private final File csvFile;
 

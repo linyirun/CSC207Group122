@@ -1,11 +1,10 @@
 package app;
 
+import java.util.Scanner;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
-import java.util.Scanner;
-import java.util.Base64.Encoder;
 
 public class SpotifyAuth {
     public static String accessToken = "";
@@ -15,7 +14,7 @@ public class SpotifyAuth {
 
     private final static String CLIENT_ID = "84e604e1f851429db4c89831cf8d03a4";
 
-    private final static String CLIENT_SECRET = "15ddbac599eb49ecb3d2985a51a0f4ce";
+    private final static String CLIENT_SECRET = "c15d3e66db08456d98487002aab0fa49";
 
 
     public static void getAuthorization() throws IOException {

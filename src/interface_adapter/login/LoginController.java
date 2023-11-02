@@ -4,13 +4,21 @@ import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInputData;
 import use_case.login.LoginInteractor;
 
-public class LoginController {
-    public LoginController(LoginInputBoundary interactor) {
+import java.io.IOException;
 
+public class LoginController {
+    LoginInputBoundary interactor;
+    public LoginController(LoginInputBoundary interactor) {
+        this.interactor = interactor;
     }
 
-    public void execute(String username, String password) {
+    public void execute() {
+        try {
+            interactor.execute();
+        }
+        catch (IOException e) {
 
+        }
     }
 
 }
