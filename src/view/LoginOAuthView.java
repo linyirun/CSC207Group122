@@ -1,5 +1,6 @@
 package view;
 
+import entity.SpotifyAuth;
 import interface_adapter.loginOAuth.LoginOAuthController;
 import interface_adapter.loginOAuth.LoginOAuthState;
 import interface_adapter.loginOAuth.LoginOAuthViewModel;
@@ -12,9 +13,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class LoginOAuthView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -25,6 +29,8 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
     final JTextField codeInputField = new JTextField(15);
 
     final JButton enterCode;
+
+    final JButton getPlaylist;
 
     JButton url_link;
     private final LoginOAuthController loginOAuthController;
@@ -45,6 +51,43 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
         JPanel buttons = new JPanel();
         enterCode = new JButton(loginOAuthViewModel.ENTER_CODE_LABEL);
         buttons.add(enterCode);
+
+        getPlaylist = new JButton("Get Playlist");
+        getPlaylist.setAlignmentX(Component.LEFT_ALIGNMENT);
+        buttons.add(getPlaylist);
+
+        // getPlaylist ActionListener
+        getPlaylist.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(getPlaylist)) {
+                            try {
+                                // todo: get user id here
+                                URL url = new URL("https://api.spotify.com/v1/users/smedjan/playlists");
+                                HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+                                httpConn.setRequestMethod("GET");
+
+                                httpConn.setRequestProperty("Authorization", "Bearer " + SpotifyAuth.getAccessToken());
+
+                                int result = httpConn.getResponseCode();
+                                if (result == 200) {
+                                    InputStream responseStream  = httpConn.getInputStream();
+                                    Scanner s = new Scanner(responseStream).useDelimiter("\\A");
+                                    String response = s.hasNext() ? s.next() : "";
+                                    System.out.println(response);
+                                } else {
+                                    System.out.println("Request failed.");
+                                }
+
+
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+        );
 
         enterCode.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
                 new ActionListener() {
