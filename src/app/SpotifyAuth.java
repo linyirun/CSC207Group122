@@ -7,6 +7,7 @@ import java.net.URL;
 import java.util.Base64;
 
 public class SpotifyAuth {
+    // CLASS HAS NO USE NOW, JUST HERE FOR SOME REFERENCE FOR NOW
     public static String accessToken = "";
     public static String expiresIn = "";
 

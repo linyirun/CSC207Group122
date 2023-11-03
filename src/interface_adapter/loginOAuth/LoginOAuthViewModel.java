@@ -27,6 +27,7 @@ public class LoginOAuthViewModel extends ViewModel {
     public void firePropertyChanged() {
         support.firePropertyChange("state", null, this.state);
     }
+    public void firePropertyChangedError() {support.firePropertyChange("error", null, this.state);}
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);

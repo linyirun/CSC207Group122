@@ -5,6 +5,7 @@ import use_case.loginOAuth.LoginOAuthOutputData;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.loginOAuth.LoginOAuthViewModel;
 import interface_adapter.loginOAuth.LoginOAuthState;
+import java.util.ArrayList;
 
 public class LoginOAuthPresenter implements LoginOAuthOutputBoundary {
     ViewManagerModel viewManagerModel;
@@ -22,6 +23,10 @@ public class LoginOAuthPresenter implements LoginOAuthOutputBoundary {
 
     @Override
     public void prepareFailView(String httpErrorCode, String httpErrorMessage) {
-
+        LoginOAuthState loginOAuthState = loginOAuthViewModel.getState();
+        String errorMessage = httpErrorMessage + "\n" + httpErrorCode + "\nToken was invalid";
+        loginOAuthState.setOAuthError(errorMessage);
+        this.loginOAuthViewModel.setState(loginOAuthState);
+        this.loginOAuthViewModel.firePropertyChangedError();
     }
 }

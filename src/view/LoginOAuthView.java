@@ -24,7 +24,7 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
 
     final JTextField codeInputField = new JTextField(15);
 
-    final JButton enterToken;
+    final JButton enterCode;
 
     JButton url_link;
     private final LoginOAuthController loginOAuthController;
@@ -38,19 +38,22 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
         JLabel title = new JLabel("Login OAuth");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        LabelTextPanel codeInfo = new LabelTextPanel(
-                new JLabel("Code"), codeInputField);
+        LabelTextPanel codeInfo = new LabelTextPanel(new JLabel("Code"), codeInputField);
         url_link = new JButton("Link Here");
+        url_link.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JPanel buttons = new JPanel();
-        enterToken = new JButton(loginOAuthViewModel.ENTER_CODE_LABEL);
-        buttons.add(enterToken);
+        enterCode = new JButton(loginOAuthViewModel.ENTER_CODE_LABEL);
+        buttons.add(enterCode);
 
-        enterToken.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
+        enterCode.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(enterToken)) {
-                            loginOAuthController.execute();
+                        if (evt.getSource().equals(enterCode) && codeInputField.getText().isEmpty()) {
+                            JOptionPane.showMessageDialog(LoginOAuthView.this, "Field is empty");
+                        }
+                        else {
+                            loginOAuthController.execute(codeInputField.getText());
                         }
                     }
                 }
@@ -109,7 +112,12 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         LoginOAuthState state = (LoginOAuthState) evt.getNewValue();
-        url = state.getURL();
+        if (evt.getPropertyName().equals("state")) {
+            url = state.getURL();
+        }
+        else if (evt.getPropertyName().equals("error")) {
+            JOptionPane.showMessageDialog(LoginOAuthView.this, state.getOAuthError());
+        }
     }
 
 }
