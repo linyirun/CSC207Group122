@@ -1,6 +1,9 @@
 package use_case.loginOAuth;
 
 import entity.SpotifyAuth;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +11,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
+import java.io.InputStream;
 
 public class LoginOAuthInteractor implements LoginOAuthInputBoundary{
     LoginOAuthUserDataAccessInterface dao;
@@ -31,30 +35,21 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary{
         http.setChunkedStreamingMode(286);
         int responseCode = http.getResponseCode();
         System.out.println(http.getResponseMessage());
-        // parse the response NOT GENERALIZED PARSING
+        // parse the InputStream with json simple package
         if (HttpURLConnection.HTTP_OK == responseCode) {
-            BufferedReader in = new BufferedReader(new InputStreamReader(http.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            while ((inputLine = in.readLine()) != null) {
-                System.out.println(inputLine);
-                response.append(inputLine);
+            InputStream inputStream = http.getInputStream();
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject;
+            try {
+                jsonObject = (JSONObject)jsonParser.parse(
+                        new InputStreamReader(inputStream, "UTF-8"));
+                System.out.println(jsonObject.toJSONString());
+                SpotifyAuth.setAccessToken((String)jsonObject.get("access_token"));
+                SpotifyAuth.setRefreshToken((String)jsonObject.get("refresh_token"));
             }
-            in.close();
-            String[] jsonDataInString = new String[10];
-            int j = 0;
-            for (int i = 0; i < response.length() - 1; i++) {
-                if (response.substring(i, i + 1).equals("\"")) {
-                    int nextQuoteIndex = response.indexOf("\"", i + 1);
-                    jsonDataInString[j] = response.substring(i + 1, nextQuoteIndex);
-                    j++;
-                    i = nextQuoteIndex;
-                }
+            catch (ParseException e) {
+                System.out.println("InputStream could not be parsed into JSON object");
             }
-            System.out.println(response);
-            SpotifyAuth.setAccessToken(jsonDataInString[1]);
-            SpotifyAuth.setRefreshToken(jsonDataInString[6]);
             System.out.println(SpotifyAuth.getAccessToken());
             System.out.println(SpotifyAuth.getRefreshToken());
             presenter.prepareSuccessView(new LoginOAuthOutputData());
