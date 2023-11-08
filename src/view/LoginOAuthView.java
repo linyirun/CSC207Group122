@@ -19,11 +19,14 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.io.IOException;
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 
 public class LoginOAuthView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    public final String viewName = "login OAuth";
-    private URL url;
+    public final String viewName = "login OAuth"; //random line
+    private URL url; //add a comment oijsdhvciudeabviudfsbvi
     private final LoginOAuthViewModel loginOAuthViewModel;
 
     final JTextField codeInputField = new JTextField(15);
@@ -58,32 +61,39 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
 
         // getPlaylist ActionListener
         getPlaylist.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
+                new ActionListener() {//add a comment
+                    public void actionPerformed(ActionEvent evt) {//add another comment
                         if (evt.getSource().equals(getPlaylist)) {
                             try {
-                                // todo: get user id here
-                                URL url = new URL("https://api.spotify.com/v1/users/smedjan/playlists");
-                                HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-                                httpConn.setRequestMethod("GET");
+                                // Use your pre-existing access token
+                                String accessToken = SpotifyAuth.getAccessToken();
 
-                                httpConn.setRequestProperty("Authorization", "Bearer " + SpotifyAuth.getAccessToken());
+                                // Use the access token to make a request to get the user's playlists
+                                String endpoint = "https://api.spotify.com/v1/me/playlists";
 
-                                int result = httpConn.getResponseCode();
-                                if (result == 200) {
-                                    InputStream responseStream  = httpConn.getInputStream();
-                                    Scanner s = new Scanner(responseStream).useDelimiter("\\A");
-                                    String response = s.hasNext() ? s.next() : "";
-                                    System.out.println(response);
+                                URL playlistsUrl = new URL(endpoint);
+                                HttpURLConnection playlistsConnection = (HttpURLConnection) playlistsUrl.openConnection();
+                                playlistsConnection.setRequestMethod("GET");
+                                playlistsConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+
+                                int playlistsResponseCode = playlistsConnection.getResponseCode();
+                                if (playlistsResponseCode == 200) {
+                                    BufferedReader playlistIn = new BufferedReader(new InputStreamReader(playlistsConnection.getInputStream()));
+                                    StringBuilder playlistResponse = new StringBuilder();
+                                    String inputLine;
+                                    while ((inputLine = playlistIn.readLine()) != null) {
+                                        playlistResponse.append(inputLine);
+                                    }
+                                    playlistIn.close();
+
+                                    System.out.println(playlistResponse.toString()); // Print the playlist data
                                 } else {
-                                    System.out.println("Request failed.");
+                                    System.err.println("Error: Unable to retrieve playlists. Response code: " + playlistsResponseCode);
                                 }
-
-
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                            } catch (Exception e) {
+                                System.err.println("Error: " + e.getMessage());
                             }
+
                         }
                     }
                 }
