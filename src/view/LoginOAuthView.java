@@ -92,6 +92,8 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
                                         JSONObject playlistObj = (JSONObject) playlist;
                                         String playlistName = (String) playlistObj.get("name");
                                         System.out.println(playlistName); // Prints the name of each playlist
+                                        String playlistitems = (String) playlistObj.get("items");
+                                        System.out.println(playlistitems);
                                     }
 
                                     playlistsConnection.disconnect();
