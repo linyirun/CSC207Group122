@@ -21,7 +21,11 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.json.simple.JSONArray;
 
 public class LoginOAuthView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -75,18 +79,22 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
                                 HttpURLConnection playlistsConnection = (HttpURLConnection) playlistsUrl.openConnection();
                                 playlistsConnection.setRequestMethod("GET");
                                 playlistsConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
-
                                 int playlistsResponseCode = playlistsConnection.getResponseCode();
-                                if (playlistsResponseCode == 200) {
-                                    BufferedReader playlistIn = new BufferedReader(new InputStreamReader(playlistsConnection.getInputStream()));
-                                    StringBuilder playlistResponse = new StringBuilder();
-                                    String inputLine;
-                                    while ((inputLine = playlistIn.readLine()) != null) {
-                                        playlistResponse.append(inputLine);
-                                    }
-                                    playlistIn.close();
 
-                                    System.out.println(playlistResponse.toString()); // Print the playlist data
+                                if (playlistsResponseCode == 200) {
+                                    InputStream inputStream = playlistsConnection.getInputStream();
+                                    JSONParser jsonParser = new JSONParser();
+                                    JSONObject jsonObject = (JSONObject)jsonParser.parse(
+                                            new InputStreamReader(inputStream, "UTF-8"));
+
+                                    JSONArray playlists = (JSONArray) jsonObject.get("items");
+                                    for (Object playlist : playlists) {
+                                        JSONObject playlistObj = (JSONObject) playlist;
+                                        String playlistName = (String) playlistObj.get("name");
+                                        System.out.println(playlistName); // Prints the name of each playlist
+                                    }
+
+                                    playlistsConnection.disconnect();
                                 } else {
                                     System.err.println("Error: Unable to retrieve playlists. Response code: " + playlistsResponseCode);
                                 }
