@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.login.LoginViewModel;
@@ -59,5 +60,30 @@ public class Main {
 
         application.setSize(500, 300);
         application.setVisible(true);
+
+//        http GET https://api.spotify.com/v1/me/playlistsAuthorization:'Bearer 1POdFZRZbvb...qqillRxMr2z'
+
+//        try {
+//            URL url = new URL("https://api.spotify.com/v1/me/playlists?" +
+//                    "Authorization:'Bearer AQCArGEQuxNX6sj94yfOdmvjRD1z08dhvuHtDOUe3Ia3HDfL4wd9yIHco3dkkSE0vPiJiBqrNKkPe_1pdXQXXNB_3f38nyn4yweBNb_nEWfBVoZYfm4nTxoMrKoD4zX8M1pogtxilIapsIRsZJAjs__fVL2pB-wFmSse7Ts2yrs--uhFttBIo0-PZmEBz3zRllwvYGbuW1wZC0C8OYsyJ8KLxnnzUJdsmWhfriCfdK7IhvIF_NOIMEnHgnRAvAtFuMzdPLs5nwK2Un-3HnbLEg'");
+//            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+//            con.setRequestMethod("GET");
+//
+//            int status = con.getResponseCode();
+//
+//            System.out.println("Response Code: " + status);
+//            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+//
+//            String input;
+//            StringBuilder response = new StringBuilder();
+//            while ((input = in.readLine()) != null) {
+//                response.append(input);
+//                response.append("\n");
+//            }
+//            in.close();
+//            System.out.println(response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }
