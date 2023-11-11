@@ -96,8 +96,8 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
                         System.out.println("here");
                         if (Desktop.isDesktopSupported()) {
                             try {
-                                LoginOAuthInteractor.createServer(8080, controller);
                                 Desktop.getDesktop().browse(url.toURI());
+                                controller.execute();
                             } catch (IOException | URISyntaxException e) {
                                 System.out.println("Problem with URL");
                             }

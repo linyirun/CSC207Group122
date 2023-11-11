@@ -11,12 +11,14 @@ public class LoginOAuthController {
     public LoginOAuthController(LoginOAuthInputBoundary interactor) {
         this.interactor = interactor;
     }
-    public void execute(String code) {
+    public void execute() {
         try {
-            interactor.execute(new LoginOAuthInputData(code));
+            interactor.execute();
         }
         catch (IOException e) {
             System.out.println("Token Invalid");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }
