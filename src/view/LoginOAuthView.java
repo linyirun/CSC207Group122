@@ -5,6 +5,8 @@ import interface_adapter.loginOAuth.LoginOAuthController;
 import interface_adapter.loginOAuth.LoginOAuthState;
 import interface_adapter.loginOAuth.LoginOAuthViewModel;
 
+import use_case.loginOAuth.LoginOAuthInteractor;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -89,24 +91,15 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
                 }
         );
 
-        enterCode.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(enterCode) && codeInputField.getText().isEmpty()) {
-                            JOptionPane.showMessageDialog(LoginOAuthView.this, "Field is empty");
-                        }
-                        else {
-                            loginOAuthController.execute(codeInputField.getText());
-                        }
-                    }
-                }
-        );
+
         url_link.addActionListener(
             new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                     if (evt.getSource().equals(url_link)) {
+                        System.out.println("here");
                         if (Desktop.isDesktopSupported()) {
                             try {
+                                LoginOAuthInteractor.createServer(8080, controller);
                                 Desktop.getDesktop().browse(url.toURI());
                             } catch (IOException | URISyntaxException e) {
                                 System.out.println("Problem with URL");
@@ -159,6 +152,8 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
             url = state.getURL();
         }
         else if (evt.getPropertyName().equals("error")) {
+
+
             JOptionPane.showMessageDialog(LoginOAuthView.this, state.getOAuthError());
         }
     }
