@@ -31,18 +31,31 @@ import java.io.InputStream;
 public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
     LoginOAuthUserDataAccessInterface dao;
     LoginOAuthOutputBoundary presenter;
+    public String code;
+
 
     public LoginOAuthInteractor(LoginOAuthUserDataAccessInterface dao, LoginOAuthOutputBoundary presenter) {
         this.dao = dao;
         this.presenter = presenter;
     }
 
-    public void execute(LoginOAuthInputData data) throws IOException {
+    public void execute() throws IOException, InterruptedException {
         // make the http POST request for the access token
 
+        createServer(8080);
 
-        // code passed in manually, needs to change?
-        String code = data.getCode();
+        synchronized (this) {
+
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.out.println("Thread interrupted while waiting: " + e.getMessage());
+                // Happens if someone interrupts your thread.
+            }
+        }
+
+        System.out.println(code);
         URL url = new URL("https://accounts.spotify.com/api/token?grant_type=authorization_code&code=" +
                 code + "&redirect_uri=http://localhost:8080/callback");
         HttpURLConnection http = (HttpURLConnection) url.openConnection();
@@ -79,24 +92,19 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
         http.disconnect();
     }
     // Methods and classes for creating server to handle redirect
-    public static void createServer(int port, LoginOAuthController controller) throws IOException {
+    public void createServer(int port) throws IOException {
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-            server.createContext("/callback", new LoginOAuthInteractor.CallbackHandler(controller));
+            server.createContext("/callback", new LoginOAuthInteractor.CallbackHandler());
             server.start();
             System.out.println("Server is listening on port " + port);
         } catch (IOException e) {
-            System.out.println("Could not create server");
+            System.out.println("Could not create server, error: " + e);
+
         }
     }
 
-    static class CallbackHandler implements HttpHandler {
-        private final LoginOAuthController controller;
-
-        public CallbackHandler(LoginOAuthController controller) {
-            this.controller = controller;
-        }
-
+     class CallbackHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
 
@@ -113,9 +121,13 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
             }
             System.out.println("Authorization code: " + code);
 
-            controller.execute(code);
 
             // Stop the server after handling the callback
+
+            synchronized (LoginOAuthInteractor.this) {
+                LoginOAuthInteractor.this.code = code;
+                LoginOAuthInteractor.this.notifyAll();
+            }
             exchange.close();
         }
     }

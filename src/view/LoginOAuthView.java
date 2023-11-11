@@ -38,7 +38,6 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
 
     final JTextField codeInputField = new JTextField(15);
 
-    final JButton enterCode;
 
     final JButton getPlaylist;
 
@@ -59,8 +58,6 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
         url_link.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JPanel buttons = new JPanel();
-        enterCode = new JButton(loginOAuthViewModel.ENTER_CODE_LABEL);
-        buttons.add(enterCode);
 
         getPlaylist = new JButton("Get Playlist");
         getPlaylist.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -121,8 +118,8 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
                         System.out.println("here");
                         if (Desktop.isDesktopSupported()) {
                             try {
-                                LoginOAuthInteractor.createServer(8080, controller);
                                 Desktop.getDesktop().browse(url.toURI());
+                                controller.execute();
                             } catch (IOException | URISyntaxException e) {
                                 System.out.println("Problem with URL");
                             }
