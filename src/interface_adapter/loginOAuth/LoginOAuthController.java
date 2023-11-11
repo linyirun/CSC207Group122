@@ -19,4 +19,9 @@ public class LoginOAuthController {
             System.out.println("Token Invalid");
         }
     }
+
+//    //for testing purpose only can be deleted when clening the code but let Raymond know
+//    public void changeToSplit(){
+//        interactor.changeToSplit();
+//    }
 }

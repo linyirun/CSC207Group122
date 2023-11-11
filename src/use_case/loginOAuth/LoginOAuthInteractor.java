@@ -78,7 +78,6 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
         }
         http.disconnect();
     }
-
     // Methods and classes for creating server to handle redirect
     public static void createServer(int port, LoginOAuthController controller) throws IOException {
         try {
@@ -120,5 +119,4 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
             exchange.close();
         }
     }
-
 }

@@ -33,4 +33,5 @@ public class LoginPresenter implements LoginOutputBoundary {
     public void prepareFailView(String httpErrorCode, String httpErrorMessage) {
 
     }
+
 }
