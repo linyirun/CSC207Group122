@@ -18,7 +18,8 @@ public class LoginOAuthPresenter implements LoginOAuthOutputBoundary {
     }
     @Override
     public void prepareSuccessView(LoginOAuthOutputData data) {
-
+        viewManagerModel.setActiveView("Split Playlist");
+        viewManagerModel.firePropertyChanged();
     }
 
     @Override
@@ -29,4 +30,5 @@ public class LoginOAuthPresenter implements LoginOAuthOutputBoundary {
         this.loginOAuthViewModel.setState(loginOAuthState);
         this.loginOAuthViewModel.firePropertyChangedError();
     }
+
 }

@@ -1,6 +1,7 @@
 package view;
 
 import entity.SpotifyAuth;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.loginOAuth.LoginOAuthController;
 import interface_adapter.loginOAuth.LoginOAuthState;
 import interface_adapter.loginOAuth.LoginOAuthViewModel;
@@ -62,6 +63,7 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
         getPlaylist = new JButton("Get Playlist");
         getPlaylist.setAlignmentX(Component.LEFT_ALIGNMENT);
         buttons.add(getPlaylist);
+
 
         // getPlaylist ActionListener
         getPlaylist.addActionListener(
@@ -138,6 +140,8 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
                 }
             }
         );
+
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         codeInputField.addKeyListener(

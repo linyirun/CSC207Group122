@@ -8,11 +8,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import data_access.SpotifyDataAccessObject;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.login.LoginViewModel;
 import data_access.FileUserDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.loginOAuth.LoginOAuthViewModel;
+import interface_adapter.playlists.PlaylistsViewModel;
+import interface_adapter.split_playlist.SplitState;
+import interface_adapter.split_playlist.SplitViewModel;
+import view.SplitView;
 import view.ViewManager;
 import view.LoginView;
 import view.LoginOAuthView;
@@ -42,23 +48,30 @@ public class Main {
         // be observed by the Views.
         LoginViewModel loginViewModel = new LoginViewModel();
         LoginOAuthViewModel loginOAuthViewModel = new LoginOAuthViewModel();
+        SplitViewModel splitViewModel = new SplitViewModel();
+        PlaylistsViewModel playlistsViewModel = new PlaylistsViewModel();
 
         FileUserDataAccessObject userDataAccessObject;
+        SpotifyDataAccessObject spotifyDataAccessObject;
         try {
             userDataAccessObject = new FileUserDataAccessObject("./users.csv", new UserFactory());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+        spotifyDataAccessObject = new SpotifyDataAccessObject();
+
         LoginView loginView = LoginUseCaseFactory.create(viewManagerModel, loginViewModel, loginOAuthViewModel,userDataAccessObject);
         views.add(loginView, loginView.viewName);
         LoginOAuthView loginOAuthView = LoginOAuthUseCaseFactory.create(viewManagerModel, loginOAuthViewModel, userDataAccessObject);
         views.add(loginOAuthView, loginOAuthView.viewName);
+        SplitView splitView = SplitUseCaseFactory.create(viewManagerModel, splitViewModel, playlistsViewModel,spotifyDataAccessObject, spotifyDataAccessObject);
+        views.add(splitView, splitView.viewName);
 
         viewManagerModel.setActiveView(loginView.viewName);
         viewManagerModel.firePropertyChanged();
 
-        application.setSize(500, 300);
+        application.setSize(1000, 600);
         application.setVisible(true);
 
 //        http GET https://api.spotify.com/v1/me/playlistsAuthorization:'Bearer 1POdFZRZbvb...qqillRxMr2z'

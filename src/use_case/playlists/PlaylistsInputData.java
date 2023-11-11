@@ -1,2 +1,4 @@
-package use_case.playlists;public class playlistsInputData {
+package use_case.playlists;
+
+public class PlaylistsInputData {
 }

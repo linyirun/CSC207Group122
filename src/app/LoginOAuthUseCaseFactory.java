@@ -28,7 +28,7 @@ public class LoginOAuthUseCaseFactory {
 
         try {
             LoginOAuthController loginOAuthController = createLoginUseCase(viewManagerModel, loginOAuthViewModel, userDataAccessObject);
-            return new LoginOAuthView(loginOAuthViewModel, loginOAuthController);
+            return new LoginOAuthView(loginOAuthViewModel, loginOAuthController); // add an additional parameter which can be deleted
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error TODO");
         }

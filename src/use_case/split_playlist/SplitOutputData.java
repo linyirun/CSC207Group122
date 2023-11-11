@@ -1,2 +1,4 @@
-package use_case.split_playlist;public class SplitOutputData {
+package use_case.split_playlist;
+
+public class SplitOutputData {
 }

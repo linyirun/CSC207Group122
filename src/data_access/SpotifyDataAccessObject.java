@@ -4,7 +4,8 @@ import entity.SpotifyAuth;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import use_case.split_playlist.SplitDataAccessInterface;
+import use_case.playlists.PlaylistsUserDataAccessInterface;
+import use_case.split_playlist.SplitUserDataAccessInterface;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Map;
 
-public class SpotifyDataAccessObject implements SplitDataAccessInterface {
+public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface {
     public Set<String> get_playlists(){
         return get_playlistMap().keySet();
     }
