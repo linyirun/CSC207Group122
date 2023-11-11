@@ -16,7 +16,7 @@ public class LoginInteractor implements LoginInputBoundary {
     }
     public void execute() throws IOException {
         URL url = new URL("https://accounts.spotify.com/authorize?client_id=" + SpotifyAuth.getClientId() + "&response_type" +
-                "=code&scope=" + SpotifyAuth.getScope() + "&redirect_uri=https://www.google.com/&show_dialog=true") ;
+                "=code&scope=" + SpotifyAuth.getScope() + "&redirect_uri=http://localhost:8080/callback") ;
         HttpURLConnection http = (HttpURLConnection) url.openConnection();
         http.setRequestMethod("GET");
         int responseCode = http.getResponseCode();
