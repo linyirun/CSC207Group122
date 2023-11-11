@@ -87,7 +87,8 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
             server.start();
             System.out.println("Server is listening on port " + port);
         } catch (IOException e) {
-            System.out.println("Could not create server");
+            System.out.println("Could not create server, error: " + e);
+
         }
     }
 
