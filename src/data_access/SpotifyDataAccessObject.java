@@ -143,7 +143,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         HttpClient client = HttpClient.newHttpClient();
         JSONObject requestBody = new JSONObject();
         requestBody.put("name", playlistName);
-        requestBody.put("public", false);
+        requestBody.put("public", true);
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
