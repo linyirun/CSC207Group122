@@ -14,7 +14,9 @@ public class SplitPresenter implements SplitOutputBoundary {
     }
     @Override
     public void prepareSuccessView(SplitOutputData response) {
-
+        SplitState state = new SplitState();
+        state.setCreatedPlaylistNames(response.getCreatedPlaylistNames());
+        splitViewModel.setState(state);
     }
 
     @Override

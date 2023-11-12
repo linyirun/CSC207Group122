@@ -3,12 +3,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SplitState {
-    Map playlist_map;
+    String createdPlaylistNames;
     public SplitState(){
-        this.playlist_map = new HashMap();
+        this.createdPlaylistNames = "";
+    }
+    public void setCreatedPlaylistNames(String createdPlaylistNames) {
+        this.createdPlaylistNames = createdPlaylistNames;
     }
 
-    public void setPlaylistMap(Map playlist_map) {
-        this.playlist_map = playlist_map;
+    public String getCreatedPlaylistNames(){
+        return createdPlaylistNames;
     }
 }

@@ -16,6 +16,8 @@ public class SplitViewModel extends ViewModel {
 
     public static final String SPLIT_BY_YEAR = "Split by year";
 
+    public static final String SPLIT_BY_ARTISTS = "Split by artists";
+
     public SplitViewModel(){super("Split Playlist");};
 
     public void firePropertyChanged(){
@@ -31,5 +33,9 @@ public class SplitViewModel extends ViewModel {
 
     public void setState(SplitState givenState){
         this.state = givenState;
+    }
+
+    public String toString(){
+        return state.getCreatedPlaylistNames();
     }
 }
