@@ -1,13 +1,14 @@
 package entity;
 
 import java.util.List;
+import java.util.Map;
 
 public class Playlist {
 
-    private List<String> songIds;
+    private List<Song> songs;
 
-
-    public List<String> getSongIds() {
-        return songIds;
+    public List<Song> getSongIds() {
+        return songs;
     }
+
 }

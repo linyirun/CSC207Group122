@@ -45,6 +45,8 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
 
     private final JButton splitByYear;
 
+    private final JButton splitByArtists;
+
     public SplitView(SplitController splitController, SplitViewModel splitViewModel,
                      PlaylistsController playlistsController, PlaylistsViewModel playlistsViewModel){
         this.splitController = splitController;
@@ -81,6 +83,11 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
         });
 
         JPanel buttons =  new JPanel();
+
+        splitByArtists = new JButton(splitViewModel.SPLIT_BY_ARTISTS);
+        splitByArtists.setAlignmentX(Component.CENTER_ALIGNMENT);
+        buttons.add(splitByArtists);
+
         getPlaylist = new JButton(PlaylistsViewModel.GET_PLAYLIST_BUTTON_LABLE);
         getPlaylist.setAlignmentX(Component.RIGHT_ALIGNMENT);
         buttons.add(getPlaylist);
@@ -102,6 +109,20 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(getPlaylist)) {
+                            playlistsController.execute();
+                        }
+                    }
+                }
+        );
+
+        splitByArtists.addActionListener(
+                // This creates an anonymous subclass of ActionListener and instantiates it.
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(splitByArtists)) {
+                            SplitInputData inputData = new SplitInputData(selectedPlaylistName, splitViewModel.SPLIT_BY_ARTISTS);
+                            splitController.execute(inputData);
+                            JOptionPane.showMessageDialog(null, splitViewModel.toString());
                             playlistsController.execute();
                         }
                     }

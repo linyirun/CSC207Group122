@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.List;
+import java.util.Map;
 
 public class Song {
 
@@ -8,9 +9,9 @@ public class Song {
 
     private final String name;
 
-    private List<String> artists;
+    private Map<String, Long> artists;    // name : popularity
 
-    public Song(String id, String name, List<String> artists) {
+    public Song(String id, String name, Map<String, Long> artists) {
         this.id = id;
         this.name = name;
         this.artists = artists;
@@ -24,7 +25,7 @@ public class Song {
         return name;
     }
 
-    public List<String> getArtists() {
+    public Map<String, Long> getArtists() {
         return artists;
     }
 }
