@@ -84,7 +84,12 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
             }
             System.out.println(SpotifyAuth.getAccessToken());
             System.out.println(SpotifyAuth.getRefreshToken());
-            presenter.prepareSuccessView(new LoginOAuthOutputData());
+            try {
+                presenter.prepareSuccessView(new LoginOAuthOutputData(dao.getAccountName()));
+            }
+            catch (ParseException e) {
+                System.out.println("Error while getting acccount name");
+            }
 
         } else {
             presenter.prepareFailView(Integer.toString(responseCode), http.getResponseMessage());

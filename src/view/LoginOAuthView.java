@@ -59,56 +59,57 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
 
         JPanel buttons = new JPanel();
 
+        // We will need to delete this
         getPlaylist = new JButton("Get Playlist");
         getPlaylist.setAlignmentX(Component.LEFT_ALIGNMENT);
-        buttons.add(getPlaylist);
+//        buttons.add(getPlaylist);
 
 
         // getPlaylist ActionListener
-        getPlaylist.addActionListener(
-                new ActionListener() {//add a comment
-                    public void actionPerformed(ActionEvent evt) {//add another comment
-                        if (evt.getSource().equals(getPlaylist)) {
-                            try {
-                                // Use your pre-existing access token
-                                String accessToken = SpotifyAuth.getAccessToken();
-
-                                // Use the access token to make a request to get the user's playlists
-                                String endpoint = "https://api.spotify.com/v1/me/playlists";
-
-                                URL playlistsUrl = new URL(endpoint);
-                                HttpURLConnection playlistsConnection = (HttpURLConnection) playlistsUrl.openConnection();
-                                playlistsConnection.setRequestMethod("GET");
-                                playlistsConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
-                                int playlistsResponseCode = playlistsConnection.getResponseCode();
-
-                                if (playlistsResponseCode == 200) {
-                                    InputStream inputStream = playlistsConnection.getInputStream();
-                                    JSONParser jsonParser = new JSONParser();
-                                    JSONObject jsonObject = (JSONObject)jsonParser.parse(
-                                            new InputStreamReader(inputStream, "UTF-8"));
-
-                                    JSONArray playlists = (JSONArray) jsonObject.get("items");
-                                    for (Object playlist : playlists) {
-                                        JSONObject playlistObj = (JSONObject) playlist;
-                                        String playlistName = (String) playlistObj.get("name");
-                                        System.out.println(playlistName); // Prints the name of each playlist
-                                        String playlistitems = (String) playlistObj.get("items");
-                                        System.out.println(playlistitems);
-                                    }
-
-                                    playlistsConnection.disconnect();
-                                } else {
-                                    System.err.println("Error: Unable to retrieve playlists. Response code: " + playlistsResponseCode);
-                                }
-                            } catch (Exception e) {
-                                System.err.println("Error: " + e.getMessage());
-                            }
-
-                        }
-                    }
-                }
-        );
+//        getPlaylist.addActionListener(
+//                new ActionListener() {//add a comment
+//                    public void actionPerformed(ActionEvent evt) {//add another comment
+//                        if (evt.getSource().equals(getPlaylist)) {
+//                            try {
+//                                // Use your pre-existing access token
+//                                String accessToken = SpotifyAuth.getAccessToken();
+//
+//                                // Use the access token to make a request to get the user's playlists
+//                                String endpoint = "https://api.spotify.com/v1/me/playlists";
+//
+//                                URL playlistsUrl = new URL(endpoint);
+//                                HttpURLConnection playlistsConnection = (HttpURLConnection) playlistsUrl.openConnection();
+//                                playlistsConnection.setRequestMethod("GET");
+//                                playlistsConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
+//                                int playlistsResponseCode = playlistsConnection.getResponseCode();
+//
+//                                if (playlistsResponseCode == 200) {
+//                                    InputStream inputStream = playlistsConnection.getInputStream();
+//                                    JSONParser jsonParser = new JSONParser();
+//                                    JSONObject jsonObject = (JSONObject)jsonParser.parse(
+//                                            new InputStreamReader(inputStream, "UTF-8"));
+//
+//                                    JSONArray playlists = (JSONArray) jsonObject.get("items");
+//                                    for (Object playlist : playlists) {
+//                                        JSONObject playlistObj = (JSONObject) playlist;
+//                                        String playlistName = (String) playlistObj.get("name");
+//                                        System.out.println(playlistName); // Prints the name of each playlist
+//                                        String playlistitems = (String) playlistObj.get("items");
+//                                        System.out.println(playlistitems);
+//                                    }
+//
+//                                    playlistsConnection.disconnect();
+//                                } else {
+//                                    System.err.println("Error: Unable to retrieve playlists. Response code: " + playlistsResponseCode);
+//                                }
+//                            } catch (Exception e) {
+//                                System.err.println("Error: " + e.getMessage());
+//                            }
+//
+//                        }
+//                    }
+//                }
+//        );
 
 
         url_link.addActionListener(

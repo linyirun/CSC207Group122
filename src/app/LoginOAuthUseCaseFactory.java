@@ -5,6 +5,7 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.loginOAuth.LoginOAuthController;
 import interface_adapter.loginOAuth.LoginOAuthPresenter;
 import interface_adapter.loginOAuth.LoginOAuthViewModel;
+import interface_adapter.home.HomeViewModel;
 import use_case.loginOAuth.LoginOAuthInputBoundary;
 import use_case.loginOAuth.LoginOAuthOutputBoundary;
 import use_case.loginOAuth.LoginOAuthInteractor;
@@ -23,12 +24,12 @@ public class LoginOAuthUseCaseFactory {
     }
 
     public static LoginOAuthView create(
-            ViewManagerModel viewManagerModel, LoginOAuthViewModel loginOAuthViewModel,
+            ViewManagerModel viewManagerModel, LoginOAuthViewModel loginOAuthViewModel, HomeViewModel homeViewModel,
             LoginOAuthUserDataAccessInterface userDataAccessObject) {
 
         try {
-            LoginOAuthController loginOAuthController = createLoginUseCase(viewManagerModel, loginOAuthViewModel, userDataAccessObject);
-            return new LoginOAuthView(loginOAuthViewModel, loginOAuthController); // add an additional parameter which can be deleted
+            LoginOAuthController loginOAuthController = createLoginUseCase(viewManagerModel, loginOAuthViewModel, homeViewModel, userDataAccessObject);
+            return new LoginOAuthView(loginOAuthViewModel, loginOAuthController);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error TODO");
         }
@@ -38,11 +39,11 @@ public class LoginOAuthUseCaseFactory {
 
     private static LoginOAuthController createLoginUseCase(
             ViewManagerModel viewManagerModel,
-            LoginOAuthViewModel loginOAuthViewModel,
+            LoginOAuthViewModel loginOAuthViewModel, HomeViewModel homeViewModel,
             LoginOAuthUserDataAccessInterface userDataAccessObject) throws IOException {
 
         // Notice how we pass this method's parameters to the Presenter.
-        LoginOAuthOutputBoundary loginOutputBoundary = new LoginOAuthPresenter(viewManagerModel, loginOAuthViewModel);
+        LoginOAuthOutputBoundary loginOutputBoundary = new LoginOAuthPresenter(viewManagerModel, loginOAuthViewModel, homeViewModel);
 
         LoginOAuthInputBoundary loginOAuthInteractor = new LoginOAuthInteractor(userDataAccessObject, loginOutputBoundary);
 

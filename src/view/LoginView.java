@@ -21,10 +21,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     public final String viewName = "log in";
     private final LoginViewModel loginViewModel;
 
-    final JTextField tokenInputField = new JTextField(15);
-
     final JButton logInSpotify;
-    final JButton loginToken
             ;
     private final LoginController loginController;
 
@@ -37,15 +34,9 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         JLabel title = new JLabel("Login Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        LabelTextPanel tokenInfo = new LabelTextPanel(
-                new JLabel("Token"), tokenInputField);
-
         JPanel buttons = new JPanel();
         logInSpotify = new JButton(loginViewModel.LOGIN_BUTTON_LABEL);
         buttons.add(logInSpotify);
-        loginToken
-                = new JButton(loginViewModel.TOKEN_BUTTON_LABEL);
-        buttons.add(loginToken);
 
         logInSpotify.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
                 new ActionListener() {
@@ -57,32 +48,10 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                 }
         );
 
-        loginToken.addActionListener(this); // TODO
-
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        tokenInputField.addKeyListener(
-                new KeyListener() {
-                    @Override
-                    public void keyTyped(KeyEvent e) {
-                        LoginState currentState = loginViewModel.getState();
-                        currentState.setToken(tokenInputField.getText() + e.getKeyChar());
-                        loginViewModel.setState(currentState);
-                        System.out.println(loginViewModel.getState().getToken());
-                    }
-
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                    }
-
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                    }
-                });
 
         this.add(title);
         this.add(buttons);
-        this.add(tokenInfo);
     }
 
     /**

@@ -10,7 +10,7 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class FileUserDataAccessObject implements LoginUserDataAccessInterface, LoginOAuthUserDataAccessInterface {
+public class FileUserDataAccessObject implements LoginUserDataAccessInterface{
 
     private final File csvFile;
 
