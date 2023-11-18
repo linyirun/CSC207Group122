@@ -4,6 +4,8 @@ import entity.SpotifyAuth;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import use_case.home.HomeUserDataAccessInterface;
+import use_case.loginOAuth.LoginOAuthUserDataAccessInterface;
 import use_case.playlists.PlaylistsUserDataAccessInterface;
 import use_case.split_playlist.SplitUserDataAccessInterface;
 
@@ -22,7 +24,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 import java.io.IOException;
 
-public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface {
+public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface, HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface {
 
     public Set<String> get_playlists(){
         return get_playlistMap().keySet();
@@ -126,15 +128,27 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
     public String getUserId() throws IOException, InterruptedException, ParseException {
         String url = "https://api.spotify.com/v1" + "/me";
         String accessToken = SpotifyAuth.getAccessToken();
-         HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("Authorization", "Bearer " + accessToken)
                 .build();
-
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         JSONObject responseObject = (JSONObject) new JSONParser().parse(response.body());
         return (String) responseObject.get("id");
+    }
+
+    public String getAccountName() throws IOException, InterruptedException, ParseException {
+        String url = "https://api.spotify.com/v1" + "/me";
+        String accessToken = SpotifyAuth.getAccessToken();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Authorization", "Bearer " + accessToken)
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        JSONObject responseObject = (JSONObject) new JSONParser().parse(response.body());
+        return (String) responseObject.get("display_name");
     }
 
     public String createPlaylist(String playlistName, String userId) throws IOException, InterruptedException, ParseException {
