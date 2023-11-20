@@ -33,7 +33,7 @@ import org.json.simple.JSONArray;
 public class LoginOAuthView extends JPanel implements ActionListener, PropertyChangeListener {
 
     public final String viewName = "login OAuth"; //random line
-    private URL url; //add a comment oijsdhvciudeabviudfsbvi
+    private URL url;
     private final LoginOAuthViewModel loginOAuthViewModel;
 
     final JTextField codeInputField = new JTextField(15);
