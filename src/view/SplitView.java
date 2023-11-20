@@ -122,8 +122,14 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
                         if (evt.getSource().equals(splitByArtists)) {
                             SplitInputData inputData = new SplitInputData(selectedPlaylistName, splitViewModel.SPLIT_BY_ARTISTS);
                             splitController.execute(inputData);
-                            JOptionPane.showMessageDialog(null, splitViewModel.toString());
                             playlistsController.execute();
+                            String splitedPlaylists = splitViewModel.toString();
+                            if(splitedPlaylists.isEmpty()){
+                                JOptionPane.showMessageDialog(null, "You need to choose a playlist first or the playlist you chose is empty!");
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(null, "Playlist is split to: " + splitedPlaylists);
+                            }
                         }
                     }
                 }
