@@ -15,8 +15,9 @@ public class HomeInteractor implements HomeInputBoundary{
         String button_name = data.getButtonName();
         if (button_name.equals("split")) {
             presenter.prepareSuccessView(new HomeOutputData("Split Playlist"));
-        }
-        else {
+        } else if (button_name.equals("apm")) {
+            presenter.prepareSuccessView(new HomeOutputData("Artists Playlist Maker"));
+        } else {
             presenter.prepareFailView("Event source not defined");
         }
     }

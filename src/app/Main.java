@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import data_access.SpotifyDataAccessObject;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.artists_playlist_maker.ArtistsPmViewModel;
 import interface_adapter.login.LoginViewModel;
 import data_access.FileUserDataAccessObject;
 import entity.UserFactory;
@@ -15,11 +16,7 @@ import interface_adapter.playlists.PlaylistsViewModel;
 import interface_adapter.split_playlist.SplitState;
 import interface_adapter.split_playlist.SplitViewModel;
 import interface_adapter.home.HomeViewModel;
-import view.SplitView;
-import view.ViewManager;
-import view.LoginView;
-import view.LoginOAuthView;
-import view.HomeView;
+import view.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -49,6 +46,7 @@ public class Main {
         SplitViewModel splitViewModel = new SplitViewModel();
         PlaylistsViewModel playlistsViewModel = new PlaylistsViewModel();
         HomeViewModel homeViewModel = new HomeViewModel();
+        ArtistsPmViewModel artistsPmViewModel = new ArtistsPmViewModel();
 
         FileUserDataAccessObject userDataAccessObject;
         SpotifyDataAccessObject spotifyDataAccessObject;
@@ -68,6 +66,8 @@ public class Main {
         views.add(splitView, splitView.viewName);
         HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, spotifyDataAccessObject);
         views.add(homeView, homeView.viewName);
+        ArtistsPlaylistMakerView artistsPlaylistMakerView = ArtistsPmUseCaseFactory.create(viewManagerModel, artistsPmViewModel,spotifyDataAccessObject);
+        views.add(artistsPlaylistMakerView, artistsPlaylistMakerView.viewName);
 
         viewManagerModel.setActiveView(loginView.viewName);
         viewManagerModel.firePropertyChanged();

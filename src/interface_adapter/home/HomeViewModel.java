@@ -8,6 +8,8 @@ import java.beans.PropertyChangeSupport;
 
 public class HomeViewModel extends ViewModel {
     public final String SPLIT_PLAYLIST_NAME = "Split Playlist";
+
+    public final String ARTISTS_PLAYLIST_MAKER_NAME = "Artists Playlist Maker";
     private HomeState state = new HomeState();
 
     public HomeViewModel() {
