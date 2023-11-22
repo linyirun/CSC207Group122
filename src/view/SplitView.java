@@ -59,7 +59,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
         // Create the list and put it in a scroll pane.
         playlistModel.addElement("Inicial"); // for testing only
         playlistList = new JList<>(playlistModel);
-        playlistList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        playlistList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         playlistList.setSelectedIndex(0);
         playlistList.setVisibleRowCount(10);
         playlistScrollPane = new JScrollPane(playlistList);
@@ -122,8 +122,14 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
                         if (evt.getSource().equals(splitByArtists)) {
                             SplitInputData inputData = new SplitInputData(selectedPlaylistName, splitViewModel.SPLIT_BY_ARTISTS);
                             splitController.execute(inputData);
-                            JOptionPane.showMessageDialog(null, splitViewModel.toString());
                             playlistsController.execute();
+                            String splitedPlaylists = splitViewModel.toString();
+                            if(splitedPlaylists.isEmpty()){
+                                JOptionPane.showMessageDialog(null, "You need to choose a playlist first or the playlist you chose is empty!");
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(null, "Playlist is split to: " + splitedPlaylists);
+                            }
                         }
                     }
                 }
@@ -184,6 +190,10 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
         for (String newName : currentPlaylists) {
             playlistModel.addElement(newName); // Add new elements
         }
+    }
+
+    public PlaylistsController getPlaylistsController() {
+        return playlistsController;
     }
 
     public static void main(String[] args) {

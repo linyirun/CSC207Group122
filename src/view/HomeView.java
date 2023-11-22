@@ -3,6 +3,8 @@ package view;
 import interface_adapter.home.HomeController;
 import interface_adapter.home.HomeViewModel;
 import interface_adapter.home.HomeState;
+import interface_adapter.playlists.PlaylistsController;
+import interface_adapter.playlists.PlaylistsViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +23,8 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private final HomeViewModel homeViewModel;
 
     private final HomeController homeController;
+    private final PlaylistsController playlistsController;
+    private final PlaylistsViewModel playlistsViewModel;
 
     private final JButton splitPlaylist;
 
@@ -28,9 +32,11 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final JLabel profile;
 
-    public HomeView(HomeController homeController, HomeViewModel homeViewModel){
+    public HomeView(HomeController homeController, HomeViewModel homeViewModel, PlaylistsController playlistsController, PlaylistsViewModel playlistsViewModel){
         this.homeController = homeController;
         this.homeViewModel = homeViewModel;
+        this.playlistsController = playlistsController;
+        this.playlistsViewModel = playlistsViewModel;
         homeViewModel.addPropertyChangeListener(this);
 
         JPanel buttons =  new JPanel();
@@ -38,7 +44,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         profile = new JLabel();
         profile.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-        splitPlaylist= new JButton(homeViewModel.SPLIT_PLAYLIST_NAME);
+        splitPlaylist = new JButton(homeViewModel.SPLIT_PLAYLIST_NAME);
         splitPlaylist.setAlignmentX(Component.CENTER_ALIGNMENT);
         buttons.add(splitPlaylist);
 
@@ -50,6 +56,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(splitPlaylist)) {
+                            playlistsController.execute();
                             homeController.execute("split");
                         }
                     }

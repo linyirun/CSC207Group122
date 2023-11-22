@@ -6,9 +6,9 @@ import java.util.List;
 
 public class MergeController {
 
-    private MergeInputBoundary mergeUCI;
+    private MergeInputBoundary mergeUseCaseInteractor;
 
-    public void execute(List<String> playlistIds, String name){
+    public void execute(List<String> playlistIds, String name) {
 
     }
 }

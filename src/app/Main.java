@@ -64,12 +64,17 @@ public class Main {
         views.add(loginOAuthView, loginOAuthView.viewName);
         SplitView splitView = SplitUseCaseFactory.create(viewManagerModel, splitViewModel, playlistsViewModel,spotifyDataAccessObject, spotifyDataAccessObject);
         views.add(splitView, splitView.viewName);
-        HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, spotifyDataAccessObject);
+        HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, spotifyDataAccessObject, splitView.getPlaylistsController(), playlistsViewModel);
         views.add(homeView, homeView.viewName);
         ArtistsPlaylistMakerView artistsPlaylistMakerView = ArtistsPmUseCaseFactory.create(viewManagerModel, artistsPmViewModel,spotifyDataAccessObject);
         views.add(artistsPlaylistMakerView, artistsPlaylistMakerView.viewName);
 
-        viewManagerModel.setActiveView(loginView.viewName);
+
+        // temporary - remove after factory is implemented
+//        MergeView mergeView = new MergeView();
+
+//        viewManagerModel.setActiveView(loginView.viewName);
+        viewManagerModel.setActiveView(MergeView.viewName);
         viewManagerModel.firePropertyChanged();
 
         application.setSize(1000, 600);
