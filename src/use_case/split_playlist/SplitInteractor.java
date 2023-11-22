@@ -18,7 +18,7 @@ public class SplitInteractor implements SplitInputBoundary{
     @Override
     public void execute(SplitInputData splitInputData) {
         String givenPlaylistName = splitInputData.getPlaylistName();
-        String givePlaylistID = userDataAccessObject.get_playlistMap().get(givenPlaylistName);
+        String givePlaylistID = userDataAccessObject.getPlaylistMap().get(givenPlaylistName);
         List<Song> songs = userDataAccessObject.getSongs(givePlaylistID);
         Map<String, List<String>> artistPlaylists = new HashMap<>();
         for(Song song : songs){

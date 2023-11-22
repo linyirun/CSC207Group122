@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 public interface PlaylistsUserDataAccessInterface {
-    Set<String> get_playlists();
+    Set<String> getPlaylists();
 
-    Map<String, String> get_playlistMap();
+    Map<String, String> getPlaylistMap();
 }

@@ -1,7 +1,5 @@
 package use_case.playlists;
 
-import use_case.playlists.*;
-
 import java.util.Map;
 
 public class PlaylistsInteractor implements PlaylistsInputBoundary{
@@ -17,7 +15,7 @@ public class PlaylistsInteractor implements PlaylistsInputBoundary{
     @Override
     public void execute() {
         Map<String,String> playlistMap;
-        playlistMap = userDataAccessObject.get_playlistMap();
+        playlistMap = userDataAccessObject.getPlaylistMap();
         System.out.println("interactor DAO" + playlistMap);
         PlaylistsOutputData outputData = new PlaylistsOutputData(playlistMap);
         System.out.println("interactor out put data" + outputData.getPlaylistMap());

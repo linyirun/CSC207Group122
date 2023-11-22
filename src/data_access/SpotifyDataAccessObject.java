@@ -20,17 +20,17 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import org.json.simple.JSONArray;
+
 import org.json.simple.parser.ParseException;
 import java.io.IOException;
 
 public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface, HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface {
 
-    public Set<String> get_playlists(){
-        return get_playlistMap().keySet();
+    public Set<String> getPlaylists(){
+        return getPlaylistMap().keySet();
     }
 
-    public Map<String, String> get_playlistMap(){
+    public Map<String, String> getPlaylistMap(){
         Map<String, String> playlist_map = new HashMap<>();
         try {
             // Use your pre-existing access token
