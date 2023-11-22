@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.ViewManagerModel;
 import interface_adapter.merge_playlists.MergeViewModel;
 
 import javax.swing.*;
@@ -10,7 +11,8 @@ import java.beans.PropertyChangeListener;
 
 public class MergeView extends JPanel implements ActionListener, PropertyChangeListener {
     public final static String viewName = "Merge View";
-    public final MergeViewModel mergeViewModel;
+    private final MergeViewModel mergeViewModel;
+    private final ViewManagerModel viewManagerModel;
 
     private final JButton getPlaylistButton;
 
@@ -20,13 +22,19 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
     private String selectedPlaylistName;
 
 
-    public MergeView(MergeViewModel mergeViewModel) {
+    public MergeView(MergeViewModel mergeViewModel, ViewManagerModel viewManagerModel) {
 
         this.mergeViewModel = mergeViewModel;
+        this.viewManagerModel = viewManagerModel;
+
+        viewManagerModel.addPropertyChangeListener(this);
+        mergeViewModel.addPropertyChangeListener(this);
 
         getPlaylistButton = new JButton(mergeViewModel.GET_PLAYLISTS_LABEL);
 
         mergeButton = new JButton(mergeViewModel.MERGE_BUTTON_LABEL);
+
+
     }
 
 
@@ -37,6 +45,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        // Update the list in
 
     }
 }

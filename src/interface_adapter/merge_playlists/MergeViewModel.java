@@ -18,8 +18,8 @@ public class MergeViewModel extends ViewModel {
         super("Merge Playlist");
     };
 
-    public void firePropertyChanged(){
-
+    public void firePropertyChanged() {
+        support.firePropertyChange("", null, this.state);
     }
     public void addPropertyChangeListener(PropertyChangeListener listener){
         support.addPropertyChangeListener(listener);
