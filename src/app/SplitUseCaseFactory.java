@@ -34,7 +34,7 @@ public class SplitUseCaseFactory {
         try {
             SplitController splitController = createSplitUseCase(viewManagerModel, splitViewModel,userDataAccessObject);
             PlaylistsController playlistsController = createPlaylistsUseCase(viewManagerModel, playlistsViewModel, userDataAccessObjectPlaylists);
-            return new SplitView(splitController, splitViewModel, playlistsController, playlistsViewModel);
+            return new SplitView(splitController, splitViewModel, playlistsController, playlistsViewModel, viewManagerModel);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "can not create Split View");
         }

@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.ViewManagerModel;
 import interface_adapter.login.LoginState;
 import interface_adapter.split_playlist.SplitController;
 import interface_adapter.split_playlist.SplitViewModel;
@@ -29,6 +30,8 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
 
     private final PlaylistsController playlistsController;
 
+    private final ViewManagerModel viewManagerModel;
+
     private final JButton getPlaylist;
 
     private JScrollPane playlistScrollPane;
@@ -48,12 +51,14 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
     private final JButton splitByArtists;
 
     public SplitView(SplitController splitController, SplitViewModel splitViewModel,
-                     PlaylistsController playlistsController, PlaylistsViewModel playlistsViewModel){
+                     PlaylistsController playlistsController, PlaylistsViewModel playlistsViewModel, ViewManagerModel viewManagerModel){
+        this.viewManagerModel = viewManagerModel;
         this.splitController = splitController;
         this.splitViewModel = splitViewModel;
         this.playlistsViewModel = playlistsViewModel;
         this.playlistsController = playlistsController;
         playlistsViewModel.addPropertyChangeListener(this);
+        viewManagerModel.addPropertyChangeListener(this);
 
         playlistModel = new DefaultListModel<>();
         // Create the list and put it in a scroll pane.
@@ -103,6 +108,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
         splitByYear = new JButton(splitViewModel.SPLIT_BY_YEAR);
         splitByYear.setAlignmentX(Component.RIGHT_ALIGNMENT);
         buttons.add(splitByYear);
+
 
         getPlaylist.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
@@ -173,7 +179,6 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
 
         this.add(scrollPlaylist);
         this.add(buttons);
-
     }
 
     public void actionPerformed(ActionEvent evt) {
@@ -182,20 +187,20 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        PlaylistsState state = (PlaylistsState) evt.getNewValue();
-        Set<String> currentPlaylists;
-        currentPlaylists = state.getPlaylistMap().keySet();
-        playlistModel.clear(); // Clear the model
-        System.out.println("view property change"+currentPlaylists.toString());
-        for (String newName : currentPlaylists) {
-            playlistModel.addElement(newName); // Add new elements
+        if (evt.getNewValue().equals("Split Playlist")) {
+            playlistsController.execute();  // Call this to initially gather the user's playlists
+        }
+        if (evt.getNewValue() instanceof PlaylistsState) {
+            PlaylistsState state = (PlaylistsState) evt.getNewValue();
+            Set<String> currentPlaylists;
+            currentPlaylists = state.getPlaylistMap().keySet();
+            playlistModel.clear(); // Clear the model
+            System.out.println("view property change" + currentPlaylists.toString());
+            for (String newName : currentPlaylists) {
+                playlistModel.addElement(newName); // Add new elements
+            }
         }
     }
-
-    public PlaylistsController getPlaylistsController() {
-        return playlistsController;
-    }
-
     public static void main(String[] args) {
         //only for testing purpose
 

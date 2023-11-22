@@ -20,12 +20,12 @@ public class HomeUseCaseFactory {
     }
 
     public static HomeView create(
-            ViewManagerModel viewManagerModel, HomeViewModel homeViewModel,
-            HomeUserDataAccessInterface dao, PlaylistsController playlistsController, PlaylistsViewModel playlistsViewModel) {
+            ViewManagerModel viewManagerModel, HomeViewModel homeViewModel, PlaylistsViewModel playlistsViewModel,
+            HomeUserDataAccessInterface dao) {
 
         try {
             HomeController homeController = createHomeUseCase(viewManagerModel, homeViewModel, dao);
-            return new HomeView(homeController, homeViewModel, playlistsController, playlistsViewModel);
+            return new HomeView(homeController, homeViewModel, playlistsViewModel);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error TODO");
         }

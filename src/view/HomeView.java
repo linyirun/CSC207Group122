@@ -23,17 +23,15 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private final HomeViewModel homeViewModel;
 
     private final HomeController homeController;
-    private final PlaylistsController playlistsController;
     private final PlaylistsViewModel playlistsViewModel;
 
     private final JButton splitPlaylist;
 
     private final JLabel profile;
 
-    public HomeView(HomeController homeController, HomeViewModel homeViewModel, PlaylistsController playlistsController, PlaylistsViewModel playlistsViewModel){
+    public HomeView(HomeController homeController, HomeViewModel homeViewModel, PlaylistsViewModel playlistsViewModel){
         this.homeController = homeController;
         this.homeViewModel = homeViewModel;
-        this.playlistsController = playlistsController;
         this.playlistsViewModel = playlistsViewModel;
         homeViewModel.addPropertyChangeListener(this);
 
@@ -50,7 +48,6 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(splitPlaylist)) {
-                            playlistsController.execute();
                             homeController.execute("split");
                         }
                     }
