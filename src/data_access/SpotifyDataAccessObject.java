@@ -9,6 +9,7 @@ import use_case.loginOAuth.LoginOAuthUserDataAccessInterface;
 import use_case.playlists.PlaylistsUserDataAccessInterface;
 import use_case.split_playlist.SplitUserDataAccessInterface;
 
+import java.awt.*;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -23,6 +24,7 @@ import java.net.http.HttpResponse;
 
 import org.json.simple.parser.ParseException;
 import java.io.IOException;
+import java.util.List;
 
 public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface, HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface {
 
@@ -151,6 +153,15 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         return (String) responseObject.get("display_name");
     }
 
+    /**
+     *
+     * @param playlistName the name of the playlist
+     * @param userId the user's id
+     * @return String: the new playlist's id
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws ParseException
+     */
     public String createPlaylist(String playlistName, String userId) throws IOException, InterruptedException, ParseException {
         String url = "https://api.spotify.com/v1" + "/users/" + userId + "/playlists";
         String accessToken = SpotifyAuth.getAccessToken();
@@ -170,6 +181,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         JSONObject responseObject = (JSONObject) new JSONParser().parse(response.body());
         return (String) responseObject.get("id");
     }
+
 
     public void addSongsToPlaylist(String playlistId, List<String> songIds) throws IOException, InterruptedException {
         String url = "https://api.spotify.com/v1" + "/playlists/" + playlistId + "/tracks";
