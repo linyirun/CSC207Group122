@@ -5,6 +5,7 @@ import use_case.artists_playlist_maker.ArtistsPmInputBoundary;
 import use_case.login.LoginInputBoundary;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ArtistsPmController {
     ArtistsPmInputBoundary interactor;
@@ -12,9 +13,9 @@ public class ArtistsPmController {
         this.interactor = interactor;
     }
 
-    public void execute() {
+    public List<String> showTopArtists(String artistName) {
         try {
-            interactor.execute();
+            return interactor.showTopArtists(artistName);
         }
         catch (IOException e) {
 
@@ -23,5 +24,12 @@ public class ArtistsPmController {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        return null;
+    }
+
+    public void createPlaylist(List<String> selectedArtists){
+
+        interactor.createPlaylist(selectedArtists);
+
     }
 }
