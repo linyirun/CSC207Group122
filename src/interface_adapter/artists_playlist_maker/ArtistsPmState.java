@@ -9,7 +9,7 @@ public class ArtistsPmState {
     private String selectedArtist;
     private List<String> chosenArtists;
 
-    private boolean playlistCreated;  // New property
+    private boolean playlistCreated;
 
     public ArtistsPmState() {
         this.searchResults = new ArrayList<>();
@@ -26,6 +26,7 @@ public class ArtistsPmState {
     public void setPlaylistCreated(boolean playlistCreated) {
         this.playlistCreated = playlistCreated;
     }
+
 
     public List<String> getSearchResults() {
         return searchResults;

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ArtistsPmInputBoundary {
 
-    List<String> showTopArtists(String artistName) throws IOException, ParseException, InterruptedException;
+    List<String> showTopArtists(ArtistsPmInputData inputData) throws IOException, ParseException, InterruptedException;
 
-    void createPlaylist(List<String> selectedArtists);
+    void createPlaylist(ArtistsPmInputData inputData);
 }

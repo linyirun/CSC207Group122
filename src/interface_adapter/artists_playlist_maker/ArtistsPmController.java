@@ -2,22 +2,22 @@ package interface_adapter.artists_playlist_maker;
 
 import org.json.simple.parser.ParseException;
 import use_case.artists_playlist_maker.ArtistsPmInputBoundary;
-import use_case.login.LoginInputBoundary;
+import use_case.artists_playlist_maker.ArtistsPmInputData;
 
 import java.io.IOException;
 import java.util.List;
 
 public class ArtistsPmController {
     ArtistsPmInputBoundary interactor;
+
     public ArtistsPmController(ArtistsPmInputBoundary interactor) {
         this.interactor = interactor;
     }
 
-    public List<String> showTopArtists(String artistName) {
+    public List<String> showTopArtists(ArtistsPmInputData inputData) {
         try {
-            return interactor.showTopArtists(artistName);
-        }
-        catch (IOException e) {
+            return interactor.showTopArtists(inputData);
+        } catch (IOException e) {
 
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -27,9 +27,9 @@ public class ArtistsPmController {
         return null;
     }
 
-    public void createPlaylist(List<String> selectedArtists){
+    public void createPlaylist(ArtistsPmInputData inputData) {
 
-        interactor.createPlaylist(selectedArtists);
+        interactor.createPlaylist(inputData);
 
     }
 }

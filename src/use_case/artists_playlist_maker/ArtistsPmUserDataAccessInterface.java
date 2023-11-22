@@ -16,23 +16,17 @@ public interface ArtistsPmUserDataAccessInterface {
 
     String getUserId() throws IOException, InterruptedException, ParseException;
 
-String createPlaylist(String playlistName, String userId) throws IOException, InterruptedException, ParseException;
+    String createPlaylist(String playlistName, String userId) throws IOException, InterruptedException, ParseException;
 
-void addSongsToPlaylist(String playlistId, List<String> songIds) throws IOException, InterruptedException;
+    void addSongsToPlaylist(String playlistId, List<String> songIds) throws IOException, InterruptedException;
 
-List<Song> getSongs(String playlistID);
+    List<Song> getSongs(String playlistID);
 
- Map<String, String> get_playlistMap();
+    List<String> getTrackIds(String playlistID);
+
+    Map<String, String> get_playlistMap();
 
     Set<String> get_playlists();
-
-
-
-
-
-
-
-
 
 
 }

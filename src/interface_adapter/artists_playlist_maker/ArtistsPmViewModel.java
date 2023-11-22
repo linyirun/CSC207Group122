@@ -10,27 +10,19 @@ public class ArtistsPmViewModel extends ViewModel {
     public static final String ARTISTS_BUTTON_LABEL = "ENTER AN ARTIST";
 
     public static final String CREATE_PLAYLIST_BUTTON_LABEL = "CREATE PLAYLIST";  // New button label
-
-    private ArtistsPmState state = new ArtistsPmState();
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+    private ArtistsPmState state = new ArtistsPmState();
 
     public ArtistsPmViewModel() {
         super("Artists Playlist Maker");
     }
 
-    public void setState(ArtistsPmState state) {
-        ArtistsPmState oldState = this.state;
-        this.state = state;
-        support.firePropertyChange("state", oldState, this.state);
-    }
-
-    // This is what the Presenter will call to let the ViewModel know
-    // to alert the View
     public void firePropertyChanged() {
         support.firePropertyChange("state", null, this.state);
-        // Additional check for playlist creation
         if (state.isPlaylistCreated()) {
             support.firePropertyChange("playlistCreated", false, true);
+        } else {
+            support.firePropertyChange("noArtistsSelectedError", false, true);
         }
     }
 
@@ -40,5 +32,11 @@ public class ArtistsPmViewModel extends ViewModel {
 
     public ArtistsPmState getState() {
         return state;
+    }
+
+    public void setState(ArtistsPmState state) {
+        ArtistsPmState oldState = this.state;
+        this.state = state;
+        support.firePropertyChange("state", oldState, this.state);
     }
 }
