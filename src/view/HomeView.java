@@ -27,6 +27,8 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final JButton splitPlaylist;
 
+    private final JButton artistsPlaylistMaker;
+
     private final JLabel profile;
 
     public HomeView(HomeController homeController, HomeViewModel homeViewModel, PlaylistsViewModel playlistsViewModel){
@@ -44,11 +46,25 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         splitPlaylist.setAlignmentX(Component.CENTER_ALIGNMENT);
         buttons.add(splitPlaylist);
 
+        artistsPlaylistMaker= new JButton(homeViewModel.ARTISTS_PLAYLIST_MAKER_NAME);
+        artistsPlaylistMaker.setAlignmentX(Component.CENTER_ALIGNMENT);
+        buttons.add(artistsPlaylistMaker);
+
         splitPlaylist.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(splitPlaylist)) {
                             homeController.execute("split");
+                        }
+                    }
+                }
+        );
+
+        artistsPlaylistMaker.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(artistsPlaylistMaker)) {
+                            homeController.execute("apm");
                         }
                     }
                 }
