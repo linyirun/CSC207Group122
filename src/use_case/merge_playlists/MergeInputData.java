@@ -4,6 +4,7 @@ import java.util.List;
 
 public class MergeInputData {
 
+    // Need the ids of the playlists that the user wants to merge
     private List<String> playlistIds;
 
     public MergeInputData(List<String> playlistIds) {

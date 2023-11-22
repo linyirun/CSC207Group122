@@ -1,6 +1,6 @@
 package use_case.merge_playlists;
 
-public class MergeInteractor implements MergeInputBoundary{
+public class MergeInteractor implements MergeInputBoundary {
 
     private MergeDataAccessInterface mergeDataAccessObject;
     @Override
