@@ -19,7 +19,7 @@ public class PlaylistsPresenter implements PlaylistsOutputBoundary {
         PlaylistsState playlistsState = playlistsViewModel.getState();
         playlistsState.setPlaylistMap(response.getPlaylistMap());
         playlistsViewModel.setState(playlistsState);
-        System.out.println("Presenter prepare"+ playlistsState.getPlaylistMap().toString());
+        System.out.println("Presenter prepare " + playlistsState.getPlaylistMap().toString());
         playlistsViewModel.firePropertyChanged();
     }
 

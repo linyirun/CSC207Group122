@@ -1,7 +1,6 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.login.LoginState;
 import interface_adapter.split_playlist.SplitController;
 import interface_adapter.split_playlist.SplitViewModel;
 import interface_adapter.playlists.*;
@@ -93,7 +92,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
         splitByArtists.setAlignmentX(Component.CENTER_ALIGNMENT);
         buttons.add(splitByArtists);
 
-        getPlaylist = new JButton(PlaylistsViewModel.GET_PLAYLIST_BUTTON_LABLE);
+        getPlaylist = new JButton(PlaylistsViewModel.GET_PLAYLIST_BUTTON_LABEL);
         getPlaylist.setAlignmentX(Component.RIGHT_ALIGNMENT);
         buttons.add(getPlaylist);
 

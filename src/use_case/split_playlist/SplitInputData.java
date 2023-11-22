@@ -4,17 +4,17 @@ import java.io.BufferedReader;
 
 public class SplitInputData {
 
-    private String PlaylistName;
+    private String playlistName;
 
     private String byTime;
 
     public SplitInputData(String givenPlaylistName, String givenbyTime){
-        this.PlaylistName = givenPlaylistName;
+        this.playlistName = givenPlaylistName;
         this.byTime = givenbyTime;
     }
 
     public String getPlaylistName(){
-        return PlaylistName;
+        return playlistName;
     }
 
     public String getByTime(){
