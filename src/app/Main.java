@@ -67,7 +67,7 @@ public class Main {
         views.add(loginOAuthView, loginOAuthView.viewName);
         SplitView splitView = SplitUseCaseFactory.create(viewManagerModel, splitViewModel, playlistsViewModel,spotifyDataAccessObject, spotifyDataAccessObject);
         views.add(splitView, splitView.viewName);
-        HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, spotifyDataAccessObject, splitView.getPlaylistsController(), playlistsViewModel);
+        HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, playlistsViewModel, spotifyDataAccessObject);
         views.add(homeView, homeView.viewName);
 
 
