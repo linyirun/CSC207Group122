@@ -188,9 +188,11 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getNewValue().equals("Split Playlist")) {
+            // This will only be reached when being called when HomeInteractor calls the presenter to switch to this page
             playlistsController.execute();  // Call this to initially gather the user's playlists
         }
         if (evt.getNewValue() instanceof PlaylistsState) {
+            // This branch will be reached whenever SplitViewModel calls firePropertyChanged, as event's new value will be of type PlaylistsState
             PlaylistsState state = (PlaylistsState) evt.getNewValue();
             Set<String> currentPlaylists;
             currentPlaylists = state.getPlaylistMap().keySet();
