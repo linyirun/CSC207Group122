@@ -5,8 +5,6 @@ import interface_adapter.artists_playlist_maker.ArtistsPmViewModel;
 import use_case.artists_playlist_maker.ArtistsPmInputData;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +13,9 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * View class for the Artists Playlist Maker use case.
+ */
 public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, PropertyChangeListener {
 
     public final String viewName = "Artists Playlist Maker";
@@ -30,6 +31,12 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
     private final ArtistsPmViewModel artistsPmViewModel;
     private final ArtistsPmController artistsPmController;
 
+    /**
+     * Constructs the Artists Playlist Maker view.
+     *
+     * @param artistsPmViewModel the view model for Artists Playlist Maker
+     * @param controller         the controller for Artists Playlist Maker
+     */
     public ArtistsPlaylistMakerView(ArtistsPmViewModel artistsPmViewModel, ArtistsPmController controller) {
         this.artistsPmController = controller;
         this.artistsPmViewModel = artistsPmViewModel;
