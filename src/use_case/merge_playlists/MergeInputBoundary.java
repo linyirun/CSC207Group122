@@ -2,5 +2,7 @@ package use_case.merge_playlists;
 
 public interface MergeInputBoundary {
 
-    void execute(MergeInputData data);
+    void mergePlaylists(MergeInputData data);
+
+    void returnHome();
 }

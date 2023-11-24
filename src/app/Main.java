@@ -11,6 +11,7 @@ import interface_adapter.login.LoginViewModel;
 import data_access.FileUserDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.loginOAuth.LoginOAuthViewModel;
+import interface_adapter.merge_playlists.MergeViewModel;
 import interface_adapter.playlists.PlaylistsViewModel;
 import interface_adapter.split_playlist.SplitState;
 import interface_adapter.split_playlist.SplitViewModel;
@@ -50,6 +51,7 @@ public class Main {
         SplitViewModel splitViewModel = new SplitViewModel();
         PlaylistsViewModel playlistsViewModel = new PlaylistsViewModel();
         HomeViewModel homeViewModel = new HomeViewModel();
+        MergeViewModel mergeViewModel = new MergeViewModel();
 
         FileUserDataAccessObject userDataAccessObject;
         SpotifyDataAccessObject spotifyDataAccessObject;
@@ -70,11 +72,12 @@ public class Main {
         HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, playlistsViewModel, spotifyDataAccessObject);
         views.add(homeView, homeView.viewName);
 
+        MergeView mergeView = MergeUseCaseFactory.create(viewManagerModel, mergeViewModel, spotifyDataAccessObject);
+        views.add(mergeView, MergeView.viewName);
 
         // temporary - remove after factory is implemented
-//        MergeView mergeView = new MergeView();
 
-//        viewManagerModel.setActiveView(loginView.viewName);
+        viewManagerModel.setActiveView(loginView.viewName);
 //        viewManagerModel.setActiveView(MergeView.viewName);
 //        viewManagerModel.firePropertyChanged();
 

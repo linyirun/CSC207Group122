@@ -32,18 +32,10 @@ public class MergeUseCaseFactory {
     }
 
     public static MergeView create(ViewManagerModel viewManagerModel, MergeViewModel mergeViewModel,
-                                   PlaylistsViewModel playlistsViewModel, MergeDataAccessInterface mergeDataAccessInterface,
-                                   PlaylistsUserDataAccessInterface playlistsUserDataAccessInterface) {
+                                   MergeDataAccessInterface mergeDataAccessInterface) {
 
         MergeController mergeController = createMergeUseCase(viewManagerModel, mergeViewModel, mergeDataAccessInterface);
-
-        try {
-            PlaylistsController playlistsController = SplitUseCaseFactory.createPlaylistsUseCase(viewManagerModel, playlistsViewModel, playlistsUserDataAccessInterface);
-            return new MergeView(mergeViewModel, mergeController, viewManagerModel, playlistsViewModel, playlistsController);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Unable to create Merge View.");
-        }
-        return null;
+        return new MergeView(mergeViewModel, mergeController, viewManagerModel);
     }
 
     private static MergeController createMergeUseCase(

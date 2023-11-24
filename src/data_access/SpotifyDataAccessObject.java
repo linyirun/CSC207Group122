@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import use_case.home.HomeUserDataAccessInterface;
 import use_case.loginOAuth.LoginOAuthUserDataAccessInterface;
+import use_case.merge_playlists.MergeDataAccessInterface;
 import use_case.playlists.PlaylistsUserDataAccessInterface;
 import use_case.split_playlist.SplitUserDataAccessInterface;
 
@@ -26,7 +27,8 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.util.List;
 
-public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface, HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface {
+public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface,
+        HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface, MergeDataAccessInterface {
 
     public Set<String> getPlaylists(){
         return getPlaylistMap().keySet();

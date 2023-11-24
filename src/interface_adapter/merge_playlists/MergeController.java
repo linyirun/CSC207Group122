@@ -5,7 +5,7 @@ import use_case.merge_playlists.MergeInputData;
 
 import java.util.List;
 
-public class MergeController implements MergeInputBoundary {
+public class MergeController {
 
     private MergeInputBoundary mergeUseCaseInteractor;
 
@@ -13,8 +13,11 @@ public class MergeController implements MergeInputBoundary {
         this.mergeUseCaseInteractor = mergeUseCaseInteractor;
     }
 
-    @Override
     public void execute(MergeInputData data) {
-
+        if (data.isReturnHome()) {
+            mergeUseCaseInteractor.returnHome();
+        } else {
+            mergeUseCaseInteractor.mergePlaylists(data);
+        }
     }
 }

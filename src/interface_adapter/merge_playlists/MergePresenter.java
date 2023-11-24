@@ -17,10 +17,15 @@ public class MergePresenter implements MergeOutputBoundary {
 
     @Override
     public void prepareSuccessView(MergeOutputData response) {
+        if (response.isReturnHome()) {
+            // Go back to the home page
+            viewManagerModel.setActiveView("Home");
+        }
 
+        // Update the state of the selected playlists
     }
 
-    public void prepareFailView(String error){
+    public void prepareFailView(String error) {
 
     }
 }

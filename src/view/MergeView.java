@@ -17,9 +17,6 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
     private final MergeViewModel mergeViewModel;
     private final ViewManagerModel viewManagerModel;
 
-    private final PlaylistsViewModel playlistsViewModel;
-    private final PlaylistsController playlistsController;
-
     private final MergeController mergeController;
 
     private final JButton getPlaylistButton;
@@ -30,25 +27,20 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
     private String selectedPlaylistName;
 
 
-    public MergeView(MergeViewModel mergeViewModel, MergeController mergeController, ViewManagerModel viewManagerModel, PlaylistsViewModel playlistsViewModel, PlaylistsController playlistsController) {
+    public MergeView(MergeViewModel mergeViewModel, MergeController mergeController, ViewManagerModel viewManagerModel) {
 
         this.mergeViewModel = mergeViewModel;
         this.viewManagerModel = viewManagerModel;
-        this.playlistsController = playlistsController;
-        this.playlistsViewModel = playlistsViewModel;
         this.mergeController = mergeController;
 
         viewManagerModel.addPropertyChangeListener(this);
-        playlistsViewModel.addPropertyChangeListener(this);
-
         getPlaylistButton = new JButton(mergeViewModel.GET_PLAYLISTS_LABEL);
 
         mergeButton = new JButton(mergeViewModel.MERGE_BUTTON_LABEL);
 
 
+
     }
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
