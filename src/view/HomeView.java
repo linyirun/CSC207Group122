@@ -40,7 +40,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         JPanel buttons = new JPanel();
 
         profile = new JLabel();
-        profile.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        profile.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         splitPlaylist = new JButton(homeViewModel.SPLIT_PLAYLIST_NAME);
         splitPlaylist.setAlignmentX(Component.CENTER_ALIGNMENT);
