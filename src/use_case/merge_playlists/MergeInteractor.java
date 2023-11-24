@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MergeInteractor implements MergeInputBoundary {
-
     private MergeDataAccessInterface mergeDataAccessObject;
     private MergeOutputBoundary mergeOutputBoundary;
 

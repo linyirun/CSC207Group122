@@ -1,7 +1,10 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.merge_playlists.MergeController;
 import interface_adapter.merge_playlists.MergeViewModel;
+import interface_adapter.playlists.PlaylistsController;
+import interface_adapter.playlists.PlaylistsViewModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -14,6 +17,11 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
     private final MergeViewModel mergeViewModel;
     private final ViewManagerModel viewManagerModel;
 
+    private final PlaylistsViewModel playlistsViewModel;
+    private final PlaylistsController playlistsController;
+
+    private final MergeController mergeController;
+
     private final JButton getPlaylistButton;
 
     private final JButton mergeButton;
@@ -22,13 +30,16 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
     private String selectedPlaylistName;
 
 
-    public MergeView(MergeViewModel mergeViewModel, ViewManagerModel viewManagerModel) {
+    public MergeView(MergeViewModel mergeViewModel, MergeController mergeController, ViewManagerModel viewManagerModel, PlaylistsViewModel playlistsViewModel, PlaylistsController playlistsController) {
 
         this.mergeViewModel = mergeViewModel;
         this.viewManagerModel = viewManagerModel;
+        this.playlistsController = playlistsController;
+        this.playlistsViewModel = playlistsViewModel;
+        this.mergeController = mergeController;
 
         viewManagerModel.addPropertyChangeListener(this);
-        mergeViewModel.addPropertyChangeListener(this);
+        playlistsViewModel.addPropertyChangeListener(this);
 
         getPlaylistButton = new JButton(mergeViewModel.GET_PLAYLISTS_LABEL);
 
@@ -45,7 +56,8 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // Update the list in
+        // Update displayed list for the user if this event is state (i.e. playlists changed)
+
 
     }
 }

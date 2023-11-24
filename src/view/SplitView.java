@@ -61,14 +61,14 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
 
         playlistModel = new DefaultListModel<>();
         // Create the list and put it in a scroll pane.
-        playlistModel.addElement("Inicial"); // for testing only
+        playlistModel.addElement("Initial"); // for testing only
         playlistList = new JList<>(playlistModel);
         playlistList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         playlistList.setSelectedIndex(0);
         playlistList.setVisibleRowCount(10);
         playlistScrollPane = new JScrollPane(playlistList);
 
-        playlistModel.addElement("Inicial");//for testing purpose only
+        playlistModel.addElement("Initial");//for testing purpose only
         JPanel scrollPlaylist = new JPanel();
         playlistScrollPane.setAlignmentX(Component.LEFT_ALIGNMENT);
         playlistScrollPane.setPreferredSize(new Dimension(220, 200));
@@ -125,7 +125,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(splitByArtists)) {
-                            SplitInputData inputData = new SplitInputData(selectedPlaylistName, splitViewModel.SPLIT_BY_ARTISTS);
+                            SplitInputData inputData = new SplitInputData(selectedPlaylistName, SplitViewModel.SPLIT_BY_ARTISTS);
                             splitController.execute(inputData);
                             playlistsController.execute();
                             String splitedPlaylists = splitViewModel.toString();
@@ -157,7 +157,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(splitByDay)) {
-                            SplitInputData inputData = new SplitInputData(selectedPlaylistName, splitViewModel.SPLIT_BY_DAY);
+                            SplitInputData inputData = new SplitInputData(selectedPlaylistName, SplitViewModel.SPLIT_BY_DAY);
                             splitController.execute(inputData);
                         }
                     }
@@ -169,7 +169,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(splitByYear)) {
-                            SplitInputData inputData = new SplitInputData(selectedPlaylistName, splitViewModel.SPLIT_BY_YEAR);
+                            SplitInputData inputData = new SplitInputData(selectedPlaylistName, SplitViewModel.SPLIT_BY_YEAR);
                             splitController.execute(inputData);
                         }
                     }
@@ -190,8 +190,8 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
             // This will only be reached when being called when HomeInteractor calls the presenter to switch to this page
             playlistsController.execute();  // Call this to initially gather the user's playlists
         }
-        if (evt.getNewValue() instanceof PlaylistsState) {
-            // This branch will be reached whenever SplitViewModel calls firePropertyChanged, as event's new value will be of type PlaylistsState
+        if (evt.getPropertyName().equals("state")) {
+            // This branch will be reached whenever PlaylistViewModel calls firePropertyChanged, as event's new value will be of type PlaylistsState
             PlaylistsState state = (PlaylistsState) evt.getNewValue();
             Set<String> currentPlaylists;
             currentPlaylists = state.getPlaylistMap().keySet();

@@ -1,14 +1,20 @@
 package interface_adapter.merge_playlists;
 
 import use_case.merge_playlists.MergeInputBoundary;
+import use_case.merge_playlists.MergeInputData;
 
 import java.util.List;
 
-public class MergeController {
+public class MergeController implements MergeInputBoundary {
 
     private MergeInputBoundary mergeUseCaseInteractor;
 
-    public void execute(List<String> playlistIds, String name) {
+    public MergeController(MergeInputBoundary mergeUseCaseInteractor) {
+        this.mergeUseCaseInteractor = mergeUseCaseInteractor;
+    }
+
+    @Override
+    public void execute(MergeInputData data) {
 
     }
 }

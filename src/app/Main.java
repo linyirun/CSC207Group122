@@ -75,8 +75,8 @@ public class Main {
 //        MergeView mergeView = new MergeView();
 
 //        viewManagerModel.setActiveView(loginView.viewName);
-        viewManagerModel.setActiveView(MergeView.viewName);
-        viewManagerModel.firePropertyChanged();
+//        viewManagerModel.setActiveView(MergeView.viewName);
+//        viewManagerModel.firePropertyChanged();
 
         application.setSize(1000, 600);
         application.setVisible(true);

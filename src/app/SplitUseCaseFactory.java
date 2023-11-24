@@ -56,7 +56,8 @@ public class SplitUseCaseFactory {
         return new SplitController(splitInteractor);
     }
 
-    private static PlaylistsController createPlaylistsUseCase(
+    // Need this to be accessed by MergeUseCase as well.
+    protected static PlaylistsController createPlaylistsUseCase(
             ViewManagerModel viewManagerModel, PlaylistsViewModel playlistsViewModel,
             PlaylistsUserDataAccessInterface userDataAccessObject) throws IOException {
 
