@@ -1,3 +1,6 @@
+/**
+ * State the state for Artists Playlist Maker.
+ */
 package interface_adapter.artists_playlist_maker;
 
 import java.util.ArrayList;
@@ -5,12 +8,15 @@ import java.util.List;
 
 public class ArtistsPmState {
 
-    private List<String> searchResults;
-    private String selectedArtist;
-    private List<String> chosenArtists;
+    private final List<String> searchResults;
+    private final String selectedArtist;
+    private final List<String> chosenArtists;
 
     private boolean playlistCreated;
 
+    /**
+     * Constructs a new ArtistsPmState with default values.
+     */
     public ArtistsPmState() {
         this.searchResults = new ArrayList<>();
         this.selectedArtist = "";
@@ -19,36 +25,21 @@ public class ArtistsPmState {
     }
 
 
+    /**
+     * Checks if a playlist has been created.
+     *
+     * @return true if a playlist has been created, false otherwise
+     */
     public boolean isPlaylistCreated() {
         return playlistCreated;
     }
 
+    /**
+     * Sets the playlist creation status.
+     *
+     * @param playlistCreated the playlist creation status
+     */
     public void setPlaylistCreated(boolean playlistCreated) {
         this.playlistCreated = playlistCreated;
-    }
-
-
-    public List<String> getSearchResults() {
-        return searchResults;
-    }
-
-    public void setSearchResults(List<String> searchResults) {
-        this.searchResults = searchResults;
-    }
-
-    public String getSelectedArtist() {
-        return selectedArtist;
-    }
-
-    public void setSelectedArtist(String selectedArtist) {
-        this.selectedArtist = selectedArtist;
-    }
-
-    public List<String> getChosenArtists() {
-        return chosenArtists;
-    }
-
-    public void setChosenArtists(List<String> chosenArtists) {
-        this.chosenArtists = chosenArtists;
     }
 }
