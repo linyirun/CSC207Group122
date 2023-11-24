@@ -1,6 +1,7 @@
 package use_case.home;
 
 import interface_adapter.home.HomePresenter;
+import view.MergeView;
 
 public class HomeInteractor implements HomeInputBoundary{
     HomeOutputBoundary presenter;
@@ -16,7 +17,7 @@ public class HomeInteractor implements HomeInputBoundary{
         if (button_name.equals("split")) {
             presenter.prepareSuccessView(new HomeOutputData("Split Playlist"));
         } else if (button_name.equals("merge")) {
-            presenter.prepareSuccessView(new HomeOutputData("Merge Playlist"));
+            presenter.prepareSuccessView(new HomeOutputData(MergeView.viewName));
         }
         else {
             presenter.prepareFailView("Event source not defined");

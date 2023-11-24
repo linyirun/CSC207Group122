@@ -20,6 +20,7 @@ public class MergePresenter implements MergeOutputBoundary {
         if (response.isReturnHome()) {
             // Go back to the home page
             viewManagerModel.setActiveView("Home");
+            viewManagerModel.firePropertyChanged();
         }
 
         // Update the state of the selected playlists
