@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.ViewManagerModel;
 import interface_adapter.artists_playlist_maker.ArtistsPmController;
 import interface_adapter.artists_playlist_maker.ArtistsPmViewModel;
 import use_case.artists_playlist_maker.ArtistsPmInputData;
@@ -24,7 +25,12 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
     private JList<String> searchResultsList, selectedArtistsList;
     private DefaultListModel<String> searchResultsModel, selectedArtistsModel;
     private final ArtistsPmViewModel artistsPmViewModel;
+
+    private JButton backButton;
+
     private final ArtistsPmController artistsPmController;
+
+    private final ViewManagerModel viewManagerModel;
 
     /**
      * Constructs an instance of ArtistsPlaylistMakerView.
@@ -32,9 +38,10 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
      * @param artistsPmViewModel The view model for the Artists Playlist Maker.
      * @param controller          The controller for the Artists Playlist Maker.
      */
-    public ArtistsPlaylistMakerView(ArtistsPmViewModel artistsPmViewModel, ArtistsPmController controller) {
+    public ArtistsPlaylistMakerView(ArtistsPmViewModel artistsPmViewModel, ArtistsPmController controller, ViewManagerModel viewManagerModel) {
         this.artistsPmController = controller;
         this.artistsPmViewModel = artistsPmViewModel;
+        this.viewManagerModel = viewManagerModel;
         this.artistsPmViewModel.addPropertyChangeListener(this);
 
         setupUI();
@@ -61,8 +68,13 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
+        // Add back button
+        backButton = new JButton("Back");
+        // Center align the title and right-align the back button
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                .addComponent(title)
+                .addGroup(layout.createSequentialGroup().addComponent(title)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(backButton))
                 .addComponent(inputPanel)
                 .addGroup(layout.createSequentialGroup().addComponent(searchScrollPane)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
@@ -71,7 +83,10 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
                                 .addComponent(deleteArtistButton))));
 
         layout.setVerticalGroup(layout.createSequentialGroup()
-                .addComponent(title)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(title)
+                        .addComponent(backButton))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(inputPanel)
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(searchScrollPane)
@@ -97,6 +112,7 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
         inputPanel.add(clearSelectionButton);
         inputPanel.add(deleteArtistButton);
 
+
         return inputPanel;
     }
 
@@ -112,6 +128,12 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
         createPlaylistButton.addActionListener(e -> createPlaylistButtonClicked());
         clearSelectionButton.addActionListener(e -> clearSelectionButtonClicked());
         deleteArtistButton.addActionListener(e -> deleteArtistButtonClicked());
+        backButton.addActionListener(e -> backButtonClicked());
+    }
+
+    private void backButtonClicked() {
+        viewManagerModel.setActiveView("Home");
+        viewManagerModel.firePropertyChanged();
     }
 
     private void searchButtonClicked() {
