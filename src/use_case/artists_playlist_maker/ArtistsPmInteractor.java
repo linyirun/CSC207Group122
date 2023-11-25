@@ -35,7 +35,7 @@ public class ArtistsPmInteractor implements ArtistsPmInputBoundary {
      */
 
     public List<String> showTopArtists(ArtistsPmInputData inputData) throws IOException, ParseException, InterruptedException {
-        return dao.getTopArtists(inputData.getArtistName(), 5);
+        return dao.getTopArtists(inputData.getArtistName(), 30);
     }
 
     /**
