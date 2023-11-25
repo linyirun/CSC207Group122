@@ -66,24 +66,25 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
         playlistPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         playlistModel = new DefaultListModel<>();
-        // Create the list and put it in a scroll pane.
 
         playlistList = new JList<>(playlistModel);
         playlistList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         playlistList.setSelectedIndex(0);
         playlistList.setVisibleRowCount(10);
 
-
         playlistScrollPane = new JScrollPane(playlistList);
+        // Add the scroll pane to the center of the playlist panel
         playlistPanel.add(playlistScrollPane, BorderLayout.CENTER);
+
+        // Set preferred size for the playlist panel
+        playlistPanel.setPreferredSize(new Dimension(250, 400)); // Adjust values as needed
 
         playlistList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) { // This line prevents double events
+                if (!e.getValueIsAdjusting()) {
                     String selectedValue = playlistList.getSelectedValue();
                     System.out.println("Selected Playlist: " + selectedValue);
-                    // Perform actions here when an item is selected
                     selectedPlaylistName = selectedValue;
                 }
             }

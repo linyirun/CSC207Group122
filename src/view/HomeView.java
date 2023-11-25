@@ -81,10 +81,6 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         profile = new JLabel(smallerProfileIcon);
         profile.setAlignmentX(Component.CENTER_ALIGNMENT);
         profile.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        profile.setBorder(BorderFactory.createCompoundBorder(
-                profile.getBorder(),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)
-        ));
         profile.setIconTextGap(10);
 
         profileText = new JLabel("Profile");
