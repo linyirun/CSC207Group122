@@ -26,6 +26,9 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private final HomeController homeController;
 
     private final JButton splitPlaylist;
+
+    private final JButton mergePlaylist;
+
     private final JButton artistsPlaylistMaker;
     private final JLabel profile;
     private final JLabel profileText;
@@ -57,7 +60,9 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
         splitPlaylist = createStyledButton(HomeViewModel.SPLIT_PLAYLIST_NAME);
         artistsPlaylistMaker = createStyledButton(HomeViewModel.ARTISTS_PLAYLIST_MAKER_NAME);
-
+        mergePlaylist = createStyledButton(HomeViewModel.MERGE_PLAYLIST_NAME);
+     
+        buttonsPanel.add(mergePlaylist);
         buttonsPanel.add(splitPlaylist);
         buttonsPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
         buttonsPanel.add(artistsPlaylistMaker);
@@ -123,7 +128,6 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         // Add the welcome label to the CENTER of the main panel
         add(welcomePanel, BorderLayout.CENTER);
     }
-
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.LEFT_ALIGNMENT);

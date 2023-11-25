@@ -1,6 +1,12 @@
 package use_case.merge_playlists;
 
+import java.util.List;
+
 public interface MergeInputBoundary {
 
-    void execute(MergeInputData data);
+    void mergePlaylists(MergeInputData data);
+
+    void returnHome();
+
+    List<String> getPlaylists();
 }

@@ -1,6 +1,8 @@
 package use_case.home;
 
 import interface_adapter.home.HomePresenter;
+
+import view.MergeView;
 import interface_adapter.home.HomeViewModel;
 import org.json.simple.parser.ParseException;
 
@@ -19,7 +21,10 @@ public class HomeInteractor implements HomeInputBoundary{
         String button_name = data.getButtonName();
         if (button_name.equals(HomeViewModel.SPLIT_PLAYLIST_NAME)) {
             presenter.prepareSuccessView(new HomeOutputData("Split Playlist"));
-        } else if (button_name.equals(HomeViewModel.ARTISTS_PLAYLIST_MAKER_NAME)) {
+          else if (button_name.equals("merge")) {
+            presenter.prepareSuccessView(new HomeOutputData(MergeView.viewName));
+        }
+          else if (button_name.equals(HomeViewModel.ARTISTS_PLAYLIST_MAKER_NAME)) {
             presenter.prepareSuccessView(new HomeOutputData("Artists Playlist Maker"));
         } else if (button_name.equals("profile")) {
             try {

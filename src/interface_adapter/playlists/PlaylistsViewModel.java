@@ -8,7 +8,7 @@ import java.beans.PropertyChangeSupport;
 public class PlaylistsViewModel extends ViewModel {
     private PlaylistsState state = new PlaylistsState();
 
-    public static final String GET_PLAYLIST_BUTTON_LABLE = "get/refresh playlists";
+    public static final String GET_PLAYLIST_BUTTON_LABEL = "get/refresh playlists";
 
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 

@@ -1,9 +1,11 @@
 package use_case.split_playlist;
 
 import java.awt.event.HierarchyBoundsAdapter;
+import java.io.IOException;
 import java.util.*;
 
 import entity.Song;
+import org.json.simple.parser.ParseException;
 
 public class SplitInteractor implements SplitInputBoundary{
     final SplitUserDataAccessInterface userDataAccessObject;
@@ -18,7 +20,7 @@ public class SplitInteractor implements SplitInputBoundary{
     @Override
     public void execute(SplitInputData splitInputData) {
         String givenPlaylistName = splitInputData.getPlaylistName();
-        String givePlaylistID = userDataAccessObject.get_playlistMap().get(givenPlaylistName);
+        String givePlaylistID = userDataAccessObject.getPlaylistMap().get(givenPlaylistName);
         List<Song> songs = userDataAccessObject.getSongs(givePlaylistID);
         Map<String, List<String>> artistPlaylists = new HashMap<>();
         for(Song song : songs){
@@ -42,13 +44,12 @@ public class SplitInteractor implements SplitInputBoundary{
             }
         }
 
-        //create playlists
-        //get userid
+        // Create playlists and get userid
         String userid = "";
         try{
             userid = userDataAccessObject.getUserId();
         }
-        catch (Exception e) {
+        catch (IOException | InterruptedException | ParseException e) {
             e.printStackTrace();
             System.err.println("unable to get userid");
         }

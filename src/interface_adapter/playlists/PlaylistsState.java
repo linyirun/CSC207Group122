@@ -10,7 +10,7 @@ public class PlaylistsState {
         this.playlist_map = new HashMap();
     }
 
-    public void setPlaylistMap(Map playlist_map) {
+    public void setPlaylistMap(Map<String, String> playlist_map) {
         this.playlist_map = playlist_map;
     }
 

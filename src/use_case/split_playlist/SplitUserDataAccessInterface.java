@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.Map;
 
 public interface SplitUserDataAccessInterface {
-    Map<String, String> get_playlistMap();
+    Map<String, String> getPlaylistMap();
 
     List<Song> getSongs(String playlistID);
 

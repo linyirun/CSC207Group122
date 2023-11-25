@@ -67,10 +67,12 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
 
         playlistModel = new DefaultListModel<>();
         // Create the list and put it in a scroll pane.
+
         playlistList = new JList<>(playlistModel);
         playlistList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         playlistList.setSelectedIndex(0);
         playlistList.setVisibleRowCount(10);
+
 
         playlistScrollPane = new JScrollPane(playlistList);
         playlistPanel.add(playlistScrollPane, BorderLayout.CENTER);
@@ -105,7 +107,9 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
 
         splitByArtists = new JButton(splitViewModel.SPLIT_BY_ARTISTS);
         splitByArtists.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         splitButtonsPanel.add(splitByArtists);
+
 
         splitBymonth = new JButton(splitViewModel.SPLIT_BY_MONTH);
         splitBymonth.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -116,6 +120,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
         splitButtonsPanel.add(splitByDay);
 
         splitByYear = new JButton(splitViewModel.SPLIT_BY_YEAR);
+
         splitByYear.setAlignmentX(Component.CENTER_ALIGNMENT);
         splitButtonsPanel.add(splitByYear);
 
@@ -148,6 +153,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
                     splitController.execute(new SplitInputData(selectedPlaylistName, splitViewModel.SPLIT_BY_DAY));
                 } else if (evt.getSource().equals(splitByYear)) {
                     splitController.execute(new SplitInputData(selectedPlaylistName, splitViewModel.SPLIT_BY_YEAR));
+
                 }
             }
         };
@@ -173,8 +179,10 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
             // This will only be reached when being called when HomeInteractor calls the presenter to switch to this page
             playlistsController.execute();  // Call this to initially gather the user's playlists
         }
+
         if (evt.getNewValue() instanceof PlaylistsState) {
             // This branch will be reached whenever SplitViewModel calls firePropertyChanged, as event's new value will be of type PlaylistsState
+
             PlaylistsState state = (PlaylistsState) evt.getNewValue();
             Set<String> currentPlaylists;
             currentPlaylists = state.getPlaylistMap().keySet();

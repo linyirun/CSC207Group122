@@ -11,6 +11,7 @@ import interface_adapter.artists_playlist_maker.ArtistsPmViewModel;
 import data_access.FileUserDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.loginOAuth.LoginOAuthViewModel;
+import interface_adapter.merge_playlists.MergeViewModel;
 import interface_adapter.playlists.PlaylistsViewModel;
 import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.split_playlist.SplitState;
@@ -45,6 +46,7 @@ public class Main {
         SplitViewModel splitViewModel = new SplitViewModel();
         PlaylistsViewModel playlistsViewModel = new PlaylistsViewModel();
         HomeViewModel homeViewModel = new HomeViewModel();
+        MergeViewModel mergeViewModel = new MergeViewModel();
         ArtistsPmViewModel artistsPmViewModel = new ArtistsPmViewModel();
         ProfileViewModel profileViewModel = new ProfileViewModel();
 
@@ -64,13 +66,16 @@ public class Main {
         views.add(splitView, splitView.viewName);
         HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, profileViewModel, spotifyDataAccessObject);
         views.add(homeView, homeView.viewName);
+
+        MergeView mergeView = MergeUseCaseFactory.create(viewManagerModel, mergeViewModel, spotifyDataAccessObject);
+        views.add(mergeView, MergeView.viewName);
         ArtistsPlaylistMakerView artistsPlaylistMakerView = ArtistsPmUseCaseFactory.create(viewManagerModel, artistsPmViewModel,spotifyDataAccessObject);
         views.add(artistsPlaylistMakerView, artistsPlaylistMakerView.viewName);
         ProfileView profileView = ProfileViewFactory.create(viewManagerModel, profileViewModel);
         views.add(profileView, profileView.viewName);
 
+
         // temporary - remove after factory is implemented
-//        MergeView mergeView = new MergeView();
 
         viewManagerModel.setActiveView(loginOAuthView.viewName);
         viewManagerModel.firePropertyChanged();

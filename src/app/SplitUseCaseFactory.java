@@ -62,8 +62,6 @@ public class SplitUseCaseFactory {
         // Notice how we pass this method's parameters to the Presenter.
         PlaylistsOutputBoundary playlistsOutputBoundary = new PlaylistsPresenter(viewManagerModel, playlistsViewModel);
 
-        UserFactory userFactory = new UserFactory();
-
         PlaylistsInputBoundary playlistsInteractor = new PlaylistsInteractor(userDataAccessObject, playlistsOutputBoundary);
 
         return new PlaylistsController(playlistsInteractor);

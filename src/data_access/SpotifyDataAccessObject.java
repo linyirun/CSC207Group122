@@ -25,9 +25,11 @@ import org.json.simple.parser.ParseException;
 import use_case.artists_playlist_maker.ArtistsPmUserDataAccessInterface;
 import use_case.home.HomeUserDataAccessInterface;
 import use_case.loginOAuth.LoginOAuthUserDataAccessInterface;
+import use_case.merge_playlists.MergeDataAccessInterface;
 import use_case.playlists.PlaylistsUserDataAccessInterface;
 import use_case.split_playlist.SplitUserDataAccessInterface;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,28 +40,33 @@ import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
 
-public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface, HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface, ArtistsPmUserDataAccessInterface {
 
+import org.json.simple.parser.ParseException;
+import java.io.IOException;
+import java.util.List;
+
+public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface,
+        HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface, MergeDataAccessInterface {
+          
     /**
      * Retrieves the set of playlist names available to the authenticated user.
      *
      * @return a set of playlist names
      */
 
-    public Set<String> get_playlists() {
-        return get_playlistMap().keySet();
+    public Set<String> getPlaylists(){
+        return getPlaylistMap().keySet();
     }
-
-    /**
+          
+     /**
      * Retrieves a map of playlist names to their corresponding playlist IDs for the authenticated user.
      *
      * @return a map of playlist names to playlist IDs
      */
 
-    public Map<String, String> get_playlistMap() {
+    public Map<String, String> getPlaylistMap(){
+
         Map<String, String> playlist_map = new HashMap<>();
         try {
             // Use your pre-existing access token
@@ -227,6 +234,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
     }
 
     /**
+    
      * Creates a new playlist for the authenticated user with the specified name.
      *
      * @param playlistName the name of the new playlist
@@ -235,6 +243,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
      * @throws IOException            if an I/O error occurs
      * @throws InterruptedException   if the operation is interrupted
      * @throws ParseException         if an error occurs during JSON parsing
+
      */
     public String createPlaylist(String playlistName, String userId) throws IOException, InterruptedException, ParseException {
         String url = "https://api.spotify.com/v1" + "/users/" + userId + "/playlists";
@@ -250,6 +259,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         JSONObject responseObject = (JSONObject) new JSONParser().parse(response.body());
         return (String) responseObject.get("id");
     }
+
 
     /**
      * Adds a list of songs to the specified playlist.
