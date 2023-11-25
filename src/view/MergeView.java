@@ -130,6 +130,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(mergeButton)) {
                             mergePlaylists();
+                            refresh();
                         }
                     }
                 }
@@ -145,10 +146,21 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
                 }
         );
 
+        refreshButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(refreshButton)) {
+                            refresh();
+                        }
+                    }
+                }
+        );
+
         playlistsList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 String selectedPlaylist = playlistsList.getSelectedValue();
-                if (selectedPlaylist != null) {
+                // TODO: this is very slow, checking if selectedPlaylistModel contains a playlist
+                if (selectedPlaylist != null && !selectedPlaylistsModel.contains(selectedPlaylist)) {
                     selectedPlaylistsModel.addElement(selectedPlaylist);
                 }
             }
@@ -199,8 +211,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
 //                }
 //            }
 //        });
-//
-//
+
         clearPlaylistsButton.addActionListener(e -> {
             if (e.getSource().equals(clearPlaylistsButton)) {
                 selectedPlaylistsModel.clear();
@@ -216,6 +227,18 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
 
     }
 
+    private void refresh() {
+        selectedPlaylistsModel.clear();
+        List<String> playlistNames = mergeController.getPlaylists();
+        displayPlaylists(playlistNames);
+    }
+
+    private void displayPlaylists(List<String> playlistNames) {
+        playlistsModel.clear();
+        for (String playlistName : playlistNames) {
+            playlistsModel.addElement(playlistName);
+        }
+    }
 
     private void mergePlaylists() {
         List<String> selectedPlaylists = new ArrayList<>();
@@ -233,11 +256,10 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         if (givenName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a non-empty name.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-//            MergeInputData inputData = new MergeInputData();
-//            mergeController.mergePlaylists(inputData);
-
             selectedPlaylistsModel.clear();
         }
+        MergeInputData mergeInputData = new MergeInputData(selectedPlaylists, givenName, false);
+        mergeController.mergePlaylists(mergeInputData);
 
     }
 
@@ -256,7 +278,11 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         // Update displayed list for the user if this event is state (i.e. playlists changed)
-
+        if (evt.getNewValue().equals("Merge View")) {
+            // This will only be reached when being called when HomeInteractor calls the presenter to switch to this page
+            // Call this to initially gather the user's playlists (same as the refresh button)
+            refresh();
+        }
 
     }
 }

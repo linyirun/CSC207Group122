@@ -19,4 +19,11 @@ public class MergeController {
     public void returnHome() {
         mergeUseCaseInteractor.returnHome();
     }
+
+    /**
+     * @return List of the user's playlist names
+     */
+    public List<String> getPlaylists() {
+        return mergeUseCaseInteractor.getPlaylists();
+    }
 }
