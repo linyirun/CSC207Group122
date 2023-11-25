@@ -90,12 +90,12 @@ public interface ArtistsPmUserDataAccessInterface {
      *
      * @return a map of playlist names to playlist IDs
      */
-    Map<String, String> get_playlistMap();
+    Map<String, String> getPlaylistMap();
 
     /**
      * Retrieves a set of playlist names.
      *
      * @return a set of playlist names
      */
-    Set<String> get_playlists();
+    Set<String> getPlaylists();
 }

@@ -21,7 +21,8 @@ public class HomeInteractor implements HomeInputBoundary{
         String button_name = data.getButtonName();
         if (button_name.equals(HomeViewModel.SPLIT_PLAYLIST_NAME)) {
             presenter.prepareSuccessView(new HomeOutputData("Split Playlist"));
-          else if (button_name.equals("merge")) {
+        }
+          else if (button_name.equals(HomeViewModel.MERGE_PLAYLIST_NAME)) {
             presenter.prepareSuccessView(new HomeOutputData(MergeView.viewName));
         }
           else if (button_name.equals(HomeViewModel.ARTISTS_PLAYLIST_MAKER_NAME)) {

@@ -39,7 +39,7 @@ public class ProfileView extends JPanel implements ActionListener, PropertyChang
         topArtistsLabel = new JLabel(ProfileViewModel.ALL_TIME_TOP_ARTISTS);
         topArtistsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        back = new JButton("Back");
+        back = new JButton("Home");
         back.setAlignmentY(Component.TOP_ALIGNMENT); // Align to the top
         back.addActionListener(
                 new ActionListener() {

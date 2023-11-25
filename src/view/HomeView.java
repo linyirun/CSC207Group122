@@ -64,8 +64,8 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
      
         buttonsPanel.add(mergePlaylist);
         buttonsPanel.add(splitPlaylist);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
         buttonsPanel.add(artistsPlaylistMaker);
+        buttonsPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
 
         add(buttonsPanel, BorderLayout.WEST);
 

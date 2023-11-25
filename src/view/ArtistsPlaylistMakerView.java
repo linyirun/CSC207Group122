@@ -69,7 +69,7 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
         layout.setAutoCreateContainerGaps(true);
 
         // Add back button
-        backButton = new JButton("Back");
+        backButton = new JButton("Home");
         // Center align the title and right-align the back button
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                 .addGroup(layout.createSequentialGroup().addComponent(title)
