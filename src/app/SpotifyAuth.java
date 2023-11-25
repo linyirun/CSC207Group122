@@ -15,7 +15,7 @@ public class SpotifyAuth {
 
     private final static String CLIENT_ID = "84e604e1f851429db4c89831cf8d03a4";
 
-    private final static String CLIENT_SECRET = "5e2b71753dc947ff98863c59e0b24802";
+    private final static String CLIENT_SECRET = "";
 
 
     public static void getAuthorization() throws IOException {

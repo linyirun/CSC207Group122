@@ -29,10 +29,17 @@ public class LoginOAuthPresenter implements LoginOAuthOutputBoundary {
     }
 
     @Override
-    public void prepareFailView(String httpErrorCode, String httpErrorMessage) {
+    public void prepareFailViewHTTP(String httpErrorCode, String httpErrorMessage) {
         LoginOAuthState loginOAuthState = loginOAuthViewModel.getState();
         String errorMessage = httpErrorMessage + "\n" + httpErrorCode + "\nToken was invalid";
         loginOAuthState.setOAuthError(errorMessage);
+        this.loginOAuthViewModel.setState(loginOAuthState);
+        this.loginOAuthViewModel.firePropertyChangedError();
+    }
+    @Override
+    public void prepareFailViewDesktop(String error) {
+        LoginOAuthState loginOAuthState = loginOAuthViewModel.getState();
+        loginOAuthState.setOAuthError(error);
         this.loginOAuthViewModel.setState(loginOAuthState);
         this.loginOAuthViewModel.firePropertyChangedError();
     }

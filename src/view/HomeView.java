@@ -10,69 +10,136 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 
 
 public class HomeView extends JPanel implements ActionListener, PropertyChangeListener {
-
     public final String viewName = "Home";
 
     private final HomeViewModel homeViewModel;
-
     private final HomeController homeController;
-    private final PlaylistsViewModel playlistsViewModel;
 
     private final JButton splitPlaylist;
-
     private final JButton artistsPlaylistMaker;
-
     private final JLabel profile;
+    private final JLabel profileText;
+    private final JLabel welcome;
 
-    public HomeView(HomeController homeController, HomeViewModel homeViewModel, PlaylistsViewModel playlistsViewModel){
+    private JLabel titleLabel;
+
+    public HomeView(HomeController homeController, HomeViewModel homeViewModel) {
         this.homeController = homeController;
         this.homeViewModel = homeViewModel;
-        this.playlistsViewModel = playlistsViewModel;
         homeViewModel.addPropertyChangeListener(this);
 
-        JPanel buttons =  new JPanel();
+        setLayout(new BorderLayout());
 
-        profile = new JLabel();
-        profile.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        titleLabel = new JLabel("Home");
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.BOLD, 16)); // Set font to bold
+        titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        splitPlaylist = new JButton(homeViewModel.SPLIT_PLAYLIST_NAME);
-        splitPlaylist.setAlignmentX(Component.CENTER_ALIGNMENT);
-        buttons.add(splitPlaylist);
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.X_AXIS));
+        titlePanel.add(titleLabel);
 
-        artistsPlaylistMaker= new JButton(homeViewModel.ARTISTS_PLAYLIST_MAKER_NAME);
-        artistsPlaylistMaker.setAlignmentX(Component.CENTER_ALIGNMENT);
-        buttons.add(artistsPlaylistMaker);
+        add(titlePanel, BorderLayout.NORTH);
 
-        splitPlaylist.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(splitPlaylist)) {
-                            homeController.execute("split");
-                        }
-                    }
+        // Create a panel for the buttons and use BoxLayout to stack them vertically
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
+        buttonsPanel.setBorder(BorderFactory.createTitledBorder("Buttons")); // Add a titled border
+
+        splitPlaylist = createStyledButton(HomeViewModel.SPLIT_PLAYLIST_NAME);
+        artistsPlaylistMaker = createStyledButton(HomeViewModel.ARTISTS_PLAYLIST_MAKER_NAME);
+
+        buttonsPanel.add(splitPlaylist);
+        buttonsPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
+        buttonsPanel.add(artistsPlaylistMaker);
+
+        add(buttonsPanel, BorderLayout.WEST);
+
+        // Create a panel for the profile information
+        JPanel profilePanel = new JPanel();
+        profilePanel.setLayout(new BoxLayout(profilePanel, BoxLayout.Y_AXIS));
+        profilePanel.setBorder(BorderFactory.createTitledBorder("Profile")); // Add a titled border
+
+        ImageIcon profileIcon = new ImageIcon("src/images/profile_icon_2.png");
+        Image scaledImage = profileIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        ImageIcon smallerProfileIcon = new ImageIcon(scaledImage);
+
+        profile = new JLabel(smallerProfileIcon);
+        profile.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profile.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        profile.setBorder(BorderFactory.createCompoundBorder(
+                profile.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        profile.setIconTextGap(10);
+
+        profileText = new JLabel("Profile");
+        profileText.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        profile.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                profile.setBorder(BorderFactory.createLineBorder(Color.RED, 1)); // Change border color
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                profile.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); // Restore border color
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                homeController.execute("profile");
+            }
+        });
+
+        profilePanel.add(profile);
+        profilePanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
+        profilePanel.add(profileText);
+
+        // Add the profile panel to the EAST of the main panel
+        add(profilePanel, BorderLayout.EAST);
+
+        // Create a panel for the welcome label
+        JPanel welcomePanel = new JPanel();
+        welcomePanel.setLayout(new BoxLayout(welcomePanel, BoxLayout.Y_AXIS));
+        welcomePanel.setBorder(BorderFactory.createTitledBorder("Welcome")); // Add a titled border
+
+        welcome = new JLabel();
+        welcome.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        welcomePanel.add(Box.createRigidArea(new Dimension(0, 20))); // Add some spacing
+        welcomePanel.add(welcome);
+
+        // Add the welcome label to the CENTER of the main panel
+        add(welcomePanel, BorderLayout.CENTER);
+    }
+
+    private JButton createStyledButton(String text) {
+        JButton button = new JButton(text);
+        button.setAlignmentX(Component.LEFT_ALIGNMENT);
+        button.setFocusPainted(false);
+        button.setBackground(new Color(240, 240, 240));
+        button.setMaximumSize(new Dimension(150, 40));
+
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(button)) {
+                    homeController.execute(text);
                 }
-        );
+            }
+        });
 
-        artistsPlaylistMaker.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(artistsPlaylistMaker)) {
-                            homeController.execute("apm");
-                        }
-                    }
-                }
-        );
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(profile);
-        this.add(buttons);
-
+        return button;
     }
 
     public void actionPerformed(ActionEvent evt) {
@@ -82,7 +149,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("state")) {
-            profile.setText("Welcome " + homeViewModel.getState().getDisplayName());
+            welcome.setText("Welcome " + homeViewModel.getState().getDisplayName());
         }
     }
 }

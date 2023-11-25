@@ -6,6 +6,7 @@ import interface_adapter.home.HomePresenter;
 import interface_adapter.home.HomeViewModel;
 import interface_adapter.playlists.PlaylistsController;
 import interface_adapter.playlists.PlaylistsViewModel;
+import interface_adapter.profile.ProfileViewModel;
 import use_case.home.HomeInputBoundary;
 import use_case.home.HomeInteractor;
 import use_case.home.HomeOutputBoundary;
@@ -20,12 +21,12 @@ public class HomeUseCaseFactory {
     }
 
     public static HomeView create(
-            ViewManagerModel viewManagerModel, HomeViewModel homeViewModel, PlaylistsViewModel playlistsViewModel,
+            ViewManagerModel viewManagerModel, HomeViewModel homeViewModel,ProfileViewModel profileViewModel,
             HomeUserDataAccessInterface dao) {
 
         try {
-            HomeController homeController = createHomeUseCase(viewManagerModel, homeViewModel, dao);
-            return new HomeView(homeController, homeViewModel, playlistsViewModel);
+            HomeController homeController = createHomeUseCase(viewManagerModel, homeViewModel, profileViewModel, dao);
+            return new HomeView(homeController, homeViewModel);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error TODO");
         }
@@ -35,9 +36,9 @@ public class HomeUseCaseFactory {
 
     private static HomeController createHomeUseCase(
             ViewManagerModel viewManagerModel,
-            HomeViewModel homeViewModel,
+            HomeViewModel homeViewModel, ProfileViewModel profileViewModel,
             HomeUserDataAccessInterface dao) throws IOException {
-        HomeOutputBoundary homePresenter = new HomePresenter(viewManagerModel, homeViewModel);
+        HomeOutputBoundary homePresenter = new HomePresenter(viewManagerModel, homeViewModel, profileViewModel);
 
         HomeInputBoundary homeInteractor = new HomeInteractor(homePresenter, dao);
 
