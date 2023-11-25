@@ -44,10 +44,12 @@ import java.net.http.HttpResponse;
 
 import org.json.simple.parser.ParseException;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.List;
 
 public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface,
-        HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface, MergeDataAccessInterface {
+        HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface, MergeDataAccessInterface, ArtistsPmUserDataAccessInterface {
           
     /**
      * Retrieves the set of playlist names available to the authenticated user.

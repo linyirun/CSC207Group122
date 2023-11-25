@@ -54,7 +54,7 @@ public class ArtistsPmInteractor implements ArtistsPmInputBoundary {
             }
 
             List<String> topTracks = dao.getArtistsTopTracks(selectedArtists, inputData.getNumberOfSongs());
-            List<String> newTracks = filterExistingTracks(topTracks, new ArrayList<>(dao.get_playlistMap().values()));
+            List<String> newTracks = filterExistingTracks(topTracks, new ArrayList<>(dao.getPlaylistMap().values()));
             String playlistName = promptForUniquePlaylistName();
             String userId = dao.getUserId();
             String playlistId = dao.createPlaylist(playlistName, userId);
@@ -79,7 +79,7 @@ public class ArtistsPmInteractor implements ArtistsPmInputBoundary {
     }
 
     private String promptForUniquePlaylistName() {
-        Set<String> existingPlaylists = dao.get_playlists();
+        Set<String> existingPlaylists = dao.getPlaylists();
         String suggestedName;
 
         do {

@@ -98,7 +98,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Back Button
-        JButton backButton = new JButton("Back");
+        JButton backButton = new JButton("Home");
         buttonsPanel.add(backButton, BorderLayout.NORTH);
 
         // Grouped Split Buttons
@@ -127,7 +127,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
         buttonsPanel.add(splitButtonsPanel, BorderLayout.CENTER);
 
         // Get Playlist Button
-        getPlaylist = new JButton(PlaylistsViewModel.GET_PLAYLIST_BUTTON_LABLE);
+        getPlaylist = new JButton(PlaylistsViewModel.GET_PLAYLIST_BUTTON_LABEL);
         buttonsPanel.add(getPlaylist, BorderLayout.SOUTH);
 
         // Action Listeners for Buttons
