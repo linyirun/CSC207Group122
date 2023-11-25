@@ -18,6 +18,7 @@ public class SpotifyAuth {
     private final static String CLIENT_SECRET = "";
 
 
+
     public static void getAuthorization() throws IOException {
 
         URL url = new URL("https://accounts.spotify.com/authorize?client_id=" + CLIENT_ID + "&response_type" +
