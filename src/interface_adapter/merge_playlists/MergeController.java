@@ -13,11 +13,10 @@ public class MergeController {
         this.mergeUseCaseInteractor = mergeUseCaseInteractor;
     }
 
-    public void execute(MergeInputData data) {
-        if (data.isReturnHome()) {
-            mergeUseCaseInteractor.returnHome();
-        } else {
-            mergeUseCaseInteractor.mergePlaylists(data);
-        }
+    public void mergePlaylists(MergeInputData data) {
+        mergeUseCaseInteractor.mergePlaylists(data);
+    }
+    public void returnHome() {
+        mergeUseCaseInteractor.returnHome();
     }
 }

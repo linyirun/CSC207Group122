@@ -3,8 +3,11 @@ package view;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.merge_playlists.MergeController;
 import interface_adapter.merge_playlists.MergeViewModel;
+import use_case.merge_playlists.MergeInputData;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,12 +29,16 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
 
     private final JButton homeButton;
     private final JButton refreshButton;
+    private final JButton clearPlaylistsButton;
+    private final JButton deletePlaylistButton;
 
     private JScrollPane playlistScrollPane;
     private String selectedPlaylistName;
 
-    private DefaultListModel<String> playlistModel;
-    private JList<String> playlistList;
+    private DefaultListModel<String> playlistsModel;
+    private JList<String> playlistsList;
+    private DefaultListModel<String> selectedPlaylistsModel;
+    private JList<String> selectedPlaylistsList;
 
 
     public MergeView(MergeViewModel mergeViewModel, MergeController mergeController, ViewManagerModel viewManagerModel) {
@@ -53,30 +60,28 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
-//        JPanel inputPanel = new JPanel();
-//        inputPanel.setBorder(BorderFactory.createTitledBorder("Search and Actions"));
-//        searchField = new JTextField(20);
-//        enterButton = new JButton(ArtistsPmViewModel.ARTISTS_BUTTON_LABEL);
+        JPanel actionsPanel = new JPanel();
+        actionsPanel.setBorder(BorderFactory.createTitledBorder("Actions"));
 
-//        clearSelectionButton = new JButton("Clear Selection");
-//        deleteArtistButton = new JButton("Delete Artist");
+        clearPlaylistsButton = new JButton("Clear Selection");
+        deletePlaylistButton = new JButton("Delete Playlist");
 //        inputPanel.add(new JLabel("Search:"));
 //        inputPanel.add(searchField);
 //        inputPanel.add(enterButton);
-//        inputPanel.add(createPlaylistButton);
-//        inputPanel.add(clearSelectionButton);
-//        inputPanel.add(deleteArtistButton);
-//
-//        searchResultsModel = new DefaultListModel<>();
-//        searchResultsList = new JList<>(searchResultsModel);
-//        JScrollPane searchScrollPane = new JScrollPane(searchResultsList);
-//        searchScrollPane.setBorder(BorderFactory.createTitledBorder("Search Results"));
-//
-//        selectedArtistsModel = new DefaultListModel<>();
-//        selectedArtistsList = new JList<>(selectedArtistsModel);
-//        JScrollPane selectedScrollPane = new JScrollPane(selectedArtistsList);
 
+        actionsPanel.add(refreshButton);
+        actionsPanel.add(mergeButton);
+//        actionsPanel.add();
 
+        playlistsModel = new DefaultListModel<>();
+        playlistsList = new JList<>(playlistsModel);
+        JScrollPane playlistsScrollPane = new JScrollPane(playlistsList);
+        playlistsScrollPane.setBorder(BorderFactory.createTitledBorder("Your Playlists"));
+
+        selectedPlaylistsModel = new DefaultListModel<>();
+        selectedPlaylistsList = new JList<>(selectedPlaylistsModel);
+        JScrollPane selectedScrollPane = new JScrollPane(selectedPlaylistsList);
+        selectedScrollPane.setBorder(BorderFactory.createTitledBorder("Selected Playlists"));
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -86,20 +91,68 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
                 layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(title)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
+                                        GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE) // places this on the right
+                                .addComponent(homeButton)
                         )
-                        .addComponent(mergeButton)
-
-
+                        .addComponent(actionsPanel)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(playlistsScrollPane)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                        .addComponent(selectedScrollPane)
+                                        .addComponent(clearPlaylistsButton)
+                                        .addComponent(deletePlaylistButton)
+                                )
+                        )
         );
+
 
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                                 .addComponent(title)
+                                .addComponent(homeButton)
                         )
-                        .addComponent(mergeButton)
-
+                        .addComponent(actionsPanel)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(playlistsScrollPane)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addComponent(selectedScrollPane)
+                                        .addComponent(clearPlaylistsButton)
+                                        .addComponent(deletePlaylistButton)
+                                )
+                        )
         );
+
+
+        mergeButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(mergeButton)) {
+                            mergePlaylists();
+                        }
+                    }
+                }
+        );
+
+        homeButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(homeButton)) {
+                            mergeController.returnHome();
+                        }
+                    }
+                }
+        );
+
+        playlistsList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                String selectedPlaylist = playlistsList.getSelectedValue();
+                if (selectedPlaylist != null) {
+                    selectedPlaylistsModel.addElement(selectedPlaylist);
+                }
+            }
+        });
 
 
 
@@ -147,25 +200,52 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
 //            }
 //        });
 //
-//        createPlaylistButton.addActionListener(e -> {
-//            if (e.getSource().equals(createPlaylistButton)) {
-//                createPlaylist();
-//            }
-//        });
 //
-//        clearSelectionButton.addActionListener(e -> {
-//            if (e.getSource().equals(clearSelectionButton)) {
-//                selectedArtistsModel.clear();
-//            }
-//        });
-//
-//        deleteArtistButton.addActionListener(e -> {
-//            if (e.getSource().equals(deleteArtistButton)) {
-//                deleteSelectedArtist();
-//            }
-//        });
+        clearPlaylistsButton.addActionListener(e -> {
+            if (e.getSource().equals(clearPlaylistsButton)) {
+                selectedPlaylistsModel.clear();
+            }
+        });
+
+        deletePlaylistButton.addActionListener(e -> {
+            if (e.getSource().equals(deletePlaylistButton)) {
+                deleteSelectedPlaylist();
+            }
+        });
 //
 
+    }
+
+
+    private void mergePlaylists() {
+        List<String> selectedPlaylists = new ArrayList<>();
+        for (int i = 0; i < selectedPlaylistsModel.getSize(); i++) {
+            selectedPlaylists.add(selectedPlaylistsModel.getElementAt(i));
+        }
+
+        if (selectedPlaylists.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please select at least one playlist to merge.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String givenName = JOptionPane.showInputDialog(this, "Enter the name of the new playlist: ", JOptionPane.QUESTION_MESSAGE);
+
+        if (givenName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a non-empty name.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+//            MergeInputData inputData = new MergeInputData();
+//            mergeController.mergePlaylists(inputData);
+
+            selectedPlaylistsModel.clear();
+        }
+
+    }
+
+    private void deleteSelectedPlaylist() {
+        int selectedIndex = selectedPlaylistsList.getSelectedIndex();
+        if (selectedIndex != -1) {
+            selectedPlaylistsModel.remove(selectedIndex);
+        }
     }
 
     @Override
