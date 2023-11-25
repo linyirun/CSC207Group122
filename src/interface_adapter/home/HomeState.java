@@ -1,6 +1,5 @@
 package interface_adapter.home;
 
-import interface_adapter.login.LoginState;
 
 public class HomeState {
     String button_error_msg = "";

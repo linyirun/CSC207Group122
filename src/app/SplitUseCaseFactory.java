@@ -8,7 +8,6 @@ import interface_adapter.playlists.PlaylistsViewModel;
 import interface_adapter.split_playlist.SplitViewModel;
 
 import use_case.playlists.PlaylistsUserDataAccessInterface;
-import view.LoginView;
 import view.SplitView;
 
 import javax.swing.*;

@@ -1,7 +1,6 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.login.LoginState;
 import interface_adapter.split_playlist.SplitController;
 import interface_adapter.split_playlist.SplitViewModel;
 import interface_adapter.playlists.*;

@@ -350,5 +350,40 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         return topTracks;
     }
 
+    @Override
+    public Map<String, List<String>> getUserTopTracksAndArtists() throws ParseException, IOException, InterruptedException{
+        Map<String, List<String>> topTracksAndArtists = new HashMap<>();
+
+        // first fetch the top 10 user tracks
+        String url1 = "https://api.spotify.com/v1" + "/me/top/tracks?time_range=long_term&limit=10";
+        String accessToken = SpotifyAuth.getAccessToken();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request1 = HttpRequest.newBuilder().uri(URI.create(url1)).header("Authorization", "Bearer " + accessToken).build();
+        HttpResponse<String> response1 = client.send(request1, HttpResponse.BodyHandlers.ofString());
+        JSONObject responseObject1 = (JSONObject) new JSONParser().parse(response1.body());
+        JSONArray trackObjects = (JSONArray) responseObject1.get("items");
+        List<String> topTracks = new ArrayList<>();
+        for (Object item : trackObjects) {
+            JSONObject track = (JSONObject) item;
+            String trackName = (String) track.get("name");
+            topTracks.add(trackName);
+        }
+        topTracksAndArtists.put("tracks", topTracks);
+
+        // then fetch the top 10 user artists
+        String url2 = "https://api.spotify.com/v1" + "/me/top/artists?time_range=long_term&limit=10";
+        HttpRequest request2 = HttpRequest.newBuilder().uri(URI.create(url2)).header("Authorization", "Bearer " + accessToken).build();
+        HttpResponse<String> response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
+        JSONObject responseObject = (JSONObject) new JSONParser().parse(response2.body());
+        JSONArray artistObjects = (JSONArray) responseObject.get("items");
+        List<String> topArtists = new ArrayList<>();
+        for (Object item : artistObjects) {
+            JSONObject track = (JSONObject) item;
+            String trackName = (String) track.get("name");
+            topArtists.add(trackName);
+        }
+        topTracksAndArtists.put("artists", topArtists);
+        return topTracksAndArtists;
+    }
 
 }
