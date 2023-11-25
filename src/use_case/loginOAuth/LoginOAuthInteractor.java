@@ -4,10 +4,10 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.net.URI;
+import java.net.*;
 
 import interface_adapter.loginOAuth.LoginOAuthController;
 
@@ -16,14 +16,13 @@ import entity.SpotifyAuth;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import use_case.login.LoginInteractor;
+import view.LoginOAuthView;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
-import java.net.URL;
 import java.util.Base64;
 import java.io.InputStream;
 
@@ -40,7 +39,28 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
     }
 
     public void execute() throws IOException, InterruptedException {
+        URL url1 = new URL("https://accounts.spotify.com/authorize?client_id=" + SpotifyAuth.getClientId() + "&response_type" +
+                "=code&scope=" + SpotifyAuth.getScope() + "&redirect_uri=http://localhost:8080/callback") ;
+        HttpURLConnection http1 = (HttpURLConnection) url1.openConnection();
+        http1.setRequestMethod("GET");
+        int responseCode1 = http1.getResponseCode();
+        System.out.println(responseCode1);
+        System.out.println(HttpURLConnection.HTTP_OK);
+        if (HttpURLConnection.HTTP_OK != responseCode1) {
+            presenter.prepareFailViewHTTP(Integer.toString(responseCode1), http1.getResponseMessage());
+            return;
+        }
         // make the http POST request for the access token
+        if (Desktop.isDesktopSupported()) {
+            try {
+                Desktop.getDesktop().browse(url1.toURI());
+            } catch (IOException | URISyntaxException e) {
+                System.out.println("Problem with URL");
+            }
+        } else {
+            presenter.prepareFailViewDesktop("Automatic browser link opening not supported");
+            return;
+        }
 
         createServer(8080);
 
@@ -92,7 +112,7 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
             }
 
         } else {
-            presenter.prepareFailView(Integer.toString(responseCode), http.getResponseMessage());
+            presenter.prepareFailViewHTTP(Integer.toString(responseCode), http.getResponseMessage());
         }
         http.disconnect();
     }

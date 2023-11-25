@@ -3,14 +3,13 @@ import java.util.*;
 
 import entity.User;
 import entity.UserFactory;
-import use_case.login.LoginUserDataAccessInterface;
 import use_case.loginOAuth.LoginOAuthUserDataAccessInterface;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class FileUserDataAccessObject implements LoginUserDataAccessInterface{
+public class FileUserDataAccessObject {
 
     private final File csvFile;
 
@@ -50,15 +49,14 @@ public class FileUserDataAccessObject implements LoginUserDataAccessInterface{
                 }
             }
         }
+
     }
 
-    @Override
     public void save(User user) {
         accounts.put(user.getName(), user);
         this.save();
     }
 
-    @Override
     public User get(String username) {
         return accounts.get(username);
     }
@@ -90,7 +88,6 @@ public class FileUserDataAccessObject implements LoginUserDataAccessInterface{
      * @param identifier the username to check.
      * @return whether a user exists with username identifier
      */
-    @Override
     public boolean existsByName(String identifier) {
         return accounts.containsKey(identifier);
     }

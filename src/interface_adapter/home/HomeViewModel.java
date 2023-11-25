@@ -7,8 +7,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class HomeViewModel extends ViewModel {
-    public final String SPLIT_PLAYLIST_NAME = "Split Playlist";
-    public final String MERGE_PLAYLIST_NAME = "Merge Playlist";
+
+    public static final String SPLIT_PLAYLIST_NAME = "Split Playlist";
+    public static final String MERGE_PLAYLIST_NAME = "Merge Playlist";
+    public static final String ARTISTS_PLAYLIST_MAKER_NAME = "Artists Playlist Maker";
     private HomeState state = new HomeState();
 
     public HomeViewModel() {

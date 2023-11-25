@@ -1,9 +1,28 @@
+/**
+ * Provides methods to access the Spotify API for retrieving user playlists, songs,
+ * and performing actions like playlist creation and song addition.
+ * <p>
+ * Implements:
+ * - {@link use_case.playlists.PlaylistsUserDataAccessInterface}
+ * - {@link use_case.split_playlist.SplitUserDataAccessInterface}
+ * - {@link use_case.home.HomeUserDataAccessInterface}
+ * - {@link use_case.loginOAuth.LoginOAuthUserDataAccessInterface}
+ * - {@link use_case.artists_playlist_maker.ArtistsPmUserDataAccessInterface}
+ * <p>
+ * Uses the Spotify Web API to interact with the user's Spotify account.
+ * <p>
+ * Requires a valid access token set with {@link entity.SpotifyAuth#getAccessToken()}.
+ */
+
 package data_access;
 
+import entity.Song;
 import entity.SpotifyAuth;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import use_case.artists_playlist_maker.ArtistsPmUserDataAccessInterface;
 import use_case.home.HomeUserDataAccessInterface;
 import use_case.loginOAuth.LoginOAuthUserDataAccessInterface;
 import use_case.merge_playlists.MergeDataAccessInterface;
@@ -11,17 +30,17 @@ import use_case.playlists.PlaylistsUserDataAccessInterface;
 import use_case.split_playlist.SplitUserDataAccessInterface;
 
 import java.awt.*;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.*;
-import entity.Song;
-
 import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+
 
 import org.json.simple.parser.ParseException;
 import java.io.IOException;
@@ -29,12 +48,25 @@ import java.util.List;
 
 public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface,
         HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface, MergeDataAccessInterface {
+          
+    /**
+     * Retrieves the set of playlist names available to the authenticated user.
+     *
+     * @return a set of playlist names
+     */
 
     public Set<String> getPlaylists(){
         return getPlaylistMap().keySet();
     }
+          
+     /**
+     * Retrieves a map of playlist names to their corresponding playlist IDs for the authenticated user.
+     *
+     * @return a map of playlist names to playlist IDs
+     */
 
     public Map<String, String> getPlaylistMap(){
+
         Map<String, String> playlist_map = new HashMap<>();
         try {
             // Use your pre-existing access token
@@ -52,8 +84,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
             if (playlistsResponseCode == 200) {
                 InputStream inputStream = playlistsConnection.getInputStream();
                 JSONParser jsonParser = new JSONParser();
-                JSONObject jsonObject = (JSONObject)jsonParser.parse(
-                        new InputStreamReader(inputStream, "UTF-8"));
+                JSONObject jsonObject = (JSONObject) jsonParser.parse(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
                 JSONArray playlists = (JSONArray) jsonObject.get("items");
                 for (Object playlist : playlists) {
@@ -73,17 +104,55 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         return playlist_map;
     }
 
-    public List<Song> getSongs(String playlistID){
+    /**
+     * Retrieves a list of track IDs for a given playlist ID.
+     *
+     * @param playlistID the ID of the playlist
+     * @return a list of track IDs
+     */
+
+    public List<String> getTrackIds(String playlistID) {
+        String accessToken = SpotifyAuth.getAccessToken();
+        String url = "https://api.spotify.com/v1/playlists/" + playlistID + "/tracks";
+        List<String> trackIds = new ArrayList<>();
+
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Authorization", "Bearer " + accessToken).build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser.parse(response.body());
+            JSONArray tracks = (JSONArray) jsonObject.get("items");
+
+            for (Object o : tracks) {
+                JSONObject track = (JSONObject) ((JSONObject) o).get("track");
+                String songId = (String) track.get("id");
+                trackIds.add(songId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return trackIds;
+    }
+
+    /**
+     * Retrieves a list of {@link entity.Song} objects for a given playlist ID,
+     * including information about the song name, artists, and their popularity.
+     *
+     * @param playlistID the ID of the playlist
+     * @return a list of Song objects
+     */
+    public List<Song> getSongs(String playlistID) {
         String accessToken = SpotifyAuth.getAccessToken();
         String url = "https://api.spotify.com/v1/playlists/" + playlistID + "/tracks";
         List<Song> songsInPlaylist = new ArrayList<>();
 
         try {
             HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .header("Authorization", "Bearer " + accessToken)
-                    .build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Authorization", "Bearer " + accessToken).build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -98,16 +167,13 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
 
                 Map<String, Long> artists = new HashMap<>();
                 JSONArray artistsArray = (JSONArray) track.get("artists");
-                for(Object artist: artistsArray){
+                for (Object artist : artistsArray) {
                     JSONObject JasonArtist = (JSONObject) artist;
 
                     String artistId = (String) JasonArtist.get("id");
                     // Fetching artist details
                     String artistUrl = "https://api.spotify.com/v1/artists/" + artistId;
-                    HttpRequest artistRequest = HttpRequest.newBuilder()
-                            .uri(URI.create(artistUrl))
-                            .header("Authorization", "Bearer " + accessToken)
-                            .build();
+                    HttpRequest artistRequest = HttpRequest.newBuilder().uri(URI.create(artistUrl)).header("Authorization", "Bearer " + accessToken).build();
                     HttpResponse<String> artistResponse = client.send(artistRequest, HttpResponse.BodyHandlers.ofString());
                     JSONObject artistDetails = (JSONObject) parser.parse(artistResponse.body());
 
@@ -119,7 +185,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
                 }
                 Song song = new Song(songId, name, artists);
                 songsInPlaylist.add(song);
-                System.out.println(name);
+//                System.out.println(name);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -129,40 +195,55 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         return songsInPlaylist;
     }
 
+    /**
+     * Retrieves the user ID of the authenticated user.
+     *
+     * @return the user ID
+     * @throws IOException            if an I/O error occurs
+     * @throws InterruptedException   if the operation is interrupted
+     * @throws ParseException         if an error occurs during JSON parsing
+     */
+
     public String getUserId() throws IOException, InterruptedException, ParseException {
         String url = "https://api.spotify.com/v1" + "/me";
         String accessToken = SpotifyAuth.getAccessToken();
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("Authorization", "Bearer " + accessToken)
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Authorization", "Bearer " + accessToken).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         JSONObject responseObject = (JSONObject) new JSONParser().parse(response.body());
         return (String) responseObject.get("id");
     }
 
+    /**
+     * Retrieves the display name of the authenticated user's account.
+     *
+     * @return the display name
+     * @throws IOException            if an I/O error occurs
+     * @throws InterruptedException   if the operation is interrupted
+     * @throws ParseException         if an error occurs during JSON parsing
+     */
+
     public String getAccountName() throws IOException, InterruptedException, ParseException {
         String url = "https://api.spotify.com/v1" + "/me";
         String accessToken = SpotifyAuth.getAccessToken();
         HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("Authorization", "Bearer " + accessToken)
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Authorization", "Bearer " + accessToken).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         JSONObject responseObject = (JSONObject) new JSONParser().parse(response.body());
         return (String) responseObject.get("display_name");
     }
 
     /**
+    
+     * Creates a new playlist for the authenticated user with the specified name.
      *
-     * @param playlistName the name of the playlist
-     * @param userId the user's id
-     * @return String: the new playlist's id
-     * @throws IOException
-     * @throws InterruptedException
-     * @throws ParseException
+     * @param playlistName the name of the new playlist
+     * @param userId       the ID of the user for whom the playlist is created
+     * @return the ID of the newly created playlist
+     * @throws IOException            if an I/O error occurs
+     * @throws InterruptedException   if the operation is interrupted
+     * @throws ParseException         if an error occurs during JSON parsing
+
      */
     public String createPlaylist(String playlistName, String userId) throws IOException, InterruptedException, ParseException {
         String url = "https://api.spotify.com/v1" + "/users/" + userId + "/playlists";
@@ -172,18 +253,22 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         requestBody.put("name", playlistName);
         requestBody.put("public", true);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("Authorization", "Bearer " + accessToken)
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody.toJSONString()))
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Authorization", "Bearer " + accessToken).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(requestBody.toJSONString())).build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         JSONObject responseObject = (JSONObject) new JSONParser().parse(response.body());
         return (String) responseObject.get("id");
     }
 
+
+    /**
+     * Adds a list of songs to the specified playlist.
+     *
+     * @param playlistId the ID of the playlist
+     * @param songIds    a list of song IDs to be added to the playlist
+     * @throws IOException          if an I/O error occurs
+     * @throws InterruptedException if the operation is interrupted
+     */
 
     public void addSongsToPlaylist(String playlistId, List<String> songIds) throws IOException, InterruptedException {
         String url = "https://api.spotify.com/v1" + "/playlists/" + playlistId + "/tracks";
@@ -195,14 +280,120 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         JSONObject requestBody = new JSONObject();
         requestBody.put("uris", uris);
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("Authorization", "Bearer " + accessToken)
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody.toJSONString()))
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Authorization", "Bearer " + accessToken).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(requestBody.toJSONString())).build();
 
         client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    /**
+     * Retrieves a list of top artists based on the provided search query and limit.
+     *
+     * @param searchQuery the search query for top artists
+     * @param limit       the maximum number of artists to retrieve
+     * @return a list of top artist names
+     * @throws IOException            if an I/O error occurs
+     * @throws InterruptedException   if the operation is interrupted
+     * @throws ParseException         if an error occurs during JSON parsing
+     */
+
+    @Override
+    public List<String> getTopArtists(String searchQuery, int limit) throws IOException, InterruptedException, ParseException {
+        // Encode the search query to handle spaces and special characters
+        String encodedSearchQuery = URLEncoder.encode(searchQuery, StandardCharsets.UTF_8);
+
+        String url = "https://api.spotify.com/v1/search?q=" + encodedSearchQuery + "&type=artist&limit=" + limit;
+        String accessToken = SpotifyAuth.getAccessToken();
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Authorization", "Bearer " + accessToken).build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        JSONObject responseObject = (JSONObject) new JSONParser().parse(response.body());
+        JSONObject artistsObject = (JSONObject) responseObject.get("artists");
+        JSONArray items = (JSONArray) artistsObject.get("items");
+
+        List<String> artists = new ArrayList<>();
+        for (Object item : items) {
+            JSONObject artist = (JSONObject) item;
+            artists.add((String) artist.get("name"));
+        }
+        return artists;
+    }
+
+    /**
+     * Retrieves a list of top tracks for a list of artist queries and a specified limit.
+     *
+     * @param queries a list of artist names to search for
+     * @param limit   the maximum number of top tracks per artist
+     * @return a list of track IDs representing top tracks
+     */
+
+    public List<String> getArtistsTopTracks(List<String> queries, int limit) {
+        List<String> topTracks = new ArrayList<>();
+
+        for (String artistName : queries) {
+            try {
+                // Encode the artist name to handle spaces and special characters
+                String encodedArtistName = URLEncoder.encode(artistName, StandardCharsets.UTF_8);
+
+                String url = "https://api.spotify.com/v1/search?q=" + encodedArtistName + "&type=track&limit=" + limit;
+                String accessToken = SpotifyAuth.getAccessToken();
+
+                HttpClient client = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Authorization", "Bearer " + accessToken).build();
+
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                JSONObject responseObject = (JSONObject) new JSONParser().parse(response.body());
+                JSONObject tracksObject = (JSONObject) responseObject.get("tracks");
+                JSONArray items = (JSONArray) tracksObject.get("items");
+
+                for (Object item : items) {
+                    JSONObject track = (JSONObject) item;
+                    String trackName = (String) track.get("id");
+                    topTracks.add(trackName);
+                }
+            } catch (IOException | InterruptedException | ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return topTracks;
+    }
+
+    @Override
+    public Map<String, List<String>> getUserTopTracksAndArtists() throws ParseException, IOException, InterruptedException{
+        Map<String, List<String>> topTracksAndArtists = new HashMap<>();
+
+        // first fetch the top 10 user tracks
+        String url1 = "https://api.spotify.com/v1" + "/me/top/tracks?time_range=long_term&limit=10";
+        String accessToken = SpotifyAuth.getAccessToken();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request1 = HttpRequest.newBuilder().uri(URI.create(url1)).header("Authorization", "Bearer " + accessToken).build();
+        HttpResponse<String> response1 = client.send(request1, HttpResponse.BodyHandlers.ofString());
+        JSONObject responseObject1 = (JSONObject) new JSONParser().parse(response1.body());
+        JSONArray trackObjects = (JSONArray) responseObject1.get("items");
+        List<String> topTracks = new ArrayList<>();
+        for (Object item : trackObjects) {
+            JSONObject track = (JSONObject) item;
+            String trackName = (String) track.get("name");
+            topTracks.add(trackName);
+        }
+        topTracksAndArtists.put("tracks", topTracks);
+
+        // then fetch the top 10 user artists
+        String url2 = "https://api.spotify.com/v1" + "/me/top/artists?time_range=long_term&limit=10";
+        HttpRequest request2 = HttpRequest.newBuilder().uri(URI.create(url2)).header("Authorization", "Bearer " + accessToken).build();
+        HttpResponse<String> response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
+        JSONObject responseObject = (JSONObject) new JSONParser().parse(response2.body());
+        JSONArray artistObjects = (JSONArray) responseObject.get("items");
+        List<String> topArtists = new ArrayList<>();
+        for (Object item : artistObjects) {
+            JSONObject track = (JSONObject) item;
+            String trackName = (String) track.get("name");
+            topArtists.add(trackName);
+        }
+        topTracksAndArtists.put("artists", topArtists);
+        return topTracksAndArtists;
     }
 
 }

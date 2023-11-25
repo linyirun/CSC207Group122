@@ -32,137 +32,50 @@ import org.json.simple.JSONArray;
 
 public class LoginOAuthView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    public final String viewName = "login OAuth"; //random line
-    private URL url;
+    public final String viewName = "login OAuth";
     private final LoginOAuthViewModel loginOAuthViewModel;
 
-    final JTextField codeInputField = new JTextField(15);
-
-
-    final JButton getPlaylist;
-
-    JButton url_link;
-    private final LoginOAuthController loginOAuthController;
+    private JButton url_link;
 
     public LoginOAuthView(LoginOAuthViewModel loginOAuthViewModel, LoginOAuthController controller) {
 
-        this.loginOAuthController = controller;
         this.loginOAuthViewModel = loginOAuthViewModel;
         this.loginOAuthViewModel.addPropertyChangeListener(this);
 
-        JLabel title = new JLabel("Login OAuth");
+        setLayout(new BorderLayout());
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel title = new JLabel("Spotify Login");
+        title.setFont(new Font(title.getFont().getName(), Font.BOLD, 24));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(title);
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        LabelTextPanel codeInfo = new LabelTextPanel(new JLabel("Code"), codeInputField);
-        url_link = new JButton("Link Here");
+        url_link = new JButton("Login to Spotify");
         url_link.setAlignmentX(Component.CENTER_ALIGNMENT);
+        url_link.setFocusPainted(false);
+        url_link.setBackground(new Color(29, 185, 84));
+        url_link.setForeground(Color.BLACK); // Set text color to black
+        url_link.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        JPanel buttons = new JPanel();
-
-        // We will need to delete this
-        getPlaylist = new JButton("Get Playlist");
-        getPlaylist.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        buttons.add(getPlaylist);
-
-
-        // getPlaylist ActionListener
-//        getPlaylist.addActionListener(
-//                new ActionListener() {//add a comment
-//                    public void actionPerformed(ActionEvent evt) {//add another comment
-//                        if (evt.getSource().equals(getPlaylist)) {
-//                            try {
-//                                // Use your pre-existing access token
-//                                String accessToken = SpotifyAuth.getAccessToken();
-//
-//                                // Use the access token to make a request to get the user's playlists
-//                                String endpoint = "https://api.spotify.com/v1/me/playlists";
-//
-//                                URL playlistsUrl = new URL(endpoint);
-//                                HttpURLConnection playlistsConnection = (HttpURLConnection) playlistsUrl.openConnection();
-//                                playlistsConnection.setRequestMethod("GET");
-//                                playlistsConnection.setRequestProperty("Authorization", "Bearer " + accessToken);
-//                                int playlistsResponseCode = playlistsConnection.getResponseCode();
-//
-//                                if (playlistsResponseCode == 200) {
-//                                    InputStream inputStream = playlistsConnection.getInputStream();
-//                                    JSONParser jsonParser = new JSONParser();
-//                                    JSONObject jsonObject = (JSONObject)jsonParser.parse(
-//                                            new InputStreamReader(inputStream, "UTF-8"));
-//
-//                                    JSONArray playlists = (JSONArray) jsonObject.get("items");
-//                                    for (Object playlist : playlists) {
-//                                        JSONObject playlistObj = (JSONObject) playlist;
-//                                        String playlistName = (String) playlistObj.get("name");
-//                                        System.out.println(playlistName); // Prints the name of each playlist
-//                                        String playlistitems = (String) playlistObj.get("items");
-//                                        System.out.println(playlistitems);
-//                                    }
-//
-//                                    playlistsConnection.disconnect();
-//                                } else {
-//                                    System.err.println("Error: Unable to retrieve playlists. Response code: " + playlistsResponseCode);
-//                                }
-//                            } catch (Exception e) {
-//                                System.err.println("Error: " + e.getMessage());
-//                            }
-//
-//                        }
-//                    }
-//                }
-//        );
-
-
-        url_link.addActionListener(
-            new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    if (evt.getSource().equals(url_link)) {
-                        System.out.println("here");
-                        if (Desktop.isDesktopSupported()) {
-                            try {
-                                Desktop.getDesktop().browse(url.toURI());
-                                controller.execute();
-                            } catch (IOException | URISyntaxException e) {
-                                System.out.println("Problem with URL");
-                            }
-                        } else {
-                            JOptionPane.showMessageDialog(LoginOAuthView.this, "Automatic browser link opening not supported");
-                        }
-                    }
+        url_link.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(url_link)) {
+                    controller.execute();
                 }
             }
-        );
+        });
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(url_link);
+        contentPanel.add(buttonPanel);
 
-
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        codeInputField.addKeyListener(
-                new KeyListener() {
-                    @Override
-                    public void keyTyped(KeyEvent e) {
-                        LoginOAuthState currentState = loginOAuthViewModel.getState();
-                        currentState.setCode(codeInputField.getText() + e.getKeyChar());
-                        loginOAuthViewModel.setState(currentState);
-                        System.out.println(loginOAuthViewModel.getState().getCode());
-                    }
-
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                    }
-
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                    }
-                });
-
-        this.add(title);
-        this.add(url_link);
-        this.add(buttons);
-        this.add(codeInfo);
+        add(contentPanel, BorderLayout.CENTER);
+        setPreferredSize(new Dimension(400, 200));
     }
-
-    /**
-     * React to a button click that results in evt.
-     */
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
     }
@@ -170,14 +83,8 @@ public class LoginOAuthView extends JPanel implements ActionListener, PropertyCh
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         LoginOAuthState state = (LoginOAuthState) evt.getNewValue();
-        if (evt.getPropertyName().equals("state")) {
-            url = state.getURL();
-        }
-        else if (evt.getPropertyName().equals("error")) {
-
-
+        if (evt.getPropertyName().equals("error")) {
             JOptionPane.showMessageDialog(LoginOAuthView.this, state.getOAuthError());
         }
     }
-
 }
