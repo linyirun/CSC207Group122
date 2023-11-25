@@ -20,7 +20,7 @@ public class ArtistsPmUseCaseFactory {
 
         try {
             ArtistsPmController artistsPmController = createLoginUseCase(viewManagerModel, artistsPmViewModel, userDataAccessObject);
-            return new ArtistsPlaylistMakerView(artistsPmViewModel, artistsPmController);
+            return new ArtistsPlaylistMakerView(artistsPmViewModel, artistsPmController,viewManagerModel);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Could not open user data file.");
         }
