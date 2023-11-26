@@ -10,7 +10,6 @@ import java.util.Set;
 
 public interface MergeDataAccessInterface {
 
-    // Needs the same methods as SplitUserDataAccessInterface
     Map<String, String> getPlaylistMap();
 
     List<Song> getSongs(String playlistID);
@@ -20,4 +19,6 @@ public interface MergeDataAccessInterface {
     String createPlaylist(String playlistName, String userId) throws IOException, InterruptedException, ParseException;
 
     void addSongsToPlaylist(String playlistId, List<String> songIds) throws IOException, InterruptedException;
+
+    List<Map<String, String>> getSongsAudioFeatures(List<String> songIds);
 }
