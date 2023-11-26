@@ -96,7 +96,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
 
         // Valence/Mood
         valenceButtonGroup = new ButtonGroup();
-        noneValenceRadioButton = new JRadioButton(mergeViewModel.NONE_LABEL);
+        noneValenceRadioButton = new JRadioButton(mergeViewModel.NONE_LABEL, true);
         sadValenceRadioButton = new JRadioButton(mergeViewModel.SAD_VALENCE_BUTTON_LABEL);
         neutralValenceRadioButton = new JRadioButton(mergeViewModel.NEUTRAL_VALENCE_BUTTON_LABEL);
         happyValenceRadioButton = new JRadioButton(mergeViewModel.HAPPY_VALENCE_BUTTON_LABEL);
@@ -119,7 +119,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         // Panel storing the filters
         JPanel filtersPanel = new JPanel();
         filtersPanel.setBorder(BorderFactory.createTitledBorder("Filters"));
-        filtersPanel.setLayout(new GridLayout(2, 2));
+        filtersPanel.setLayout(new GridLayout(1,2));
 
         // Instrumental filter
         JPanel instrumentalPanel = new JPanel();
@@ -283,15 +283,28 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
             selectedPlaylistsModel.clear();
         }
 
+        // This function gets the options for filters and puts it into mergeInputData
+        MergeInputData mergeInputData = createMergeInputData(selectedPlaylists, givenName);
+
+        mergeController.mergePlaylists(mergeInputData);
+
+    }
+
+    private MergeInputData createMergeInputData(List<String> selectedPlaylists, String givenName) {
         // get the options selected from the filters
         int instrumentalChoice = MergeInputData.ANY;
         if (instrumentalRadioButton.isSelected()) instrumentalChoice = MergeInputData.INSTRUMENTAL_CHOICE;
         if (vocalRadioButton.isSelected()) instrumentalChoice = MergeInputData.VOCAL_CHOICE;
 
-        MergeInputData mergeInputData = new MergeInputData(selectedPlaylists, givenName, false,
-                instrumentalChoice);
-        mergeController.mergePlaylists(mergeInputData);
+        int valenceChoice = MergeInputData.ANY;
+        if (sadValenceRadioButton.isSelected()) valenceChoice = MergeInputData.SAD_CHOICE;
+        if (neutralValenceRadioButton.isSelected()) valenceChoice = MergeInputData.NEUTRAL_CHOICE;
+        if (happyValenceRadioButton.isSelected()) valenceChoice = MergeInputData.HAPPY_CHOICE;
 
+        MergeInputData mergeInputData = new MergeInputData(selectedPlaylists, givenName, false);
+        mergeInputData.setInstrumentalChoice(instrumentalChoice);
+        mergeInputData.setValenceChoice(valenceChoice);
+        return mergeInputData;
     }
 
     private void deleteSelectedPlaylist() {

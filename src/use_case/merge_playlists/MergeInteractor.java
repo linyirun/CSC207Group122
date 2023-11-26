@@ -68,6 +68,7 @@ public class MergeInteractor implements MergeInputBoundary {
     private boolean checkFilters(Map<String, String> audioFeaturesMap, MergeInputData mergeInputData) {
 
         Double instrumentalness = Double.parseDouble(audioFeaturesMap.get("instrumentalness"));
+        Double valence = Double.parseDouble(audioFeaturesMap.get("valence"));
 
         // Check if it satisfies the instrumental filter
         if (mergeInputData.getInstrumentalChoice() == MergeInputData.INSTRUMENTAL_CHOICE) {
@@ -75,6 +76,19 @@ public class MergeInteractor implements MergeInputBoundary {
         }
         if (mergeInputData.getInstrumentalChoice() == MergeInputData.VOCAL_CHOICE) {
             if (instrumentalness >= MergeInputData.VOCAL_THRESHOLD) return false;
+        }
+
+        // Check if it satisfies the valence filter
+        if (mergeInputData.getValenceChoice() == MergeInputData.SAD_CHOICE) {
+            if (valence >= MergeInputData.SAD_THRESHOLD) return false;
+        }
+
+        if (mergeInputData.getValenceChoice() == MergeInputData.NEUTRAL_CHOICE) {
+            if (valence <= MergeInputData.SAD_THRESHOLD || valence >= MergeInputData.HAPPY_THRESHOLD) return false;
+        }
+
+        if (mergeInputData.getValenceChoice() == MergeInputData.HAPPY_CHOICE) {
+            if (valence <= MergeInputData.HAPPY_THRESHOLD) return false;
         }
 
         return true;

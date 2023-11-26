@@ -8,11 +8,23 @@ public class MergeInputData {
     // 0 means filter is off
     public static final int ANY = 0;
 
+    // Instrumental
     public static final int INSTRUMENTAL_CHOICE = 1;
     public static final int VOCAL_CHOICE = 2;
 
     public static final double INSTRUMENTAL_THRESHOLD = 0.8d;
     public static final double VOCAL_THRESHOLD = 0.2d;
+
+    // Mood/Valence
+    public static final int SAD_CHOICE = 1;
+    public static final int NEUTRAL_CHOICE = 2;
+    public static final int HAPPY_CHOICE = 3;
+
+    public static final double SAD_THRESHOLD = 0.3d;
+    public static final double HAPPY_THRESHOLD = 0.7d;
+
+
+
 
     // Need the ids of the playlists that the user wants to merge
     private List<String> selectedPlaylistNames;
@@ -21,13 +33,13 @@ public class MergeInputData {
     // if the user wants to return to home
     private boolean returnHome;
 
-    private int instrumentalChoice;
+    private int instrumentalChoice = ANY;
+    private int valenceChoice = ANY;
 
-    public MergeInputData(List<String> playlistNames, String playlistName, boolean returnHome, int instrumentalChoice) {
+    public MergeInputData(List<String> playlistNames, String playlistName, boolean returnHome) {
         this.selectedPlaylistNames = playlistNames;
         this.playlistName = playlistName;
         this.returnHome = returnHome;
-        this.instrumentalChoice = instrumentalChoice;
     }
 
     public List<String> getSelectedPlaylistNames() {
@@ -44,5 +56,17 @@ public class MergeInputData {
 
     public int getInstrumentalChoice() {
         return instrumentalChoice;
+    }
+
+    public void setInstrumentalChoice(int choice) {
+        this.instrumentalChoice = choice;
+    }
+
+    public int getValenceChoice() {
+        return valenceChoice;
+    }
+
+    public void setValenceChoice(int valenceChoice) {
+        this.valenceChoice = valenceChoice;
     }
 }
