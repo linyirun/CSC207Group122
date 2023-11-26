@@ -49,6 +49,12 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
     private final JRadioButton noneInstrumentalRadioButton;
 
 
+    private final ButtonGroup valenceButtonGroup;
+    private final JRadioButton noneValenceRadioButton;
+    private final JRadioButton sadValenceRadioButton;
+    private final JRadioButton neutralValenceRadioButton;
+    private final JRadioButton happyValenceRadioButton;
+
 
     public MergeView(MergeViewModel mergeViewModel, MergeController mergeController, ViewManagerModel viewManagerModel) {
 
@@ -78,6 +84,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         deletePlaylistButton = new JButton("Delete Playlist");
 
         // Creating radio buttons and their groups
+        // Instrumental:
         instrumentalButtonGroup = new ButtonGroup();
         instrumentalRadioButton = new JRadioButton(mergeViewModel.INSTRUMENTAL_BUTTON_LABEL);
         vocalRadioButton = new JRadioButton(mergeViewModel.VOCAL_BUTTON_LABEL);
@@ -87,10 +94,21 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         instrumentalButtonGroup.add(instrumentalRadioButton);
         instrumentalButtonGroup.add(vocalRadioButton);
 
+        // Valence/Mood
+        valenceButtonGroup = new ButtonGroup();
+        noneValenceRadioButton = new JRadioButton(mergeViewModel.NONE_LABEL);
+        sadValenceRadioButton = new JRadioButton(mergeViewModel.SAD_VALENCE_BUTTON_LABEL);
+        neutralValenceRadioButton = new JRadioButton(mergeViewModel.NEUTRAL_VALENCE_BUTTON_LABEL);
+        happyValenceRadioButton = new JRadioButton(mergeViewModel.HAPPY_VALENCE_BUTTON_LABEL);
 
+        valenceButtonGroup.add(noneValenceRadioButton);
+        valenceButtonGroup.add(sadValenceRadioButton);
+        valenceButtonGroup.add(neutralValenceRadioButton);
+        valenceButtonGroup.add(happyValenceRadioButton);
+
+        // Making the Action Panel
         JPanel buttonsActionPanel = new JPanel();
         buttonsActionPanel.setLayout(new BoxLayout(buttonsActionPanel, BoxLayout.Y_AXIS));
-
         // The buttons in the ActionPanel
         buttonsActionPanel.add(refreshButton);
         buttonsActionPanel.add(mergeButton);
@@ -101,6 +119,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         // Panel storing the filters
         JPanel filtersPanel = new JPanel();
         filtersPanel.setBorder(BorderFactory.createTitledBorder("Filters"));
+        filtersPanel.setLayout(new GridLayout(2, 2));
 
         // Instrumental filter
         JPanel instrumentalPanel = new JPanel();
@@ -108,8 +127,16 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         instrumentalPanel.add(instrumentalRadioButton);
         instrumentalPanel.add(vocalRadioButton);
         instrumentalPanel.setBorder(BorderFactory.createTitledBorder("Instrumentalness"));
-
         filtersPanel.add(instrumentalPanel);
+
+        // Valence/Mood filter
+        JPanel valencePanel = new JPanel();
+        valencePanel.add(noneValenceRadioButton);
+        valencePanel.add(sadValenceRadioButton);
+        valencePanel.add(neutralValenceRadioButton);
+        valencePanel.add(happyValenceRadioButton);
+        valencePanel.setBorder(BorderFactory.createTitledBorder("Valence/Mood"));
+        filtersPanel.add(valencePanel);
 
         // Other filters here
 
@@ -248,7 +275,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
             return;
         }
 
-        String givenName = JOptionPane.showInputDialog(this, "Enter the name of the new playlist: ", JOptionPane.QUESTION_MESSAGE);
+        String givenName = JOptionPane.showInputDialog(this, "Enter the name of the new playlist: ");
 
         if (givenName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a non-empty name.", "Error", JOptionPane.ERROR_MESSAGE);

@@ -22,6 +22,10 @@ public class MergeViewModel extends ViewModel {
     public final String VOCAL_BUTTON_LABEL = "Vocal";
     public final String NONE_LABEL = "Any";
 
+    public final String SAD_VALENCE_BUTTON_LABEL = "Sad";
+    public final String NEUTRAL_VALENCE_BUTTON_LABEL = "Neutral";
+    public final String HAPPY_VALENCE_BUTTON_LABEL = "Happy";
+
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public MergeViewModel(){
