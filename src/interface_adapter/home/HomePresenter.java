@@ -4,6 +4,8 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.loginOAuth.LoginOAuthState;
 import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
+import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeState;
+import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeViewModel;
 import use_case.home.HomeOutputBoundary;
 import use_case.home.HomeOutputData;
 
@@ -13,10 +15,12 @@ public class HomePresenter implements HomeOutputBoundary {
     ViewManagerModel viewManagerModel;
     HomeViewModel homeViewModel;
     ProfileViewModel profileViewModel;
-    public HomePresenter(ViewManagerModel viewManagerModel, HomeViewModel homeViewModel, ProfileViewModel profileViewModel) {
+    SpotifyToYoutubeViewModel spotifyToYoutubeViewModel;
+    public HomePresenter(ViewManagerModel viewManagerModel, HomeViewModel homeViewModel, ProfileViewModel profileViewModel, SpotifyToYoutubeViewModel spotifyToYoutubeViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.homeViewModel = homeViewModel;
         this.profileViewModel = profileViewModel;
+        this.spotifyToYoutubeViewModel = spotifyToYoutubeViewModel;
     }
 
     public void prepareSuccessView(HomeOutputData data) {
@@ -24,6 +28,11 @@ public class HomePresenter implements HomeOutputBoundary {
             ProfileState state = profileViewModel.getState();
             state.setProfileObjects(data.getProfileObjects());
             profileViewModel.firePropertyChanged();
+        }
+        else if (data.getPlaylistNames() != null) {
+            SpotifyToYoutubeState state = spotifyToYoutubeViewModel.getState();
+            state.setPlaylistNames(data.getPlaylistNames());
+            spotifyToYoutubeViewModel.firePropertyChanged();
         }
         viewManagerModel.setActiveView(data.getViewName());
         viewManagerModel.firePropertyChanged();
