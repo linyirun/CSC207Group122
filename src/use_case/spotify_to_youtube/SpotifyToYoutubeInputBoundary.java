@@ -4,5 +4,6 @@ import java.io.IOException;
 
 public interface SpotifyToYoutubeInputBoundary {
     void execute(SpotifyToYoutubeInputData data);
+
     void connectToYoutube() throws IOException, InterruptedException;
 }

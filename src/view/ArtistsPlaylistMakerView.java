@@ -20,6 +20,8 @@ import java.util.List;
 public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, PropertyChangeListener {
 
     public final String viewName = "Artists Playlist Maker";
+
+    private JCheckBox includeInPlaylistCheckBox;
     private JButton enterButton, createPlaylistButton, clearSelectionButton, deleteArtistButton;
     private JTextField searchField;
     private JList<String> searchResultsList, selectedArtistsList;
@@ -105,12 +107,15 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
         clearSelectionButton = new JButton("Clear Selection");
         deleteArtistButton = new JButton("Delete Artist");
 
+        includeInPlaylistCheckBox = new JCheckBox("Include songs already in playlists");
+
         inputPanel.add(new JLabel("Search:"));
         inputPanel.add(searchField);
         inputPanel.add(enterButton);
         inputPanel.add(createPlaylistButton);
         inputPanel.add(clearSelectionButton);
         inputPanel.add(deleteArtistButton);
+        inputPanel.add(includeInPlaylistCheckBox);
 
 
         return inputPanel;
@@ -138,8 +143,7 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
 
     private void searchButtonClicked() {
         String searchTerm = searchField.getText();
-        ArtistsPmInputData inputData = new ArtistsPmInputData(searchTerm, null, 0);
-        List<String> searchResults = artistsPmController.showTopArtists(inputData);
+        List<String> searchResults = artistsPmController.showTopArtists(searchTerm);
         displaySearchResults(searchResults);
     }
 
@@ -164,13 +168,14 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
 
         int numberOfSongs = getNumberOfSongs();
 
+        boolean includeInPlaylist = includeInPlaylistCheckBox.isSelected();
+
         if (numberOfSongs <= 0) {
             showErrorMessage("Please enter a valid number of songs greater than zero.");
             return;
         }
 
-        ArtistsPmInputData inputData = new ArtistsPmInputData(null, selectedArtists, numberOfSongs);
-        artistsPmController.createPlaylist(inputData);
+        artistsPmController.createPlaylist(selectedArtists, numberOfSongs, includeInPlaylist);
 
         clearSelectionButtonClicked();
     }

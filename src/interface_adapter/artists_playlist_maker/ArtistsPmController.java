@@ -29,8 +29,9 @@ public class ArtistsPmController {
      * @return list of top artist names
      * @throws RuntimeException if an error occurs
      */
-    public List<String> showTopArtists(ArtistsPmInputData inputData) {
+    public List<String> showTopArtists(String artistName) {
         try {
+            ArtistsPmInputData inputData = new ArtistsPmInputData(artistName, null, -1, false);
             return interactor.showTopArtists(inputData);
         } catch (IOException e) {
 
@@ -47,8 +48,9 @@ public class ArtistsPmController {
      *
      * @param inputData user preferences
      */
-    public void createPlaylist(ArtistsPmInputData inputData) {
+    public void createPlaylist(List<String> selectedArtists, int numberOfSongs, boolean includeInPlaylist) {
 
+        ArtistsPmInputData inputData = new ArtistsPmInputData(null, selectedArtists, numberOfSongs, includeInPlaylist);
         interactor.createPlaylist(inputData);
 
     }

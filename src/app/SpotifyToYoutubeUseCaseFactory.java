@@ -4,10 +4,7 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeController;
 import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubePresenter;
 import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeViewModel;
-import use_case.spotify_to_youtube.SpotifyToYoutubeDataAccessInterface;
-import use_case.spotify_to_youtube.SpotifyToYoutubeInputBoundary;
-import use_case.spotify_to_youtube.SpotifyToYoutubeInteractor;
-import use_case.spotify_to_youtube.SpotifyToYoutubeOutputBoundary;
+import use_case.spotify_to_youtube.*;
 import view.LoginOAuthView;
 import view.SpotifyToYoutubeView;
 
@@ -20,10 +17,10 @@ public class SpotifyToYoutubeUseCaseFactory {
 
     public static SpotifyToYoutubeView create(
             ViewManagerModel viewManagerModel, SpotifyToYoutubeViewModel spotifyToYoutubeViewModel,
-            SpotifyToYoutubeDataAccessInterface userDataAccessObject) {
+            SpotifyToYoutubeDataAccessInterface userDataAccessObject, SpotifyToYoutubeDataAccessInterfaceForSpotify userDataAccessObject_2) {
 
         try {
-            SpotifyToYoutubeController controller = createSpotifyToYTUseCase(viewManagerModel, spotifyToYoutubeViewModel, userDataAccessObject);
+            SpotifyToYoutubeController controller = createSpotifyToYTUseCase(viewManagerModel, spotifyToYoutubeViewModel, userDataAccessObject,userDataAccessObject_2);
             return new SpotifyToYoutubeView(spotifyToYoutubeViewModel, controller, viewManagerModel);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "error while creating spotify to youtube use case");
@@ -35,11 +32,11 @@ public class SpotifyToYoutubeUseCaseFactory {
     private static SpotifyToYoutubeController createSpotifyToYTUseCase(
             ViewManagerModel viewManagerModel,
             SpotifyToYoutubeViewModel spotifyToYoutubeViewModel,
-            SpotifyToYoutubeDataAccessInterface userDataAccessObject) throws IOException {
+            SpotifyToYoutubeDataAccessInterface userDataAccessObject, SpotifyToYoutubeDataAccessInterfaceForSpotify userDataAccessObject_2) throws IOException {
 
         SpotifyToYoutubeOutputBoundary presenter = new SpotifyToYoutubePresenter(viewManagerModel, spotifyToYoutubeViewModel);
 
-        SpotifyToYoutubeInputBoundary interactor = new SpotifyToYoutubeInteractor(userDataAccessObject, presenter);
+        SpotifyToYoutubeInputBoundary interactor = new SpotifyToYoutubeInteractor(userDataAccessObject,userDataAccessObject_2, presenter);
 
         return new SpotifyToYoutubeController(interactor);
     }

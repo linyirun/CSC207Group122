@@ -5,7 +5,7 @@ public final class YoutubeAuth {
     private static String accessToken = "";
     private static String refreshToken = "";
     private static final String scope = "https://www.googleapis.com/auth/youtube.force-ssl";
-    private static final String CLIENT_ID = "1016234743626-p2864temak6gu1l6auk5h1uag4ran75j.apps.googleusercontent.com";
+    private static final String CLIENT_ID = "301610688418-im7k6ap2sjnffbr54neqhj6n8thi8jvp.apps.googleusercontent.com";
     private static final String CLIENT_SECRET = "";
     private static final String redirectURI = "http://localhost:8000/callback";
     private static final String API_KEY = "";

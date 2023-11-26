@@ -11,28 +11,30 @@ public class SpotifyToYoutubeViewModel extends ViewModel {
 
     public static final String CONVERT_BUTTON_LABEL = "Convert";
     public static final String VIEW_TITLE = "Spotify To Youtube Converter";
-
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
     private SpotifyToYoutubeState state = new SpotifyToYoutubeState();
 
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-
-    public SpotifyToYoutubeViewModel() {super("Spot To YT");};
+    public SpotifyToYoutubeViewModel() {
+        super("Spot To YT");
+    }
 
     public void firePropertyChanged() {
         support.firePropertyChange("state", null, this.state);
     }
+
     public void firePropertyChangedRefresh() {
         support.firePropertyChange("refresh", null, this.state);
     }
-    public void addPropertyChangeListener(PropertyChangeListener listener){
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
 
-    public SpotifyToYoutubeState getState(){
+    public SpotifyToYoutubeState getState() {
         return state;
     }
 
-    public void setState(SpotifyToYoutubeState givenState){
+    public void setState(SpotifyToYoutubeState givenState) {
         this.state = givenState;
     }
 

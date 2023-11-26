@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import data_access.SpotifyDataAccessObject;
+import data_access.YouTubeDataAccessObject;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.artists_playlist_maker.ArtistsPmViewModel;
 import data_access.FileUserDataAccessObject;
@@ -55,6 +56,7 @@ public class Main {
 
         FileUserDataAccessObject userDataAccessObject;
         SpotifyDataAccessObject spotifyDataAccessObject;
+        YouTubeDataAccessObject youTubeDataAccessObject;
         try {
             userDataAccessObject = new FileUserDataAccessObject("./users.csv", new UserFactory());
         } catch (IOException e) {
@@ -62,6 +64,8 @@ public class Main {
         }
 
         spotifyDataAccessObject = new SpotifyDataAccessObject();
+
+        youTubeDataAccessObject = new YouTubeDataAccessObject();
 
         LoginOAuthView loginOAuthView = LoginOAuthUseCaseFactory.create(viewManagerModel, loginOAuthViewModel, homeViewModel, spotifyDataAccessObject);
         views.add(loginOAuthView, loginOAuthView.viewName);
@@ -72,12 +76,12 @@ public class Main {
 
         MergeView mergeView = MergeUseCaseFactory.create(viewManagerModel, mergeViewModel, spotifyDataAccessObject);
         views.add(mergeView, MergeView.viewName);
-        ArtistsPlaylistMakerView artistsPlaylistMakerView = ArtistsPmUseCaseFactory.create(viewManagerModel, artistsPmViewModel,spotifyDataAccessObject);
+        ArtistsPlaylistMakerView artistsPlaylistMakerView = ArtistsPmUseCaseFactory.create(viewManagerModel, artistsPmViewModel, spotifyDataAccessObject);
         views.add(artistsPlaylistMakerView, artistsPlaylistMakerView.viewName);
         ProfileView profileView = ProfileViewFactory.create(viewManagerModel, profileViewModel);
         views.add(profileView, profileView.viewName);
 
-        SpotifyToYoutubeView spotifyToYoutubeView = SpotifyToYoutubeUseCaseFactory.create(viewManagerModel, spotifyToYoutubeViewModel, spotifyDataAccessObject);
+        SpotifyToYoutubeView spotifyToYoutubeView = SpotifyToYoutubeUseCaseFactory.create(viewManagerModel, spotifyToYoutubeViewModel,youTubeDataAccessObject, spotifyDataAccessObject);
         views.add(spotifyToYoutubeView, spotifyToYoutubeView.viewName);
 
         // temporary - remove after factory is implemented
