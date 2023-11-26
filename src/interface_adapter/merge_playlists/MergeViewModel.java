@@ -15,6 +15,13 @@ public class MergeViewModel extends ViewModel {
     public final String GET_PLAYLISTS_LABEL = "Get Playlists";
     public final String HOME_BUTTON_LABEL = "Home";
 
+
+    // RadioButtons for filters
+
+    public final String INSTRUMENTAL_BUTTON_LABEL = "Instrumental";
+    public final String VOCAL_BUTTON_LABEL = "Vocal";
+    public final String NONE_LABEL = "Any";
+
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public MergeViewModel(){

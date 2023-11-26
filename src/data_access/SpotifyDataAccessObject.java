@@ -428,6 +428,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
             // List of audio features we want to get from the Spotify Api
             // We can always add more if we need
             List<String> features = new ArrayList<>();
+
             features.add("danceability");
             features.add("energy");
             features.add("instrumentalness");
@@ -435,8 +436,8 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
 
             if (response.statusCode() == 200) {
 
-                // Stores the audio features for each song
-                Map<String, String> audioFeaturesMap = new HashMap<>();
+
+
 
                 // Process the response
                 JSONParser parser = new JSONParser();
@@ -448,10 +449,12 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
                 // Iterate through each track's audio features
                 for (Object obj : audioFeatures) {
                     JSONObject track = (JSONObject) obj;
+                    // Stores the audio features for each song
+                    Map<String, String> audioFeaturesMap = new HashMap<>();
 
                     for (String audioFeature : features) {
                         // Get all of this track's audio features and put it into a map
-                        audioFeaturesMap.put(audioFeature, (String) track.get(audioFeature));
+                        audioFeaturesMap.put(audioFeature, track.get(audioFeature).toString());
                     }
 
                     // Add the features map to a list so we can return it
