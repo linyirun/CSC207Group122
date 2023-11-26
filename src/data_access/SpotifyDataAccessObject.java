@@ -398,6 +398,13 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         return topTracksAndArtists;
     }
 
+    /**
+     * Returns a list of maps of audio features for each requested song.
+     * Note: this will only work for lists with less than 100 songs.
+     *
+     * @param songIds - ids of songs to get the audio features for
+     * @return List of (Map of String to String): map of audio features corresponding to each song
+     */
     @Override
     public List<Map<String, String>> getSongsAudioFeatures(List<String> songIds)  {
         String token = SpotifyAuth.getAccessToken();
