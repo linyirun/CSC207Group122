@@ -433,6 +433,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
             features.add("energy");
             features.add("instrumentalness");
             features.add("valence");
+            features.add("tempo");
 
             if (response.statusCode() == 200) {
 

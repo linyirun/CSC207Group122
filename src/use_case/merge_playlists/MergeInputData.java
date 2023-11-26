@@ -23,6 +23,13 @@ public class MergeInputData {
     public static final double SAD_THRESHOLD = 0.3d;
     public static final double HAPPY_THRESHOLD = 0.7d;
 
+    public static final int SLOW_CHOICE = 1;
+    public static final int NORMAL_CHOICE = 2;
+    public static final int FAST_CHOICE = 3;
+
+    public static final double SLOW_THRESHOLD = 70.0d;
+    public static final double FAST_THRESHOLD = 130.0d;
+
 
 
 
@@ -35,6 +42,7 @@ public class MergeInputData {
 
     private int instrumentalChoice = ANY;
     private int valenceChoice = ANY;
+    private int tempoChoice = ANY;
 
     public MergeInputData(List<String> playlistNames, String playlistName, boolean returnHome) {
         this.selectedPlaylistNames = playlistNames;
@@ -69,4 +77,13 @@ public class MergeInputData {
     public void setValenceChoice(int valenceChoice) {
         this.valenceChoice = valenceChoice;
     }
+
+    public int getTempoChoice() {
+        return tempoChoice;
+    }
+
+    public void setTempoChoice(int tempoChoice) {
+        this.tempoChoice = tempoChoice;
+    }
 }
+

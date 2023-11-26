@@ -56,6 +56,14 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
     private final JRadioButton happyValenceRadioButton;
 
 
+    private final ButtonGroup tempoButtonGroup;
+    private final JRadioButton noneTempoRadioButton;
+//    private final JRadioButton verySlowTempoRadioButton;
+    private final JRadioButton slowTempoRadioButton;
+    private final JRadioButton normalTempoRadioButton;
+    private final JRadioButton fastTempoRadioButton;
+//    private final JRadioButton veryFastTempoRadioButton; // uncomment to add very slow and very fast buttons
+
     public MergeView(MergeViewModel mergeViewModel, MergeController mergeController, ViewManagerModel viewManagerModel) {
 
         this.mergeViewModel = mergeViewModel;
@@ -105,7 +113,24 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         valenceButtonGroup.add(sadValenceRadioButton);
         valenceButtonGroup.add(neutralValenceRadioButton);
         valenceButtonGroup.add(happyValenceRadioButton);
+        
+        // Tempo
+        tempoButtonGroup = new ButtonGroup();
+        noneTempoRadioButton = new JRadioButton(mergeViewModel.NONE_LABEL, true);
+//        verySlowTempoRadioButton = new JRadioButton(mergeViewModel.VERY_SLOW_TEMPO_BUTTON_LABEL);
+        slowTempoRadioButton = new JRadioButton(mergeViewModel.SLOW_TEMPO_BUTTON_LABEL);
+        normalTempoRadioButton = new JRadioButton(mergeViewModel.NORMAL_TEMPO_BUTTON_LABEL);
+        fastTempoRadioButton = new JRadioButton(mergeViewModel.FAST_TEMPO_BUTTON_LABEL);
+//        veryFastTempoRadioButton = new JRadioButton(mergeViewModel.VERY_FAST_TEMPO_BUTTON_LABEL);
+        
+        tempoButtonGroup.add(noneTempoRadioButton);
+//        tempoButtonGroup.add(verySlowTempoRadioButton);
+        tempoButtonGroup.add(slowTempoRadioButton);
+        tempoButtonGroup.add(normalTempoRadioButton);
+        tempoButtonGroup.add(fastTempoRadioButton);
+//        tempoButtonGroup.add(veryFastTempoRadioButton);
 
+        
         // Making the Action Panel
         JPanel buttonsActionPanel = new JPanel();
         buttonsActionPanel.setLayout(new BoxLayout(buttonsActionPanel, BoxLayout.Y_AXIS));
@@ -119,7 +144,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         // Panel storing the filters
         JPanel filtersPanel = new JPanel();
         filtersPanel.setBorder(BorderFactory.createTitledBorder("Filters"));
-        filtersPanel.setLayout(new GridLayout(1,2));
+        filtersPanel.setLayout(new GridLayout(3, 1));
 
         // Instrumental filter
         JPanel instrumentalPanel = new JPanel();
@@ -138,7 +163,16 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         valencePanel.setBorder(BorderFactory.createTitledBorder("Valence/Mood"));
         filtersPanel.add(valencePanel);
 
-        // Other filters here
+        // Tempo filter
+        JPanel tempoPanel = new JPanel();
+        tempoPanel.add(noneTempoRadioButton);
+//        tempoPanel.add(verySlowTempoRadioButton);
+        tempoPanel.add(slowTempoRadioButton);
+        tempoPanel.add(normalTempoRadioButton);
+        tempoPanel.add(fastTempoRadioButton);
+//        tempoPanel.add(veryFastTempoRadioButton);
+        tempoPanel.setBorder(BorderFactory.createTitledBorder("Tempo"));
+        filtersPanel.add(tempoPanel);
 
         actionsPanel.add(filtersPanel);
 
@@ -279,6 +313,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
 
         if (givenName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a non-empty name.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         } else {
             selectedPlaylistsModel.clear();
         }
@@ -301,9 +336,15 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         if (neutralValenceRadioButton.isSelected()) valenceChoice = MergeInputData.NEUTRAL_CHOICE;
         if (happyValenceRadioButton.isSelected()) valenceChoice = MergeInputData.HAPPY_CHOICE;
 
+        int tempoChoice = MergeInputData.ANY;
+        if (slowTempoRadioButton.isSelected()) tempoChoice = MergeInputData.SLOW_CHOICE;
+        if (normalTempoRadioButton.isSelected()) tempoChoice = MergeInputData.NORMAL_CHOICE;
+        if (fastTempoRadioButton.isSelected()) tempoChoice = MergeInputData.FAST_CHOICE;
+
         MergeInputData mergeInputData = new MergeInputData(selectedPlaylists, givenName, false);
         mergeInputData.setInstrumentalChoice(instrumentalChoice);
         mergeInputData.setValenceChoice(valenceChoice);
+        mergeInputData.setTempoChoice(tempoChoice);
         return mergeInputData;
     }
 

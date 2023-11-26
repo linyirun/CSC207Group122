@@ -26,6 +26,12 @@ public class MergeViewModel extends ViewModel {
     public final String NEUTRAL_VALENCE_BUTTON_LABEL = "Neutral";
     public final String HAPPY_VALENCE_BUTTON_LABEL = "Positive";
 
+    public final String VERY_SLOW_TEMPO_BUTTON_LABEL = "Very Slow";
+    public final String SLOW_TEMPO_BUTTON_LABEL = "Slow";
+    public final String NORMAL_TEMPO_BUTTON_LABEL = "Normal";
+    public final String FAST_TEMPO_BUTTON_LABEL = "Fast";
+    public final String VERY_FAST_TEMPO_BUTTON_LABEL = "Very Fast";
+
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public MergeViewModel(){
