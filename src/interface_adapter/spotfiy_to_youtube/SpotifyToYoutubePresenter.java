@@ -14,11 +14,18 @@ public class SpotifyToYoutubePresenter implements SpotifyToYoutubeOutputBoundary
     }
     @Override
     public void prepareSuccessView(SpotifyToYoutubeOutputData data) {
-
+        SpotifyToYoutubeState state = spotifyToYoutubeViewModel.getState();
+        if (!state.getIsConnectedToYT()) {
+            state.setIsConnectedToYT();
+        }
+        state.setMsg(data.getMessage());
+        spotifyToYoutubeViewModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(SpotifyToYoutubeOutputData failData) {
-
+        SpotifyToYoutubeState state = spotifyToYoutubeViewModel.getState();
+        state.setMsg(failData.getMessage());
+        spotifyToYoutubeViewModel.firePropertyChanged();
     }
 }

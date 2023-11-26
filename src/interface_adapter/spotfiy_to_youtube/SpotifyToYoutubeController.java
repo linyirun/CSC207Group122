@@ -15,16 +15,17 @@ public class SpotifyToYoutubeController {
         this.interactor = interactor;
     }
 
-    public void execute(List<String> selectedPlaylists, String givenName) {
-        try {
-            interactor.execute(new SpotifyToYoutubeInputData());
+    public void execute(List<String> selectedPlaylists, String givenName, boolean isConnectedToYT){
+        if (!isConnectedToYT) {
+            try {
+                interactor.connectToYoutube();
+            }
+            catch (InterruptedException | IOException e) {
+                System.out.println("Server did not work");
+            }
+            return;
         }
-        catch(IOException e) {
-            System.out.println("Server did not work");
-        }
-        catch (InterruptedException e) {
-            System.out.println("Server did not work");
-        }
+        interactor.execute(new SpotifyToYoutubeInputData());
     }
 
 }

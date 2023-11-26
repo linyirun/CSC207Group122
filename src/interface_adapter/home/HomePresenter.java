@@ -32,7 +32,7 @@ public class HomePresenter implements HomeOutputBoundary {
         else if (data.getPlaylistNames() != null) {
             SpotifyToYoutubeState state = spotifyToYoutubeViewModel.getState();
             state.setPlaylistNames(data.getPlaylistNames());
-            spotifyToYoutubeViewModel.firePropertyChanged();
+            spotifyToYoutubeViewModel.firePropertyChangedRefresh();
         }
         viewManagerModel.setActiveView(data.getViewName());
         viewManagerModel.firePropertyChanged();

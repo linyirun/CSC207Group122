@@ -4,10 +4,11 @@ public final class YoutubeAuth {
 
     private static String accessToken = "";
     private static String refreshToken = "";
-    private final static String scope = "https://www.googleapis.com/auth/youtube.force-ssl";
-    private final static String CLIENT_ID = "1016234743626-p2864temak6gu1l6auk5h1uag4ran75j.apps.googleusercontent.com";
-    private final static String CLIENT_SECRET = "";
-    private final static String redirectURI = "http://localhost:8000/callback";
+    private static final String scope = "https://www.googleapis.com/auth/youtube.force-ssl";
+    private static final String CLIENT_ID = "1016234743626-p2864temak6gu1l6auk5h1uag4ran75j.apps.googleusercontent.com";
+    private static final String CLIENT_SECRET = "";
+    private static final String redirectURI = "http://localhost:8000/callback";
+    private static final String API_KEY = "";
 
     private YoutubeAuth() {}
 
@@ -38,4 +39,7 @@ public final class YoutubeAuth {
         refreshToken = newRefreshToken;
     }
 
+    public static String getApiKey() {
+        return API_KEY;
+    }
 }

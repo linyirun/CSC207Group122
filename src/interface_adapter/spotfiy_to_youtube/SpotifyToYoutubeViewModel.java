@@ -21,7 +21,9 @@ public class SpotifyToYoutubeViewModel extends ViewModel {
     public void firePropertyChanged() {
         support.firePropertyChange("state", null, this.state);
     }
-
+    public void firePropertyChangedRefresh() {
+        support.firePropertyChange("refresh", null, this.state);
+    }
     public void addPropertyChangeListener(PropertyChangeListener listener){
         support.addPropertyChangeListener(listener);
     }

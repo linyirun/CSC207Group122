@@ -32,6 +32,7 @@ public class SpotifyToYoutubeView extends JPanel implements ActionListener, Prop
     private final JButton homeButton;
     private final JButton clearPlaylistsButton;
     private final JButton deletePlaylistButton;
+    private final JButton connectYT;
 
     private JScrollPane playlistScrollPane;
     private String selectedPlaylistName;
@@ -64,6 +65,7 @@ public class SpotifyToYoutubeView extends JPanel implements ActionListener, Prop
 
         clearPlaylistsButton = new JButton("Clear Selection");
         deletePlaylistButton = new JButton("Delete Playlist");
+        connectYT = new JButton("Connect to YT");
 //        inputPanel.add(new JLabel("Search:"));
 //        inputPanel.add(searchField);
 //        inputPanel.add(enterButton);
@@ -100,6 +102,7 @@ public class SpotifyToYoutubeView extends JPanel implements ActionListener, Prop
                                         .addComponent(selectedScrollPane)
                                         .addComponent(clearPlaylistsButton)
                                         .addComponent(deletePlaylistButton)
+                                        .addComponent(connectYT)
                                 )
                         )
         );
@@ -118,6 +121,7 @@ public class SpotifyToYoutubeView extends JPanel implements ActionListener, Prop
                                         .addComponent(selectedScrollPane)
                                         .addComponent(clearPlaylistsButton)
                                         .addComponent(deletePlaylistButton)
+                                        .addComponent(connectYT)
                                 )
                         )
         );
@@ -142,6 +146,15 @@ public class SpotifyToYoutubeView extends JPanel implements ActionListener, Prop
                         }
                     }
                 }
+        );
+        connectYT.addActionListener(
+            new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    if (evt.getSource().equals(connectYT) && !spotifyToYoutubeViewModel.getState().getIsConnectedToYT()) {
+                        spotifyToYoutubeController.execute(null, null, false);
+                    }
+                }
+            }
         );
 
 
@@ -173,6 +186,10 @@ public class SpotifyToYoutubeView extends JPanel implements ActionListener, Prop
 
     }
     private void mergePlaylists() {
+        if (!spotifyToYoutubeViewModel.getState().getIsConnectedToYT()) {
+            JOptionPane.showMessageDialog(this, "Please connect to Youtube first");
+            return;
+        }
         List<String> selectedPlaylists = new ArrayList<>();
         for (int i = 0; i < selectedPlaylistsModel.getSize(); i++) {
             selectedPlaylists.add(selectedPlaylistsModel.getElementAt(i));
@@ -190,7 +207,7 @@ public class SpotifyToYoutubeView extends JPanel implements ActionListener, Prop
         } else {
             selectedPlaylistsModel.clear();
         }
-        spotifyToYoutubeController.execute(selectedPlaylists, givenName);
+        spotifyToYoutubeController.execute(selectedPlaylists, givenName, true);
 
     }
 
@@ -208,12 +225,16 @@ public class SpotifyToYoutubeView extends JPanel implements ActionListener, Prop
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("state")) {
+        if (evt.getPropertyName().equals("refresh")) {
             List<String> playlistNames = spotifyToYoutubeViewModel.getState().getPlaylistNames();
             playlistsModel.clear();
             for (String playlistName : playlistNames) {
                 playlistsModel.addElement(playlistName);
             }
+        }
+        else if (evt.getPropertyName().equals("state")) {
+            SpotifyToYoutubeState state = (SpotifyToYoutubeState) evt.getNewValue();
+            JOptionPane.showMessageDialog(SpotifyToYoutubeView.this, state.getMsg());
         }
 
     }
