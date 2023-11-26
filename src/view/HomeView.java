@@ -30,6 +30,8 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private final JButton mergePlaylist;
 
     private final JButton artistsPlaylistMaker;
+
+    private final JButton spotifyToYoutube;
     private final JLabel profile;
     private final JLabel profileText;
     private final JLabel welcome;
@@ -61,10 +63,12 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         splitPlaylist = createStyledButton(HomeViewModel.SPLIT_PLAYLIST_NAME);
         artistsPlaylistMaker = createStyledButton(HomeViewModel.ARTISTS_PLAYLIST_MAKER_NAME);
         mergePlaylist = createStyledButton(HomeViewModel.MERGE_PLAYLIST_NAME);
+        spotifyToYoutube = createStyledButton(HomeViewModel.SPOTIFY_TO_YT_NAME);
      
         buttonsPanel.add(mergePlaylist);
         buttonsPanel.add(splitPlaylist);
         buttonsPanel.add(artistsPlaylistMaker);
+        buttonsPanel.add(spotifyToYoutube);
         buttonsPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
 
         add(buttonsPanel, BorderLayout.WEST);

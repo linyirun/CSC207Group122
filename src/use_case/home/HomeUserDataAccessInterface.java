@@ -8,4 +8,6 @@ import java.util.Map;
 
 public interface HomeUserDataAccessInterface {
     Map<String, List<String>> getUserTopTracksAndArtists() throws ParseException, IOException, InterruptedException;
+
+    Map<String, String> getPlaylistMap();
 }

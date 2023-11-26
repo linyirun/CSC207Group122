@@ -17,6 +17,8 @@ import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.split_playlist.SplitState;
 import interface_adapter.split_playlist.SplitViewModel;
 import interface_adapter.home.HomeViewModel;
+import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubePresenter;
+import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeViewModel;
 import view.*;
 
 public class Main {
@@ -49,6 +51,7 @@ public class Main {
         MergeViewModel mergeViewModel = new MergeViewModel();
         ArtistsPmViewModel artistsPmViewModel = new ArtistsPmViewModel();
         ProfileViewModel profileViewModel = new ProfileViewModel();
+        SpotifyToYoutubeViewModel spotifyToYoutubeViewModel = new SpotifyToYoutubeViewModel();
 
         FileUserDataAccessObject userDataAccessObject;
         SpotifyDataAccessObject spotifyDataAccessObject;
@@ -64,7 +67,7 @@ public class Main {
         views.add(loginOAuthView, loginOAuthView.viewName);
         SplitView splitView = SplitUseCaseFactory.create(viewManagerModel, splitViewModel, playlistsViewModel,spotifyDataAccessObject, spotifyDataAccessObject);
         views.add(splitView, splitView.viewName);
-        HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, profileViewModel, spotifyDataAccessObject);
+        HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, profileViewModel, spotifyToYoutubeViewModel, spotifyDataAccessObject);
         views.add(homeView, homeView.viewName);
 
         MergeView mergeView = MergeUseCaseFactory.create(viewManagerModel, mergeViewModel, spotifyDataAccessObject);
@@ -74,6 +77,8 @@ public class Main {
         ProfileView profileView = ProfileViewFactory.create(viewManagerModel, profileViewModel);
         views.add(profileView, profileView.viewName);
 
+        SpotifyToYoutubeView spotifyToYoutubeView = SpotifyToYoutubeUseCaseFactory.create(viewManagerModel, spotifyToYoutubeViewModel, spotifyDataAccessObject);
+        views.add(spotifyToYoutubeView, spotifyToYoutubeView.viewName);
 
         // temporary - remove after factory is implemented
 

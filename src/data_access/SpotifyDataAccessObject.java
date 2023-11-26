@@ -43,13 +43,15 @@ import java.net.http.HttpResponse;
 
 
 import org.json.simple.parser.ParseException;
+import use_case.spotify_to_youtube.SpotifyToYoutubeDataAccessInterface;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 
 public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface,
-        HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface, MergeDataAccessInterface, ArtistsPmUserDataAccessInterface {
+        HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface, MergeDataAccessInterface, ArtistsPmUserDataAccessInterface, SpotifyToYoutubeDataAccessInterface {
           
     /**
      * Retrieves the set of playlist names available to the authenticated user.

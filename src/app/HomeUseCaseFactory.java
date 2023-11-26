@@ -7,6 +7,7 @@ import interface_adapter.home.HomeViewModel;
 import interface_adapter.playlists.PlaylistsController;
 import interface_adapter.playlists.PlaylistsViewModel;
 import interface_adapter.profile.ProfileViewModel;
+import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeViewModel;
 import use_case.home.HomeInputBoundary;
 import use_case.home.HomeInteractor;
 import use_case.home.HomeOutputBoundary;
@@ -21,11 +22,11 @@ public class HomeUseCaseFactory {
     }
 
     public static HomeView create(
-            ViewManagerModel viewManagerModel, HomeViewModel homeViewModel,ProfileViewModel profileViewModel,
+            ViewManagerModel viewManagerModel, HomeViewModel homeViewModel,ProfileViewModel profileViewModel, SpotifyToYoutubeViewModel spotifyToYoutubeViewModel,
             HomeUserDataAccessInterface dao) {
 
         try {
-            HomeController homeController = createHomeUseCase(viewManagerModel, homeViewModel, profileViewModel, dao);
+            HomeController homeController = createHomeUseCase(viewManagerModel, homeViewModel, profileViewModel, spotifyToYoutubeViewModel, dao);
             return new HomeView(homeController, homeViewModel);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error TODO");
@@ -36,9 +37,9 @@ public class HomeUseCaseFactory {
 
     private static HomeController createHomeUseCase(
             ViewManagerModel viewManagerModel,
-            HomeViewModel homeViewModel, ProfileViewModel profileViewModel,
+            HomeViewModel homeViewModel, ProfileViewModel profileViewModel, SpotifyToYoutubeViewModel spotifyToYoutubeViewModel,
             HomeUserDataAccessInterface dao) throws IOException {
-        HomeOutputBoundary homePresenter = new HomePresenter(viewManagerModel, homeViewModel, profileViewModel);
+        HomeOutputBoundary homePresenter = new HomePresenter(viewManagerModel, homeViewModel, profileViewModel, spotifyToYoutubeViewModel);
 
         HomeInputBoundary homeInteractor = new HomeInteractor(homePresenter, dao);
 
