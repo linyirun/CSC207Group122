@@ -36,6 +36,11 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private final JLabel profileText;
     private final JLabel welcome;
 
+    private final DefaultListModel<String> playlistsModel;
+    private final JList<String> playlistsList;
+    private DefaultListModel<String> selectedSongsModel;
+    private JList<String> selectedSongsList;
+
     private JLabel titleLabel;
 
     public HomeView(HomeController homeController, HomeViewModel homeViewModel) {
@@ -117,16 +122,38 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         // Create a panel for the welcome label
         JPanel welcomePanel = new JPanel();
         welcomePanel.setLayout(new BoxLayout(welcomePanel, BoxLayout.Y_AXIS));
-        welcomePanel.setBorder(BorderFactory.createTitledBorder("Welcome")); // Add a titled border
+        welcomePanel.setBorder(BorderFactory.createTitledBorder("Playlists")); // Add a titled border
 
         welcome = new JLabel();
         welcome.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        welcomePanel.add(Box.createRigidArea(new Dimension(0, 20))); // Add some spacing
+//        welcomePanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
         welcomePanel.add(welcome);
+        welcomePanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
+
+        JPanel scrollPanePanel = new JPanel();
+        scrollPanePanel.setLayout(new GridLayout(1, 2));
+
+        // add ScrollPanes displaying the user's playlists and songs
+        playlistsModel = new DefaultListModel<>();
+        playlistsList = new JList<>(playlistsModel);
+        JScrollPane playlistsScrollPane = new JScrollPane(playlistsList);
+        playlistsScrollPane.setBorder(BorderFactory.createTitledBorder("Your Playlists"));
+
+        scrollPanePanel.add(playlistsScrollPane);
+
+        selectedSongsModel = new DefaultListModel<>();
+        selectedSongsList = new JList<>(selectedSongsModel);
+        JScrollPane songsScrollPane = new JScrollPane(selectedSongsList);
+        songsScrollPane.setBorder(BorderFactory.createTitledBorder("Songs"));
+
+        scrollPanePanel.add(songsScrollPane);
+
+        welcomePanel.add(scrollPanePanel);
 
         // Add the welcome label to the CENTER of the main panel
         add(welcomePanel, BorderLayout.CENTER);
+
     }
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
@@ -155,5 +182,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         if (evt.getPropertyName().equals("state")) {
             welcome.setText("Welcome " + homeViewModel.getState().getDisplayName());
         }
+
+
     }
 }
