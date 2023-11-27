@@ -23,15 +23,6 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
 
     private final MergeController mergeController;
 
-    private final JButton getPlaylistButton;
-
-    private final JButton mergeButton;
-
-    private final JButton homeButton;
-    private final JButton refreshButton;
-    private final JButton clearPlaylistsButton;
-    private final JButton deletePlaylistButton;
-
     private JScrollPane playlistScrollPane;
     private String selectedPlaylistName;
 
@@ -41,6 +32,38 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
     private JList<String> selectedPlaylistsList;
 
 
+    private final JButton getPlaylistButton;
+
+    private final JButton mergeButton;
+
+    private final JButton homeButton;
+    private final JButton refreshButton;
+    private final JButton clearPlaylistsButton;
+    private final JButton deletePlaylistButton;
+
+    // RadioButtons for the filters, along with the group that they belong in
+
+    private final ButtonGroup instrumentalButtonGroup;
+    private final JRadioButton instrumentalRadioButton;
+    private final JRadioButton vocalRadioButton;
+    private final JRadioButton noneInstrumentalRadioButton;
+
+
+    private final ButtonGroup valenceButtonGroup;
+    private final JRadioButton noneValenceRadioButton;
+    private final JRadioButton sadValenceRadioButton;
+    private final JRadioButton neutralValenceRadioButton;
+    private final JRadioButton happyValenceRadioButton;
+
+
+    private final ButtonGroup tempoButtonGroup;
+    private final JRadioButton noneTempoRadioButton;
+//    private final JRadioButton verySlowTempoRadioButton;
+    private final JRadioButton slowTempoRadioButton;
+    private final JRadioButton normalTempoRadioButton;
+    private final JRadioButton fastTempoRadioButton;
+//    private final JRadioButton veryFastTempoRadioButton; // uncomment to add very slow and very fast buttons
+
     public MergeView(MergeViewModel mergeViewModel, MergeController mergeController, ViewManagerModel viewManagerModel) {
 
         this.mergeViewModel = mergeViewModel;
@@ -48,12 +71,6 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         this.mergeController = mergeController;
 
         viewManagerModel.addPropertyChangeListener(this);
-        getPlaylistButton = new JButton(mergeViewModel.GET_PLAYLISTS_LABEL);
-
-        mergeButton = new JButton(mergeViewModel.MERGE_BUTTON_LABEL);
-        homeButton = new JButton(mergeViewModel.HOME_BUTTON_LABEL);
-
-        refreshButton = new JButton(mergeViewModel.REFRESH_BUTTON_LABEL);
 
         JLabel title = new JLabel(mergeViewModel.VIEW_TITLE);
         title.setFont(new Font("Arial", Font.BOLD, 18));
@@ -63,16 +80,103 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         JPanel actionsPanel = new JPanel();
         actionsPanel.setBorder(BorderFactory.createTitledBorder("Actions"));
 
+        // Creating Buttons:
+        getPlaylistButton = new JButton(mergeViewModel.GET_PLAYLISTS_LABEL);
+
+        mergeButton = new JButton(mergeViewModel.MERGE_BUTTON_LABEL);
+        homeButton = new JButton(mergeViewModel.HOME_BUTTON_LABEL);
+
+        refreshButton = new JButton(mergeViewModel.REFRESH_BUTTON_LABEL);
+
         clearPlaylistsButton = new JButton("Clear Selection");
         deletePlaylistButton = new JButton("Delete Playlist");
-//        inputPanel.add(new JLabel("Search:"));
-//        inputPanel.add(searchField);
-//        inputPanel.add(enterButton);
 
-        actionsPanel.add(refreshButton);
-        actionsPanel.add(mergeButton);
-//        actionsPanel.add();
+        // Creating radio buttons and their groups
+        // Instrumental:
+        instrumentalButtonGroup = new ButtonGroup();
+        instrumentalRadioButton = new JRadioButton(mergeViewModel.INSTRUMENTAL_BUTTON_LABEL);
+        vocalRadioButton = new JRadioButton(mergeViewModel.VOCAL_BUTTON_LABEL);
+        noneInstrumentalRadioButton = new JRadioButton(mergeViewModel.NONE_LABEL, true);
 
+        instrumentalButtonGroup.add(noneInstrumentalRadioButton);
+        instrumentalButtonGroup.add(instrumentalRadioButton);
+        instrumentalButtonGroup.add(vocalRadioButton);
+
+        // Valence/Mood
+        valenceButtonGroup = new ButtonGroup();
+        noneValenceRadioButton = new JRadioButton(mergeViewModel.NONE_LABEL, true);
+        sadValenceRadioButton = new JRadioButton(mergeViewModel.SAD_VALENCE_BUTTON_LABEL);
+        neutralValenceRadioButton = new JRadioButton(mergeViewModel.NEUTRAL_VALENCE_BUTTON_LABEL);
+        happyValenceRadioButton = new JRadioButton(mergeViewModel.HAPPY_VALENCE_BUTTON_LABEL);
+
+        valenceButtonGroup.add(noneValenceRadioButton);
+        valenceButtonGroup.add(sadValenceRadioButton);
+        valenceButtonGroup.add(neutralValenceRadioButton);
+        valenceButtonGroup.add(happyValenceRadioButton);
+        
+        // Tempo
+        tempoButtonGroup = new ButtonGroup();
+        noneTempoRadioButton = new JRadioButton(mergeViewModel.NONE_LABEL, true);
+//        verySlowTempoRadioButton = new JRadioButton(mergeViewModel.VERY_SLOW_TEMPO_BUTTON_LABEL);
+        slowTempoRadioButton = new JRadioButton(mergeViewModel.SLOW_TEMPO_BUTTON_LABEL);
+        normalTempoRadioButton = new JRadioButton(mergeViewModel.NORMAL_TEMPO_BUTTON_LABEL);
+        fastTempoRadioButton = new JRadioButton(mergeViewModel.FAST_TEMPO_BUTTON_LABEL);
+//        veryFastTempoRadioButton = new JRadioButton(mergeViewModel.VERY_FAST_TEMPO_BUTTON_LABEL);
+        
+        tempoButtonGroup.add(noneTempoRadioButton);
+//        tempoButtonGroup.add(verySlowTempoRadioButton);
+        tempoButtonGroup.add(slowTempoRadioButton);
+        tempoButtonGroup.add(normalTempoRadioButton);
+        tempoButtonGroup.add(fastTempoRadioButton);
+//        tempoButtonGroup.add(veryFastTempoRadioButton);
+
+        
+        // Making the Action Panel
+        JPanel buttonsActionPanel = new JPanel();
+        buttonsActionPanel.setLayout(new BoxLayout(buttonsActionPanel, BoxLayout.Y_AXIS));
+        // The buttons in the ActionPanel
+        buttonsActionPanel.add(refreshButton);
+        buttonsActionPanel.add(mergeButton);
+
+        actionsPanel.add(buttonsActionPanel);
+
+        // PANELS: ----------------------------------------------------------------
+        // Panel storing the filters
+        JPanel filtersPanel = new JPanel();
+        filtersPanel.setBorder(BorderFactory.createTitledBorder("Filters"));
+        filtersPanel.setLayout(new GridLayout(3, 1));
+
+        // Instrumental filter
+        JPanel instrumentalPanel = new JPanel();
+        instrumentalPanel.add(noneInstrumentalRadioButton);
+        instrumentalPanel.add(instrumentalRadioButton);
+        instrumentalPanel.add(vocalRadioButton);
+        instrumentalPanel.setBorder(BorderFactory.createTitledBorder("Instrumentalness"));
+        filtersPanel.add(instrumentalPanel);
+
+        // Valence/Mood filter
+        JPanel valencePanel = new JPanel();
+        valencePanel.add(noneValenceRadioButton);
+        valencePanel.add(sadValenceRadioButton);
+        valencePanel.add(neutralValenceRadioButton);
+        valencePanel.add(happyValenceRadioButton);
+        valencePanel.setBorder(BorderFactory.createTitledBorder("Valence/Mood"));
+        filtersPanel.add(valencePanel);
+
+        // Tempo filter
+        JPanel tempoPanel = new JPanel();
+        tempoPanel.add(noneTempoRadioButton);
+//        tempoPanel.add(verySlowTempoRadioButton);
+        tempoPanel.add(slowTempoRadioButton);
+        tempoPanel.add(normalTempoRadioButton);
+        tempoPanel.add(fastTempoRadioButton);
+//        tempoPanel.add(veryFastTempoRadioButton);
+        tempoPanel.setBorder(BorderFactory.createTitledBorder("Tempo"));
+        filtersPanel.add(tempoPanel);
+
+        actionsPanel.add(filtersPanel);
+
+        // SCROLL PANES: ---------------------------
         playlistsModel = new DefaultListModel<>();
         playlistsList = new JList<>(playlistsModel);
         JScrollPane playlistsScrollPane = new JScrollPane(playlistsList);
@@ -166,52 +270,6 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
             }
         });
 
-
-
-//        this.setLayout(layout);
-//        layout.setAutoCreateGaps(true);
-//        layout.setAutoCreateContainerGaps(true);
-//
-//        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-//                .addComponent(title)
-//                .addComponent(inputPanel)
-//                .addGroup(layout.createSequentialGroup()
-//                        .addComponent(searchScrollPane)
-//                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-//                                .addComponent(selectedScrollPane)
-//                                .addComponent(clearSelectionButton)
-//                                .addComponent(deleteArtistButton))));
-//
-//        layout.setVerticalGroup(layout.createSequentialGroup()
-//                .addComponent(title)
-//                .addComponent(inputPanel)
-//                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-//                        .addComponent(searchScrollPane)
-//                        .addGroup(layout.createSequentialGroup()
-//                                .addComponent(selectedScrollPane)
-//                                .addComponent(clearSelectionButton)
-//                                .addComponent(deleteArtistButton))));
-
-
-//        selectedScrollPane.setBorder(BorderFactory.createTitledBorder("Selected Artists"));
-//        enterButton.addActionListener(e -> {
-//            if (e.getSource().equals(enterButton)) {
-//                String searchTerm = searchField.getText();
-//                ArtistsPmInputData inputData = new ArtistsPmInputData(searchTerm, null, 0);
-//                List<String> searchResults = artistsPmController.showTopArtists(inputData);
-//                displaySearchResults(searchResults);
-//            }
-//        });
-//
-//        searchResultsList.addListSelectionListener(e -> {
-//            if (!e.getValueIsAdjusting()) {
-//                String selectedArtist = searchResultsList.getSelectedValue();
-//                if (selectedArtist != null) {
-//                    selectedArtistsModel.addElement(selectedArtist);
-//                }
-//            }
-//        });
-
         clearPlaylistsButton.addActionListener(e -> {
             if (e.getSource().equals(clearPlaylistsButton)) {
                 selectedPlaylistsModel.clear();
@@ -251,16 +309,43 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
             return;
         }
 
-        String givenName = JOptionPane.showInputDialog(this, "Enter the name of the new playlist: ", JOptionPane.QUESTION_MESSAGE);
+        String givenName = JOptionPane.showInputDialog(this, "Enter the name of the new playlist: ");
 
         if (givenName.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a non-empty name.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         } else {
             selectedPlaylistsModel.clear();
         }
-        MergeInputData mergeInputData = new MergeInputData(selectedPlaylists, givenName, false);
+
+        // This function gets the options for filters and puts it into mergeInputData
+        MergeInputData mergeInputData = createMergeInputData(selectedPlaylists, givenName);
+
         mergeController.mergePlaylists(mergeInputData);
 
+    }
+
+    private MergeInputData createMergeInputData(List<String> selectedPlaylists, String givenName) {
+        // get the options selected from the filters
+        int instrumentalChoice = MergeInputData.ANY;
+        if (instrumentalRadioButton.isSelected()) instrumentalChoice = MergeInputData.INSTRUMENTAL_CHOICE;
+        if (vocalRadioButton.isSelected()) instrumentalChoice = MergeInputData.VOCAL_CHOICE;
+
+        int valenceChoice = MergeInputData.ANY;
+        if (sadValenceRadioButton.isSelected()) valenceChoice = MergeInputData.SAD_CHOICE;
+        if (neutralValenceRadioButton.isSelected()) valenceChoice = MergeInputData.NEUTRAL_CHOICE;
+        if (happyValenceRadioButton.isSelected()) valenceChoice = MergeInputData.HAPPY_CHOICE;
+
+        int tempoChoice = MergeInputData.ANY;
+        if (slowTempoRadioButton.isSelected()) tempoChoice = MergeInputData.SLOW_CHOICE;
+        if (normalTempoRadioButton.isSelected()) tempoChoice = MergeInputData.NORMAL_CHOICE;
+        if (fastTempoRadioButton.isSelected()) tempoChoice = MergeInputData.FAST_CHOICE;
+
+        MergeInputData mergeInputData = new MergeInputData(selectedPlaylists, givenName, false);
+        mergeInputData.setInstrumentalChoice(instrumentalChoice);
+        mergeInputData.setValenceChoice(valenceChoice);
+        mergeInputData.setTempoChoice(tempoChoice);
+        return mergeInputData;
     }
 
     private void deleteSelectedPlaylist() {

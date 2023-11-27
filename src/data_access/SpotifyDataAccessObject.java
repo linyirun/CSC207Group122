@@ -400,4 +400,78 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         return topTracksAndArtists;
     }
 
+    /**
+     * Returns a list of maps of audio features for each requested song.
+     * Note: this will only work for lists with less than 100 songs.
+     *
+     * @param songIds - ids of songs to get the audio features for
+     * @return List of (Map of String to String): map of audio features corresponding to each song
+     */
+    @Override
+    public List<Map<String, String>> getSongsAudioFeatures(List<String> songIds)  {
+        String token = SpotifyAuth.getAccessToken();
+
+        HttpClient httpClient = HttpClient.newHttpClient();
+
+        // Build the request
+        String trackIdsParam = String.join(",", songIds);
+        String apiUrl = "https://api.spotify.com/v1/audio-features/?ids=" + URLEncoder.encode(trackIdsParam, StandardCharsets.UTF_8);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .header("Authorization", "Bearer " + token)
+                .build();
+
+        // Send the request and handle the response
+        try {
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            List<Map<String, String>> listOfAudioFeaturesMap = new ArrayList<>();
+
+            // List of audio features we want to get from the Spotify Api
+            // We can always add more if we need
+            List<String> features = new ArrayList<>();
+
+            features.add("danceability");
+            features.add("energy");
+            features.add("instrumentalness");
+            features.add("valence");
+            features.add("tempo");
+
+            if (response.statusCode() == 200) {
+
+
+
+
+                // Process the response
+                JSONParser parser = new JSONParser();
+                JSONObject json = (JSONObject) parser.parse(response.body());
+
+                // Get the array of audio features
+                JSONArray audioFeatures = (JSONArray) json.get("audio_features");
+
+                // Iterate through each track's audio features
+                for (Object obj : audioFeatures) {
+                    JSONObject track = (JSONObject) obj;
+                    // Stores the audio features for each song
+                    Map<String, String> audioFeaturesMap = new HashMap<>();
+
+                    for (String audioFeature : features) {
+                        // Get all of this track's audio features and put it into a map
+                        audioFeaturesMap.put(audioFeature, track.get(audioFeature).toString());
+                    }
+
+                    // Add the features map to a list so we can return it
+                    listOfAudioFeaturesMap.add(audioFeaturesMap);
+                }
+
+                return listOfAudioFeaturesMap;
+            } else {
+                System.out.println("Error: " + response.statusCode() + " - " + response.body());
+            }
+        } catch (IOException | InterruptedException | ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
