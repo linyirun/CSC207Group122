@@ -455,6 +455,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
                     JSONObject track = (JSONObject) obj;
                     // Stores the audio features for each song
                     Map<String, String> audioFeaturesMap = new HashMap<>();
+                    if (track == null) continue;
 
                     for (String audioFeature : features) {
                         // Get all of this track's audio features and put it into a map

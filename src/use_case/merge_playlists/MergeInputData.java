@@ -27,7 +27,7 @@ public class MergeInputData {
     public static final int NORMAL_CHOICE = 2;
     public static final int FAST_CHOICE = 3;
 
-    public static final double SLOW_THRESHOLD = 70.0d;
+    public static final double SLOW_THRESHOLD = 90.0d;
     public static final double FAST_THRESHOLD = 130.0d;
 
 
