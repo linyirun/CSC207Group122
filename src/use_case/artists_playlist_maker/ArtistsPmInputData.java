@@ -11,6 +11,8 @@ public class ArtistsPmInputData {
     private final List<String> selectedArtists;
     private final int numberOfSongs;
 
+    private final boolean includeInPlaylist;
+
     /**
      * Constructs an ArtistsPmInputData object with the specified parameters.
      *
@@ -18,10 +20,11 @@ public class ArtistsPmInputData {
      * @param selectedArtists the list of selected artists
      * @param numberOfSongs   the number of songs for the playlist
      */
-    public ArtistsPmInputData(String artistName, List<String> selectedArtists, int numberOfSongs) {
+    public ArtistsPmInputData(String artistName, List<String> selectedArtists, int numberOfSongs, boolean includeInPlaylist){
         this.artistName = artistName;
         this.selectedArtists = selectedArtists;
         this.numberOfSongs = numberOfSongs;
+        this.includeInPlaylist = includeInPlaylist;
     }
 
     /**
@@ -49,5 +52,9 @@ public class ArtistsPmInputData {
      */
     public int getNumberOfSongs() {
         return numberOfSongs;
+    }
+
+    public boolean isIncludeInPlaylist() {
+        return includeInPlaylist;
     }
 }

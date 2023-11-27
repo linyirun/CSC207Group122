@@ -3,82 +3,79 @@ package use_case.spotify_to_youtube;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import data_access.YouTubeDataAccessObject;
+import entity.Song;
 import entity.YoutubeAuth;
-import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubePresenter;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import use_case.loginOAuth.LoginOAuthInteractor;
 
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class SpotifyToYoutubeInteractor implements SpotifyToYoutubeInputBoundary{
+public class SpotifyToYoutubeInteractor implements SpotifyToYoutubeInputBoundary {
     SpotifyToYoutubeDataAccessInterface dao;
+
+    SpotifyToYoutubeDataAccessInterfaceForSpotify dao_2;
+
+
     SpotifyToYoutubeOutputBoundary presenter;
     String code;
 
-    public SpotifyToYoutubeInteractor(SpotifyToYoutubeDataAccessInterface dao, SpotifyToYoutubeOutputBoundary presenter) {
+    public SpotifyToYoutubeInteractor(SpotifyToYoutubeDataAccessInterface dao, SpotifyToYoutubeDataAccessInterfaceForSpotify dao_2, SpotifyToYoutubeOutputBoundary presenter) {
         this.dao = dao;
+        this.dao_2 = dao_2;
         this.presenter = presenter;
     }
 
     @Override
     public void execute(SpotifyToYoutubeInputData data) {
-//        try {
-//
-//            System.out.println(YouTubeDataAccessObject.searchVideos().get(0));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        } catch (ParseException e) {
-//            throw new RuntimeException(e);
-//        }
-        List<String> d = new ArrayList<>();
-        d.add("kffacxfA7G4");
-        d.add("Fv_3oRUo_d8");
 
-        try {
-            YouTubeDataAccessObject.createPlaylist("hello world", d);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+
+        List<String> selectedPlaylists = data.selectedPlaylists;
+        List<String> givenNames = data.givenArtists;
+
+
+        Map<String, String> selectedPlaylistsMap = dao_2.getPlaylistMap();
+
+
+        for (int i = 0; i < selectedPlaylists.size(); i++) {
+            String selectedPlaylist_id = selectedPlaylistsMap.get(selectedPlaylists.get(i));
+            List<Song> songs = dao_2.getSongs(selectedPlaylist_id);
+            List<String> videoIds = dao.searchVideos(songs);
+
+            try {
+                dao.createPlaylist(givenNames.get(i), videoIds);
+                presenter.prepareSuccessView(new SpotifyToYoutubeOutputData("Playlist successfully created", false));
+            } catch (Exception e) {
+                presenter.prepareFailView(new SpotifyToYoutubeOutputData("Error creating playlist", true));
+            }
         }
+
 
     }
 
     @Override
-    public void connectToYoutube(){
-        // Create an instance of HttpClient
+    public void connectToYoutube() {
         HttpClient httpClient = HttpClient.newHttpClient();
 
-        // Define the URL for the GET request
-        String url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=" + YoutubeAuth.getClientId() + "&redirect_uri="
-                + YoutubeAuth.getRedirectURI() + "&response_type=code&scope=" + YoutubeAuth.getScope();
+
+        String url = "https://accounts.google.com/o/oauth2/v2/auth?client_id=" + YoutubeAuth.getClientId() + "&redirect_uri=" + YoutubeAuth.getRedirectURI() + "&response_type=code&scope=" + YoutubeAuth.getScope();
 
         // Create an instance of HttpRequest
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
+        HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create(url)).GET().build();
 
         try {
-            // Send the HTTP request and get the response
+
             HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-            // Print the response status code
+
             int statusCode = response.statusCode();
             System.out.println("Status Code: " + statusCode);
 
@@ -112,22 +109,14 @@ public class SpotifyToYoutubeInteractor implements SpotifyToYoutubeInputBoundary
                 // Happens if someone interrupts your thread.
             }
         }
-        // Define the URL for the GET request
         String url2 = "https://oauth2.googleapis.com/token";
-        String requestBody = "client_id=" + YoutubeAuth.getClientId() + "&redirect_uri="
-                + YoutubeAuth.getRedirectURI() + "&grant_type=authorization_code&code=" + code + "&client_secret=" +
-                YoutubeAuth.getClientSecret();
+        String requestBody = "client_id=" + YoutubeAuth.getClientId() + "&redirect_uri=" + YoutubeAuth.getRedirectURI() + "&grant_type=authorization_code&code=" + code + "&client_secret=" + YoutubeAuth.getClientSecret();
 
         // Create an instance of HttpRequest
-        HttpRequest httpRequest2 = HttpRequest.newBuilder()
-                .uri(URI.create(url2)).header("Content-Type", "application/x-www-form-urlencoded")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
+        HttpRequest httpRequest2 = HttpRequest.newBuilder().uri(URI.create(url2)).header("Content-Type", "application/x-www-form-urlencoded").POST(HttpRequest.BodyPublishers.ofString(requestBody)).build();
         try {
-            // Send the HTTP request and get the response
             HttpResponse<String> response = httpClient.send(httpRequest2, HttpResponse.BodyHandlers.ofString());
 
-            // Print the response status code
             int statusCode = response.statusCode();
             System.out.println("Status Code: " + statusCode);
 
@@ -139,12 +128,12 @@ public class SpotifyToYoutubeInteractor implements SpotifyToYoutubeInputBoundary
             YoutubeAuth.setAccessToken((String) jsonObject.get("access_token"));
             System.out.println(YoutubeAuth.getAccessToken());
             presenter.prepareSuccessView(new SpotifyToYoutubeOutputData("Connected to YouTube", false));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             presenter.prepareFailView(new SpotifyToYoutubeOutputData("Could not send http request", true));
         }
     }
+
     public void createServer(int port) {
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
@@ -161,7 +150,6 @@ public class SpotifyToYoutubeInteractor implements SpotifyToYoutubeInputBoundary
         @Override
         public void handle(HttpExchange exchange) throws IOException {
 
-            // Get the authorization code from the query parameters for GET requests
             URI uri = exchange.getRequestURI();
             String query = uri.getQuery();
             System.out.println(query);
@@ -170,7 +158,6 @@ public class SpotifyToYoutubeInteractor implements SpotifyToYoutubeInputBoundary
                 handleAuthorizationCode(code);
             }
 
-            // Send a response to the browser
             String response = "Authorization code received. You can close this window.";
             exchange.sendResponseHeaders(200, response.length());
             try (OutputStream os = exchange.getResponseBody()) {
@@ -183,7 +170,6 @@ public class SpotifyToYoutubeInteractor implements SpotifyToYoutubeInputBoundary
         private void handleAuthorizationCode(String code) {
             System.out.println("Authorization code: " + code);
 
-            // Stop the server after handling the callback
             synchronized (SpotifyToYoutubeInteractor.this) {
                 SpotifyToYoutubeInteractor.this.code = code;
                 SpotifyToYoutubeInteractor.this.notifyAll();
