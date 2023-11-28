@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static java.lang.Math.min;
+
 public class MergeInteractor implements MergeInputBoundary {
     private MergeDataAccessInterface mergeDataAccessObject;
     private MergeOutputBoundary mergePresenter;
@@ -43,7 +45,7 @@ public class MergeInteractor implements MergeInputBoundary {
             List<Map<String, String>> listOfAudioFeaturesMap = mergeDataAccessObject.getSongsAudioFeatures(songIds);
 
 
-            for (int i = 0; i < songs.size(); i++) {
+            for (int i = 0; i < min(songs.size(), listOfAudioFeaturesMap.size()); i++) {
                 Song song = songs.get(i);
                 if (checkFilters(listOfAudioFeaturesMap.get(i), mergeInputData)) {
                     newSongIDList.add(song.getId());  // add this song to the merged playlist
