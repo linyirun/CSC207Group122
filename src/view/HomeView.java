@@ -1,6 +1,5 @@
 package view;
 
-import data_access.LyricsDataAccessObject;
 import entity.Song;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.home.HomeController;
@@ -56,6 +55,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         this.viewManagerModel = viewManagerModel;
 
         this.playlistNameToIDMap = new HashMap<String, String>();
+        this.SongToLyrics = new HashMap<String, String>();
 
         homeViewModel.addPropertyChangeListener(this);
 
@@ -234,7 +234,6 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         // Store this so we don't need to call the api every time
         this.playlistNameToIDMap = homeController.getPlaylistsMap();
         List<String> playlistNames = playlistNameToIDMap.keySet().stream().toList();
-        displayLyrics("Hey");
         displayPlaylists(playlistNames);
     }
 
@@ -244,7 +243,6 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         }
     }
 
-    // TODO: Implement lyrics display
     private void displayLyrics(String lyrics) {
         lyricsModel.clear();
         String[] lyricsList = lyrics.split(" ");
@@ -280,10 +278,16 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
     private void actionOnPressSong(String songName) {
         System.out.println(songName);
+        String lyrics = "";
+        if (SongToLyrics.containsKey(songName)) {
+            lyrics = SongToLyrics.get(songName);
+        }
+        else {
+            lyrics = homeController.getLyrics(songName);
+            SongToLyrics.put(songName, lyrics);
 
-        String lyrics = homeController.getLyrics(songName);
+        }
         displayLyrics(lyrics);
-        // TODO: implement Arjun's use case: whenever a song is selected, this function is called
     }
 
 }
