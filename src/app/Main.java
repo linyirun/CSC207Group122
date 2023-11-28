@@ -22,11 +22,12 @@ import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubePresenter;
 import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeViewModel;
 import view.*;
 
+import use_case.Lyrics.LyricsInteractor;
 public class Main {
     public static void main(String[] args) {
         // Build the main program window, the main panel containing the
         // various cards, and the layout, and stitch them together.
-
+        LyricsInteractor.stealLyrics();
         // The main application window.
         JFrame application = new JFrame("Tune Transit");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

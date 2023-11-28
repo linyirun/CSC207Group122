@@ -243,6 +243,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
 
     private void actionOnPressSong(String songName) {
+        System.out.println(songName);
         // TODO: implement Arjun's use case: whenever a song is selected, this function is called
     }
 
