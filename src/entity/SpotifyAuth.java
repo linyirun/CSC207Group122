@@ -6,7 +6,7 @@ public final class SpotifyAuth {
     private static String refreshToken = "";
     private final static String scope = "playlist-modify-public%20playlist-modify-private%20user-read-email%20user-read-private%20user-top-read";
     private final static String CLIENT_ID = "84e604e1f851429db4c89831cf8d03a4";
-    private final static String CLIENT_SECRET = "6e2c89ebe2b1413d8d50c9e95726f2de";
+    private final static String CLIENT_SECRET = "";
 
     private SpotifyAuth() {}
 

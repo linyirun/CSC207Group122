@@ -42,7 +42,11 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private DefaultListModel<String> songsModel;
     private JList<String> songsList;
 
+    private DefaultListModel lyricsModel;
+    private JList<String> lyricsList;
     private Map<String, String> playlistNameToIDMap;
+
+    private Map<String, String> SongToLyrics;
 
     private JLabel titleLabel;
 
@@ -157,7 +161,13 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         JScrollPane songsScrollPane = new JScrollPane(songsList);
         songsScrollPane.setBorder(BorderFactory.createTitledBorder("Songs"));
 
+        lyricsModel = new DefaultListModel<>();
+        lyricsList = new JList<>(lyricsModel);
+        JScrollPane lyricsScrollPane = new JScrollPane(lyricsList);
+        lyricsScrollPane.setBorder(BorderFactory.createTitledBorder("Lyrics"));
+
         scrollPanePanel.add(songsScrollPane);
+        scrollPanePanel.add(lyricsScrollPane);
 
         welcomePanel.add(scrollPanePanel);
 
@@ -224,12 +234,29 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         // Store this so we don't need to call the api every time
         this.playlistNameToIDMap = homeController.getPlaylistsMap();
         List<String> playlistNames = playlistNameToIDMap.keySet().stream().toList();
+        displayLyrics("Hey");
         displayPlaylists(playlistNames);
     }
 
     private void displayPlaylists(List<String> playlistNames) {
         for (String playlistName : playlistNames) {
             playlistsModel.addElement(playlistName);
+        }
+    }
+
+    // TODO: Implement lyrics display
+    private void displayLyrics(String lyrics) {
+        lyricsModel.clear();
+        String[] lyricsList = lyrics.split(" ");
+        int i = 0;
+        String currentLine = "";
+        for (String word : lyricsList) {
+            currentLine = currentLine + word + " ";
+            i++;
+            if (i % 10 == 0) {
+                lyricsModel.addElement(currentLine);
+                currentLine = "";
+            }
         }
     }
 
@@ -254,7 +281,8 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private void actionOnPressSong(String songName) {
         System.out.println(songName);
 
-        LyricsDataAccessObject.getUrl(songName);
+        String lyrics = homeController.getLyrics(songName);
+        displayLyrics(lyrics);
         // TODO: implement Arjun's use case: whenever a song is selected, this function is called
     }
 

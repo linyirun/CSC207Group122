@@ -18,15 +18,26 @@ import java.net.URL;
 import java.io.InputStreamReader;
 import java.util.Base64;
 
-public class LyricsInteractor {
+public class LyricsInteractor implements LyricsInputBoundary{
+    LyricsDataAccessInterface dao;
+    LyricsOutputBoundary presenter;
 
-    private LyricsDataAccessInterface mergeDataAccessObject;
+    public LyricsInteractor (LyricsDataAccessInterface dao, LyricsOutputBoundary presenter) {
+        this.dao = dao;
+        this.presenter = presenter;
+    }
+    public String execute(LyricsInputData inputData) {
+        try {
+            String songName = inputData.getSongName();
+            String lyrics = dao.getLyrics(songName);
+            return lyrics;
 
-    public static void execute(LyricsInputData inputData) {
-        String songName = inputData.getSongName();
-        String lyrics = LyricsDataAccessObject.getUrl(songName);
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return "Could not get song";
 
+        }
 
     }
-
 }

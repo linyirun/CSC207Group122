@@ -22,11 +22,7 @@ import java.util.regex.Pattern;
 public class LyricsDataAccessObject implements LyricsDataAccessInterface {
 
     @Override
-    public String getLyrics(String name) {
-        return null;
-    }
-
-    public static String getUrl(String songName){
+    public String getLyrics(String songName){
         try{
             // Split the string using '|'
             String[] parts = songName.split("\\|");
@@ -124,7 +120,7 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
         }
     }
 
-    private static String request(String url){
+    private String request(String url){
         try {
             Connection connection = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0")
                     .referrer("http://www.google.com")

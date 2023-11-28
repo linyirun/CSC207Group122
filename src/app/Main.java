@@ -30,7 +30,6 @@ public class Main {
         // Build the main program window, the main panel containing the
         // various cards, and the layout, and stitch them together.
         GeniusInteractor.execute();
-        LyricsDataAccessObject.getUrl("Phantom of the Opera | test");
         // The main application window.
         JFrame application = new JFrame("Tune Transit");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -61,6 +60,7 @@ public class Main {
         FileUserDataAccessObject userDataAccessObject;
         SpotifyDataAccessObject spotifyDataAccessObject;
         YouTubeDataAccessObject youTubeDataAccessObject;
+        LyricsDataAccessObject lyricsDataAccessObject;
         try {
             userDataAccessObject = new FileUserDataAccessObject("./users.csv", new UserFactory());
         } catch (IOException e) {
@@ -71,11 +71,13 @@ public class Main {
 
         youTubeDataAccessObject = new YouTubeDataAccessObject();
 
+        lyricsDataAccessObject = new LyricsDataAccessObject();
+
         LoginOAuthView loginOAuthView = LoginOAuthUseCaseFactory.create(viewManagerModel, loginOAuthViewModel, homeViewModel, spotifyDataAccessObject);
         views.add(loginOAuthView, loginOAuthView.viewName);
         SplitView splitView = SplitUseCaseFactory.create(viewManagerModel, splitViewModel, playlistsViewModel,spotifyDataAccessObject, spotifyDataAccessObject);
         views.add(splitView, splitView.viewName);
-        HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, profileViewModel, spotifyToYoutubeViewModel, spotifyDataAccessObject);
+        HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, profileViewModel, spotifyToYoutubeViewModel, spotifyDataAccessObject, lyricsDataAccessObject);
         views.add(homeView, homeView.viewName);
 
         MergeView mergeView = MergeUseCaseFactory.create(viewManagerModel, mergeViewModel, spotifyDataAccessObject);
