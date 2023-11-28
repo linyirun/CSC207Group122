@@ -17,6 +17,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 public class LyricsDataAccessObject implements LyricsDataAccessInterface {
 
     @Override
@@ -24,7 +26,7 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
         return null;
     }
 
-    public static void getUrl(String songName){
+    public static String getUrl(String songName){
         try{
             // Split the string using '|'
             String[] parts = songName.split("\\|");
@@ -33,8 +35,18 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
             String song = parts[0].trim();
             String[] artists = parts[1].split(",");
 
+            // Remove features in title to optimize search, these happen in brackets ex. (feat. 21)
+            // These mess up our Genius API search, use regex to remove them.
+            Pattern pattern = Pattern.compile("\\([^)]+\\)");
+            Matcher matcher = pattern.matcher(song);
+
+            // Replace content inside brackets with an empty string
+            song= matcher.replaceAll("");
+
+            System.out.println(song);
             for (int i = 0; i < artists.length; i++) {
                 artists[i] = artists[i].trim();
+                System.out.println(artists[i]);
             }
 
             String tokenUrl = "https://api.genius.com/search?q=";
@@ -54,42 +66,64 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
                 InputStream inputStream = connection.getInputStream();
                 JSONParser jsonParser = new JSONParser();
                 JSONObject jsonObject;
+
                 try {
+                    String url = "";
                     jsonObject = (JSONObject) jsonParser.parse(
                             new InputStreamReader(inputStream, "UTF-8"));
                     //System.out.println(jsonObject.toJSONString());
                     JSONArray hits = (JSONArray) ((JSONObject) jsonObject.get("response")).get("hits");
+                    boolean stoploop = false;
                     for (Object item : hits) {
                         JSONObject track = ((JSONObject) item);
                         JSONObject result = (JSONObject) track.get("result");
 
-                        String artist = (String) result.get("artist_names");
-                        String url = (String) result.get("url");
+                        String itemArtist = (String) result.get("artist_names");
+                        url = (String) result.get("url");
+
                         System.out.println(track.toJSONString());
-                        System.out.println(artist);
+                        System.out.println(itemArtist);
                         System.out.println(url);
 
+                        for (String artist : artists) {
+                            if (itemArtist.contains(artist)) {
+                                System.out.println("MATCH:");
+                                System.out.println(artist);
+                                stoploop = true;
+                            }
+                        }
+                        if (stoploop) {
+                            break;
+                        }
                     }
+                    // If we did not find a match for our song with the artists, just grab lyrics for
+                    // first song that shows up
+                    if (!stoploop) {
+                        return "Could not find lyrics";
+                    }
+
+                    String lyrics = request(url);
+                    return lyrics;
+
+
 
                 } catch (ParseException e) {
                     System.out.println("InputStream could not be parsed into JSON object");
+                    return null;
                 }
 
             } else {
                 System.out.println("Token request failed: " + responseCode);
+                return null;
             }
         }
         catch (IOException e) {
             e.printStackTrace();
+            return "Could not find lyrics";
         }
     }
-    public static void stealLyrics(){
-        String url = "https://genius.com/Dire-straits-money-for-nothing-lyrics";
-        Document doc = request(url);
 
-    }
-
-    private static Document request(String url){
+    private static String request(String url){
         try {
             Connection connection = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0")
                     .referrer("http://www.google.com")
@@ -104,7 +138,7 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
                 int end = wantedPart.indexOf("Embed Cancel");
                 wantedPart = wantedPart.substring(0, end - 4);
                 System.out.println(wantedPart);
-                return doc;
+                return wantedPart;
             }
             else{
                 System.out.println("error");

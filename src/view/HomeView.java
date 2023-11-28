@@ -1,5 +1,6 @@
 package view;
 
+import data_access.LyricsDataAccessObject;
 import entity.Song;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.home.HomeController;
@@ -253,21 +254,8 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
     private void actionOnPressSong(String songName) {
         System.out.println(songName);
-        String[] parts = songName.split("\\|");
 
-        // Trim the song and artist names
-        String song = parts[0].trim();
-        String[] artists = parts[1].split(",");
-
-        for (int i = 0; i < artists.length; i++) {
-            artists[i] = artists[i].trim();
-        }
-        // Print the result
-        System.out.println("Song: " + song);
-        System.out.print("Artists: ");
-        for (String artist : artists) {
-            System.out.print(artist + " ");
-        }
+        LyricsDataAccessObject.getUrl(songName);
         // TODO: implement Arjun's use case: whenever a song is selected, this function is called
     }
 
