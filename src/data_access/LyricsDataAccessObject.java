@@ -24,8 +24,19 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
         return null;
     }
 
-    public static void getUrl(String song){
+    public static void getUrl(String songName){
         try{
+            // Split the string using '|'
+            String[] parts = songName.split("\\|");
+
+            // Trim the song and artist names
+            String song = parts[0].trim();
+            String[] artists = parts[1].split(",");
+
+            for (int i = 0; i < artists.length; i++) {
+                artists[i] = artists[i].trim();
+            }
+
             String tokenUrl = "https://api.genius.com/search?q=";
             String access_token = GeniusAuth.getAccessToken();
 

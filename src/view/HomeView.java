@@ -232,7 +232,6 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         }
     }
 
-    // TODO: ADD ARTISTS TO SONG MODEL SO WE CAN CONFIRM WE GET THE CORRECT LYRICS
     private void updateSongs(String playlistName) {
         String playlistID = playlistNameToIDMap.get(playlistName);
         songsModel.clear();
@@ -254,6 +253,21 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
     private void actionOnPressSong(String songName) {
         System.out.println(songName);
+        String[] parts = songName.split("\\|");
+
+        // Trim the song and artist names
+        String song = parts[0].trim();
+        String[] artists = parts[1].split(",");
+
+        for (int i = 0; i < artists.length; i++) {
+            artists[i] = artists[i].trim();
+        }
+        // Print the result
+        System.out.println("Song: " + song);
+        System.out.print("Artists: ");
+        for (String artist : artists) {
+            System.out.print(artist + " ");
+        }
         // TODO: implement Arjun's use case: whenever a song is selected, this function is called
     }
 
