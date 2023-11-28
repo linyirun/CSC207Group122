@@ -1,19 +1,79 @@
 package data_access;
 
+import entity.GeniusAuth;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import use_case.Lyrics.LyricsDataAccessInterface;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 
 public class LyricsDataAccessObject implements LyricsDataAccessInterface {
 
     @Override
-    public String getLyrics() {
+    public String getLyrics(String name) {
         return null;
     }
 
+    public static void getUrl(String song){
+        try{
+            String tokenUrl = "https://api.genius.com/search?q=";
+            String access_token = GeniusAuth.getAccessToken();
+
+            String encodedSearchTerm = URLEncoder.encode(song, "UTF-8");
+            String searchParam = tokenUrl + encodedSearchTerm;
+
+            HttpURLConnection connection = (HttpURLConnection) new URL(searchParam).openConnection();
+
+            connection.setRequestMethod("GET");
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Authorization", "Bearer " + access_token);
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                InputStream inputStream = connection.getInputStream();
+                JSONParser jsonParser = new JSONParser();
+                JSONObject jsonObject;
+                try {
+                    jsonObject = (JSONObject) jsonParser.parse(
+                            new InputStreamReader(inputStream, "UTF-8"));
+                    //System.out.println(jsonObject.toJSONString());
+                    JSONArray hits = (JSONArray) ((JSONObject) jsonObject.get("response")).get("hits");
+                    for (Object item : hits) {
+                        JSONObject track = ((JSONObject) item);
+                        JSONObject result = (JSONObject) track.get("result");
+
+                        String artist = (String) result.get("artist_names");
+                        String url = (String) result.get("url");
+                        System.out.println(track.toJSONString());
+                        System.out.println(artist);
+                        System.out.println(url);
+
+                    }
+
+                    System.out.println(hits.toJSONString());
+
+                } catch (ParseException e) {
+                    System.out.println("InputStream could not be parsed into JSON object");
+                }
+
+            } else {
+                System.out.println("Token request failed: " + responseCode);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public static void stealLyrics(){
         String url = "https://genius.com/Dire-straits-money-for-nothing-lyrics";
         Document doc = request(url);

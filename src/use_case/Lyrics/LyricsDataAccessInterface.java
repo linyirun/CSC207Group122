@@ -1,6 +1,6 @@
 package use_case.Lyrics;
 
 public interface LyricsDataAccessInterface {
-     String getLyrics();
+     String getLyrics(String name);
 
 }
