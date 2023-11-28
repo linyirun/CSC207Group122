@@ -6,6 +6,7 @@ import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeState;
 import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeViewModel;
+import use_case.Lyrics.LyricsOutputBoundary;
 import use_case.home.HomeOutputBoundary;
 import use_case.home.HomeOutputData;
 

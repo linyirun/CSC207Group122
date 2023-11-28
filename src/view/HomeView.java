@@ -238,7 +238,6 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         songsModel.clear();
         List<Song> songs = homeController.getSongs(playlistID);
         for (Song song : songs) {
-            System.out.println(song.getArtists());
             String element = song.getName() + " | ";
 
             Map<String, Long> artists = song.getArtists();

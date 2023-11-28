@@ -4,6 +4,12 @@ import java.util.List;
 
 public class LyricsInputData {
 
-    private List<String> playlistIds;
+    private String songName;
+
+    public LyricsInputData(String songName) {this.songName = songName;}
+
+    public String getSongName() {return this.songName;}
+
+
 
 }

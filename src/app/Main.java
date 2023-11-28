@@ -30,7 +30,6 @@ public class Main {
         // Build the main program window, the main panel containing the
         // various cards, and the layout, and stitch them together.
         GeniusInteractor.execute();
-        LyricsInteractor.stealLyrics();
         LyricsDataAccessObject.getUrl("Phantom of the Opera | test");
         // The main application window.
         JFrame application = new JFrame("Tune Transit");

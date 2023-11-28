@@ -99,6 +99,7 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
                     // If we did not find a match for our song with the artists, just grab lyrics for
                     // first song that shows up
                     if (!stoploop) {
+                        System.out.println("couldnt find song");
                         return "Could not find lyrics";
                     }
 
@@ -136,9 +137,15 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
                 String wantedPart = text.substring(text.indexOf("["));
                 // this comes after the lyrics end in text along with around 5 chars of numbers and spaces prior
                 int end = wantedPart.indexOf("Embed Cancel");
-                wantedPart = wantedPart.substring(0, end - 4);
-                System.out.println(wantedPart);
-                return wantedPart;
+                try {
+                    wantedPart = wantedPart.substring(0, end - 4);
+                    System.out.println(wantedPart);
+                    return wantedPart;
+                }
+                catch (Exception e) {
+                    return "Could not get lyrics";
+                }
+
             }
             else{
                 System.out.println("error");
