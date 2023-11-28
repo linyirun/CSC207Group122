@@ -60,8 +60,6 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
 
                     }
 
-                    System.out.println(hits.toJSONString());
-
                 } catch (ParseException e) {
                     System.out.println("InputStream could not be parsed into JSON object");
                 }

@@ -232,12 +232,22 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         }
     }
 
+    // TODO: ADD ARTISTS TO SONG MODEL SO WE CAN CONFIRM WE GET THE CORRECT LYRICS
     private void updateSongs(String playlistName) {
         String playlistID = playlistNameToIDMap.get(playlistName);
         songsModel.clear();
         List<Song> songs = homeController.getSongs(playlistID);
         for (Song song : songs) {
-            songsModel.addElement(song.getName());
+            System.out.println(song.getArtists());
+            String element = song.getName() + " | ";
+
+            Map<String, Long> artists = song.getArtists();
+            boolean first = true;
+            for (String key : artists.keySet()) {
+                element = element + key +", ";
+            }
+            element = element.substring(0, element.length() - 2);
+            songsModel.addElement(element);
         }
     }
 
