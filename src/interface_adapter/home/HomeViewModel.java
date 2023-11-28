@@ -7,6 +7,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public class HomeViewModel extends ViewModel {
+    public static final String VIEW_NAME = "Home";
 
     public static final String SPLIT_PLAYLIST_NAME = "Split Playlist";
     public static final String MERGE_PLAYLIST_NAME = "Merge Playlist";

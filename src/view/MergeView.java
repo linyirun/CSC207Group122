@@ -263,7 +263,6 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         playlistsList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 String selectedPlaylist = playlistsList.getSelectedValue();
-                // TODO: this is very slow, checking if selectedPlaylistModel contains a playlist
                 if (selectedPlaylist != null && !selectedPlaylistsModel.contains(selectedPlaylist)) {
                     selectedPlaylistsModel.addElement(selectedPlaylist);
                 }
