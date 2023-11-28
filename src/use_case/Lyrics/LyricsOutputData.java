@@ -2,6 +2,8 @@ package use_case.Lyrics;
 
 public class LyricsOutputData {
 
-    private boolean success;
-    private String playlist_name;
+    private String lyrics;
+
+    public void LyricsOutputData(String lyrics){ this.lyrics = lyrics;}
+    public String getLyrics(){return this.lyrics;}
 }

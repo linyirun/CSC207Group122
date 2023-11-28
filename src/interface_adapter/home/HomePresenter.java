@@ -40,9 +40,6 @@ public class HomePresenter implements HomeOutputBoundary, LyricsOutputBoundary {
         viewManagerModel.firePropertyChanged();
     }
 
-    public void prepareSuccessView(LyricsOutputData data) {
-
-    }
     public void prepareFailView(String error) {
         HomeState homeState = homeViewModel.getState();
         homeState.setButtonErrorMsg(error);

@@ -35,7 +35,8 @@ public class LyricsInteractor implements LyricsInputBoundary{
         }
         catch (Exception e) {
             System.out.println(e);
-            return "Could not get song";
+            presenter.prepareFailView("Could not get lyrics");
+            return null;
 
         }
 
