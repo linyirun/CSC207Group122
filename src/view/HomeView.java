@@ -1,10 +1,9 @@
 package view;
 
+import entity.Song;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.home.HomeController;
 import interface_adapter.home.HomeViewModel;
-import interface_adapter.home.HomeState;
-import interface_adapter.playlists.PlaylistsController;
-import interface_adapter.playlists.PlaylistsViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +13,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.border.Border;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.ListSelectionEvent;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class HomeView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -24,6 +23,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
     private final HomeViewModel homeViewModel;
     private final HomeController homeController;
+    private final ViewManagerModel viewManagerModel;
 
     private final JButton splitPlaylist;
 
@@ -36,12 +36,26 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private final JLabel profileText;
     private final JLabel welcome;
 
+    private final DefaultListModel<String> playlistsModel;
+    private final JList<String> playlistsList;
+    private DefaultListModel<String> songsModel;
+    private JList<String> songsList;
+
+    private Map<String, String> playlistNameToIDMap;
+
     private JLabel titleLabel;
 
-    public HomeView(HomeController homeController, HomeViewModel homeViewModel) {
+    public HomeView(HomeController homeController, HomeViewModel homeViewModel, ViewManagerModel viewManagerModel) {
         this.homeController = homeController;
         this.homeViewModel = homeViewModel;
+        this.viewManagerModel = viewManagerModel;
+
+        this.playlistNameToIDMap = new HashMap<String, String>();
+
         homeViewModel.addPropertyChangeListener(this);
+
+        // Need actionListeners from the other views, allows us to check if we change back to home
+        viewManagerModel.addPropertyChangeListener(this);
 
         setLayout(new BorderLayout());
 
@@ -117,16 +131,57 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         // Create a panel for the welcome label
         JPanel welcomePanel = new JPanel();
         welcomePanel.setLayout(new BoxLayout(welcomePanel, BoxLayout.Y_AXIS));
-        welcomePanel.setBorder(BorderFactory.createTitledBorder("Welcome")); // Add a titled border
+        welcomePanel.setBorder(BorderFactory.createTitledBorder("Playlists")); // Add a titled border
 
         welcome = new JLabel();
         welcome.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        welcomePanel.add(Box.createRigidArea(new Dimension(0, 20))); // Add some spacing
+//        welcomePanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
         welcomePanel.add(welcome);
+        welcomePanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
+
+        JPanel scrollPanePanel = new JPanel();
+        scrollPanePanel.setLayout(new GridLayout(1, 2));
+
+        // add ScrollPanes displaying the user's playlists and songs
+        playlistsModel = new DefaultListModel<>();
+        playlistsList = new JList<>(playlistsModel);
+        JScrollPane playlistsScrollPane = new JScrollPane(playlistsList);
+        playlistsScrollPane.setBorder(BorderFactory.createTitledBorder("Your Playlists"));
+
+        scrollPanePanel.add(playlistsScrollPane);
+
+        songsModel = new DefaultListModel<>();
+        songsList = new JList<>(songsModel);
+        JScrollPane songsScrollPane = new JScrollPane(songsList);
+        songsScrollPane.setBorder(BorderFactory.createTitledBorder("Songs"));
+
+        scrollPanePanel.add(songsScrollPane);
+
+        welcomePanel.add(scrollPanePanel);
 
         // Add the welcome label to the CENTER of the main panel
         add(welcomePanel, BorderLayout.CENTER);
+
+
+        playlistsList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                String selectedPlaylist = playlistsList.getSelectedValue();
+                if (selectedPlaylist != null) {
+                    updateSongs(selectedPlaylist);
+                }
+            }
+        });
+
+
+        songsList.addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                String songName = songsList.getSelectedValue();
+                if (songName != null) {
+                    actionOnPressSong(songName);
+                }
+            }
+        });
     }
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
@@ -155,5 +210,40 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         if (evt.getPropertyName().equals("state")) {
             welcome.setText("Welcome " + homeViewModel.getState().getDisplayName());
         }
+
+        // Check if we went back to this view - if we do, then we want to update our playlist model
+        if (evt.getPropertyName().equals("view") && evt.getNewValue().equals(this.viewName)) {
+            refresh();
+        }
+
     }
+
+    private void refresh() {
+        playlistsModel.clear();
+        // Store this so we don't need to call the api every time
+        this.playlistNameToIDMap = homeController.getPlaylistsMap();
+        List<String> playlistNames = playlistNameToIDMap.keySet().stream().toList();
+        displayPlaylists(playlistNames);
+    }
+
+    private void displayPlaylists(List<String> playlistNames) {
+        for (String playlistName : playlistNames) {
+            playlistsModel.addElement(playlistName);
+        }
+    }
+
+    private void updateSongs(String playlistName) {
+        String playlistID = playlistNameToIDMap.get(playlistName);
+        songsModel.clear();
+        List<Song> songs = homeController.getSongs(playlistID);
+        for (Song song : songs) {
+            songsModel.addElement(song.getName());
+        }
+    }
+
+
+    private void actionOnPressSong(String songName) {
+        // TODO: implement Arjun's use case: whenever a song is selected, this function is called
+    }
+
 }

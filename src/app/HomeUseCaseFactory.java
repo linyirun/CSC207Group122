@@ -27,7 +27,7 @@ public class HomeUseCaseFactory {
 
         try {
             HomeController homeController = createHomeUseCase(viewManagerModel, homeViewModel, profileViewModel, spotifyToYoutubeViewModel, dao);
-            return new HomeView(homeController, homeViewModel);
+            return new HomeView(homeController, homeViewModel, viewManagerModel);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error TODO");
         }

@@ -1,5 +1,6 @@
 package use_case.home;
 
+import entity.Song;
 import interface_adapter.home.HomePresenter;
 
 import view.MergeView;
@@ -9,6 +10,7 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class HomeInteractor implements HomeInputBoundary{
@@ -47,4 +49,16 @@ public class HomeInteractor implements HomeInputBoundary{
             presenter.prepareFailView("Event source not defined");
         }
     }
+
+    @Override
+    public Map<String, String> getPlaylistsMap() {
+        return dao.getPlaylistMap();
+    }
+
+    @Override
+    public List<Song> getSongs(String playlistID) {
+        return dao.getSongs(playlistID);
+    }
+
+
 }
