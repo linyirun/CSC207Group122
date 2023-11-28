@@ -1,6 +1,6 @@
 package use_case.Lyrics;
 
-public class MergeOutputData {
+public class LyricsOutputData {
 
     private boolean success;
     private String playlist_name;
