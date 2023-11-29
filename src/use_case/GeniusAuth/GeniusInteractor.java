@@ -17,8 +17,6 @@ import java.util.Base64;
 
 public class GeniusInteractor {
 
-    private GeniusDataAccessInterface mergeDataAccessObject;
-
     public static void execute() {
         String clientSecret = GeniusAuth.getClientSecret();
         String clientId = GeniusAuth.getClientId();
