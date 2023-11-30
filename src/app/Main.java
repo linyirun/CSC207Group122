@@ -5,6 +5,7 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import data_access.LyricsDataAccessObject;
 import data_access.SpotifyDataAccessObject;
 import data_access.YouTubeDataAccessObject;
 import interface_adapter.ViewManagerModel;
@@ -20,13 +21,15 @@ import interface_adapter.split_playlist.SplitViewModel;
 import interface_adapter.home.HomeViewModel;
 import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubePresenter;
 import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeViewModel;
+import use_case.GeniusAuth.GeniusInteractor;
 import view.*;
 
+import use_case.Lyrics.LyricsInteractor;
 public class Main {
     public static void main(String[] args) {
         // Build the main program window, the main panel containing the
         // various cards, and the layout, and stitch them together.
-
+        GeniusInteractor.execute();
         // The main application window.
         JFrame application = new JFrame("Tune Transit");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -57,6 +60,7 @@ public class Main {
         FileUserDataAccessObject userDataAccessObject;
         SpotifyDataAccessObject spotifyDataAccessObject;
         YouTubeDataAccessObject youTubeDataAccessObject;
+        LyricsDataAccessObject lyricsDataAccessObject;
         try {
             userDataAccessObject = new FileUserDataAccessObject("./users.csv", new UserFactory());
         } catch (IOException e) {
@@ -67,11 +71,13 @@ public class Main {
 
         youTubeDataAccessObject = new YouTubeDataAccessObject();
 
+        lyricsDataAccessObject = new LyricsDataAccessObject();
+
         LoginOAuthView loginOAuthView = LoginOAuthUseCaseFactory.create(viewManagerModel, loginOAuthViewModel, homeViewModel, spotifyDataAccessObject);
         views.add(loginOAuthView, loginOAuthView.viewName);
         SplitView splitView = SplitUseCaseFactory.create(viewManagerModel, splitViewModel, playlistsViewModel,spotifyDataAccessObject, spotifyDataAccessObject);
         views.add(splitView, splitView.viewName);
-        HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, profileViewModel, spotifyToYoutubeViewModel, spotifyDataAccessObject);
+        HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, profileViewModel, spotifyToYoutubeViewModel, spotifyDataAccessObject, lyricsDataAccessObject);
         views.add(homeView, homeView.viewName);
 
         MergeView mergeView = MergeUseCaseFactory.create(viewManagerModel, mergeViewModel, spotifyDataAccessObject);

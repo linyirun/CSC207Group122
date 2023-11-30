@@ -41,7 +41,11 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private DefaultListModel<String> songsModel;
     private JList<String> songsList;
 
+    private DefaultListModel lyricsModel;
+    private JList<String> lyricsList;
     private Map<String, String> playlistNameToIDMap;
+
+    private Map<String, String> SongToLyrics;
 
     private JLabel titleLabel;
 
@@ -51,6 +55,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         this.viewManagerModel = viewManagerModel;
 
         this.playlistNameToIDMap = new HashMap<String, String>();
+        this.SongToLyrics = new HashMap<String, String>();
 
         homeViewModel.addPropertyChangeListener(this);
 
@@ -156,7 +161,13 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         JScrollPane songsScrollPane = new JScrollPane(songsList);
         songsScrollPane.setBorder(BorderFactory.createTitledBorder("Songs"));
 
+        lyricsModel = new DefaultListModel<>();
+        lyricsList = new JList<>(lyricsModel);
+        JScrollPane lyricsScrollPane = new JScrollPane(lyricsList);
+        lyricsScrollPane.setBorder(BorderFactory.createTitledBorder("Lyrics"));
+
         scrollPanePanel.add(songsScrollPane);
+        scrollPanePanel.add(lyricsScrollPane);
 
         welcomePanel.add(scrollPanePanel);
 
@@ -232,18 +243,51 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         }
     }
 
+    private void displayLyrics(String lyrics) {
+        lyricsModel.clear();
+        String[] lyricsList = lyrics.split(" ");
+        int i = 0;
+        String currentLine = "";
+        for (String word : lyricsList) {
+            currentLine = currentLine + word + " ";
+            i++;
+            if (i % 10 == 0) {
+                lyricsModel.addElement(currentLine);
+                currentLine = "";
+            }
+        }
+    }
+
     private void updateSongs(String playlistName) {
         String playlistID = playlistNameToIDMap.get(playlistName);
         songsModel.clear();
         List<Song> songs = homeController.getSongs(playlistID);
         for (Song song : songs) {
-            songsModel.addElement(song.getName());
+            String element = song.getName() + " | ";
+
+            Map<String, Long> artists = song.getArtists();
+            boolean first = true;
+            for (String key : artists.keySet()) {
+                element = element + key +", ";
+            }
+            element = element.substring(0, element.length() - 2);
+            songsModel.addElement(element);
         }
     }
 
 
     private void actionOnPressSong(String songName) {
-        // TODO: implement Arjun's use case: whenever a song is selected, this function is called
+        System.out.println(songName);
+        String lyrics = "";
+        if (SongToLyrics.containsKey(songName)) {
+            lyrics = SongToLyrics.get(songName);
+        }
+        else {
+            lyrics = homeController.getLyrics(songName);
+            SongToLyrics.put(songName, lyrics);
+
+        }
+        displayLyrics(lyrics);
     }
 
 }

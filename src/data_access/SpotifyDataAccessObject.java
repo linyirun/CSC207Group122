@@ -235,6 +235,8 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Authorization", "Bearer " + accessToken).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         JSONObject responseObject = (JSONObject) new JSONParser().parse(response.body());
+
+        String name = (String) responseObject.get("display_name");
         return (String) responseObject.get("display_name");
     }
 

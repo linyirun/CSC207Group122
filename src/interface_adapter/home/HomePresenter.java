@@ -6,12 +6,14 @@ import interface_adapter.profile.ProfileState;
 import interface_adapter.profile.ProfileViewModel;
 import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeState;
 import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeViewModel;
+import use_case.Lyrics.LyricsOutputBoundary;
+import use_case.Lyrics.LyricsOutputData;
 import use_case.home.HomeOutputBoundary;
 import use_case.home.HomeOutputData;
 
 import javax.swing.text.View;
 
-public class HomePresenter implements HomeOutputBoundary {
+public class HomePresenter implements HomeOutputBoundary, LyricsOutputBoundary {
     ViewManagerModel viewManagerModel;
     HomeViewModel homeViewModel;
     ProfileViewModel profileViewModel;
@@ -37,6 +39,7 @@ public class HomePresenter implements HomeOutputBoundary {
         viewManagerModel.setActiveView(data.getViewName());
         viewManagerModel.firePropertyChanged();
     }
+
     public void prepareFailView(String error) {
         HomeState homeState = homeViewModel.getState();
         homeState.setButtonErrorMsg(error);
