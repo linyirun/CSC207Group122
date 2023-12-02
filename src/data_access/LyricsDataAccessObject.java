@@ -8,6 +8,8 @@ import org.json.simple.parser.ParseException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import use_case.Lyrics.LyricsDataAccessInterface;
 
 import java.io.IOException;
@@ -129,18 +131,12 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
 
             if (connection.response().statusCode() == 200) {
                 System.out.println("Link: " + url);
-                String text = doc.text();
-                String wantedPart = text.substring(text.indexOf("["));
-                // this comes after the lyrics end in text along with around 5 chars of numbers and spaces prior
-                int end = wantedPart.indexOf("Embed Cancel");
-                try {
-                    wantedPart = wantedPart.substring(0, end - 4);
-                    System.out.println(wantedPart);
-                    return wantedPart;
-                }
-                catch (Exception e) {
-                    return "Could not get lyrics";
-                }
+                Elements lyricsDiv = doc.select("div.Lyrics__Container-sc-1ynbvzw-1.kUgSbL");
+                String lyrics = lyricsDiv.text();
+                System.out.println("test:");
+                System.out.println(lyrics);
+
+                return lyrics;
 
             }
             else{
