@@ -21,6 +21,6 @@ public class SplitPresenter implements SplitOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
-
+        splitViewModel.firePropertyChanged();
     }
 }

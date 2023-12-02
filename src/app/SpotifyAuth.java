@@ -15,7 +15,7 @@ public class SpotifyAuth {
 
     private final static String CLIENT_ID = "84e604e1f851429db4c89831cf8d03a4";
 
-    private final static String CLIENT_SECRET = "";
+    private final static String CLIENT_SECRET = "ed675a5fff534206aef27b1f98a6129a";
 
 
 

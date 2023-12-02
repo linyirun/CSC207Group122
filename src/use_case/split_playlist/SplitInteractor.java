@@ -45,14 +45,7 @@ public class SplitInteractor implements SplitInputBoundary{
         }
 
         // Create playlists and get userid
-        String userid = "";
-        try{
-            userid = userDataAccessObject.getUserId();
-        }
-        catch (IOException | InterruptedException | ParseException e) {
-            e.printStackTrace();
-            System.err.println("unable to get userid");
-        }
+        String userid = getUserid();
 
         StringBuffer createdPlaylistNames = new StringBuffer();
 
@@ -77,6 +70,30 @@ public class SplitInteractor implements SplitInputBoundary{
         }
     }
 
+    private String getUserid(){
+        try{
+            return userDataAccessObject.getUserId();
+        }
+        catch (IOException | InterruptedException | ParseException e) {
+            e.printStackTrace();
+            System.err.println("unable to get userid");
+        }
+        return "";
+    }
 
+    public void splitByLength(String playlistName, int startTime, int endTime){
+        String PlaylistID = userDataAccessObject.getPlaylistMap().get(playlistName);
+        List<String> songIds = userDataAccessObject.getSongInterval(PlaylistID, startTime, endTime);
+        if(songIds.isEmpty()){
+            splitPresenter.prepareFailView("error");
+        }
+        else{
+            String createdPlaylistName = "Songs between " + startTime + " seconds to " + endTime + " seconds " + "from "
+                    + playlistName;
+            createPlaylistWithSongs(createdPlaylistName, songIds, getUserid());
 
+            SplitOutputData outputData = new SplitOutputData(createdPlaylistName);
+            splitPresenter.prepareSuccessView(outputData);
+        }
+    }
 }
