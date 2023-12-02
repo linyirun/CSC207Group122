@@ -41,13 +41,9 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
     private JButton splitByLength;
     private JButton splitByArtists;
 
-    private int endTime;
+    private String endTime;
 
-    private int startTime;
-
-    private boolean endTimeEntered = false;
-
-    private boolean startTimeEntered = false;
+    private String startTime;
 
     public SplitView(SplitController splitController, SplitViewModel splitViewModel,
                      PlaylistsController playlistsController, PlaylistsViewModel playlistsViewModel, ViewManagerModel viewManagerModel) {
@@ -155,8 +151,8 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
                     String splitPlaylists = splitViewModel.toString();
                     showMessage(splitPlaylists);
                 } else if (evt.getSource().equals(splitByLength)){
-                    if(endTimeEntered && startTimeEntered){
-                        splitController.splitByLength(selectedPlaylistName, startTime, endTime);
+                    if(endTime != null && startTime != null){
+                        splitController.splitByLength(selectedPlaylistName, Integer.parseInt(startTime), Integer.parseInt(endTime));
                         playlistsController.execute();
                         String splitPlaylists = splitViewModel.toString();
                         showMessage(splitPlaylists);
@@ -191,14 +187,40 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
         JTextField startTextField = new JTextField(5);
         JTextField endTextField = new JTextField(5);
 
+        DocumentFilter filter = new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+                if (string == null) {
+                    return;
+                }
+
+                if (string.matches("\\d*")) {
+                    super.insertString(fb, offset, string, attr);
+                }
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                if (text == null) {
+                    return;
+                }
+
+                if (text.matches("\\d*")) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        };
+
+        ((AbstractDocument) startTextField.getDocument()).setDocumentFilter(filter);
+        ((AbstractDocument) endTextField.getDocument()).setDocumentFilter(filter);
+
 
         // Add DocumentListeners to text fields
         DocumentListener startTextFieldListener = new DocumentListener() {
             public void update(DocumentEvent e) {
                 // Handle start time input here
                 System.out.println("Start Time Updated: " + startTextField.getText());
-                startTime = Integer.parseInt(startTextField.getText());
-                startTimeEntered = true;
+                startTime = startTextField.getText();
             }
 
             @Override
@@ -222,8 +244,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
             public void update(DocumentEvent e) {
                 // Handle end time input here
                 System.out.println("End Time Updated: " + endTextField.getText());
-                endTime = Integer.parseInt(endTextField.getText());
-                endTimeEntered = true;
+                endTime = endTextField.getText();
             }
 
             @Override
