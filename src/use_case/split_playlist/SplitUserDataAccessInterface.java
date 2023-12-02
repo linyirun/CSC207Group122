@@ -17,4 +17,7 @@ public interface SplitUserDataAccessInterface {
     String createPlaylist(String playlistName, String userId) throws IOException, InterruptedException, ParseException;
 
     void addSongsToPlaylist(String playlistId, List<String> songIds) throws IOException, InterruptedException;
+
+    List<String> getSongInterval(String playlistId, int startTime, int endTime);
+
 }

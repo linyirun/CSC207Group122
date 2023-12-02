@@ -1,6 +1,6 @@
 package interface_adapter.split_playlist;
 import use_case.split_playlist.*;
-public class SplitController implements SplitInputBoundary{
+public class SplitController{
     private final SplitInputBoundary splitUseCaseInteractor;
 
     public SplitController(SplitInputBoundary splitUseCaseInteractor){
@@ -9,5 +9,9 @@ public class SplitController implements SplitInputBoundary{
 
     public void execute(SplitInputData splitInputData){
         splitUseCaseInteractor.execute(splitInputData);
+    }
+
+    public void splitByLength(String playlistName, int startTime, int endTime){
+        splitUseCaseInteractor.splitByLength(playlistName,startTime, endTime);
     }
 }

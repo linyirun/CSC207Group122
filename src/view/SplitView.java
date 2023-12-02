@@ -15,6 +15,12 @@ import java.beans.PropertyChangeListener;
 import java.util.Set;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import javax.swing.text.*;
+
+
 
 
 public class SplitView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -32,10 +38,16 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
     private DefaultListModel<String> playlistModel;
     private JList<String> playlistList;
     private String selectedPlaylistName;
-    private JButton splitBymonth;
-    private JButton splitByDay;
-    private JButton splitByYear;
+    private JButton splitByLength;
     private JButton splitByArtists;
+
+    private int endTime;
+
+    private int startTime;
+
+    private boolean endTimeEntered = false;
+
+    private boolean startTimeEntered = false;
 
     public SplitView(SplitController splitController, SplitViewModel splitViewModel,
                      PlaylistsController playlistsController, PlaylistsViewModel playlistsViewModel, ViewManagerModel viewManagerModel) {
@@ -56,6 +68,9 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
 
         // Playlist Scroll Pane on the left
         add(createPlaylistPanel(), BorderLayout.WEST);
+
+        // Interval in the middle
+        add(createSongIntervalPanel(), BorderLayout.CENTER);
 
         // Buttons on the right
         add(createButtonsPanel(), BorderLayout.EAST);
@@ -111,19 +126,10 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
 
         splitButtonsPanel.add(splitByArtists);
 
+        splitByLength = new JButton(splitViewModel.SPLIT_BY_LENGTH);
+        splitByLength.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        splitBymonth = new JButton(splitViewModel.SPLIT_BY_MONTH);
-        splitBymonth.setAlignmentX(Component.CENTER_ALIGNMENT);
-        splitButtonsPanel.add(splitBymonth);
-
-        splitByDay = new JButton(splitViewModel.SPLIT_BY_DAY);
-        splitByDay.setAlignmentX(Component.CENTER_ALIGNMENT);
-        splitButtonsPanel.add(splitByDay);
-
-        splitByYear = new JButton(splitViewModel.SPLIT_BY_YEAR);
-
-        splitByYear.setAlignmentX(Component.CENTER_ALIGNMENT);
-        splitButtonsPanel.add(splitByYear);
+        splitButtonsPanel.add(splitByLength);
 
         buttonsPanel.add(splitButtonsPanel, BorderLayout.CENTER);
 
@@ -148,13 +154,16 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
                     playlistsController.execute();
                     String splitPlaylists = splitViewModel.toString();
                     showMessage(splitPlaylists);
-                } else if (evt.getSource().equals(splitBymonth)) {
-                    splitController.execute(new SplitInputData(selectedPlaylistName, splitViewModel.SPLIT_BY_MONTH));
-                } else if (evt.getSource().equals(splitByDay)) {
-                    splitController.execute(new SplitInputData(selectedPlaylistName, splitViewModel.SPLIT_BY_DAY));
-                } else if (evt.getSource().equals(splitByYear)) {
-                    splitController.execute(new SplitInputData(selectedPlaylistName, splitViewModel.SPLIT_BY_YEAR));
-
+                } else if (evt.getSource().equals(splitByLength)){
+                    if(endTimeEntered && startTimeEntered){
+                        splitController.splitByLength(selectedPlaylistName, startTime, endTime);
+                        playlistsController.execute();
+                        String splitPlaylists = splitViewModel.toString();
+                        showMessage(splitPlaylists);
+                    }
+                    else{
+                        showMessage("input error");
+                    }
                 }
             }
         };
@@ -162,11 +171,85 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
         backButton.addActionListener(buttonActionListener);
         getPlaylist.addActionListener(buttonActionListener);
         splitByArtists.addActionListener(buttonActionListener);
-        splitBymonth.addActionListener(buttonActionListener);
-        splitByDay.addActionListener(buttonActionListener);
-        splitByYear.addActionListener(buttonActionListener);
+        splitByLength.addActionListener(buttonActionListener);
 
         return buttonsPanel;
+    }
+
+    public JPanel createSongIntervalPanel() {
+        // Create a JPanel
+        JPanel panel = new JPanel();
+
+        // Set the layout
+        panel.setLayout(new FlowLayout());
+
+        // Create labels
+        JLabel startLabel = new JLabel("Start Time (seconds): ");
+        JLabel endLabel = new JLabel("End Time (seconds): ");
+
+        // Create text fields for input
+        JTextField startTextField = new JTextField(5);
+        JTextField endTextField = new JTextField(5);
+
+
+        // Add DocumentListeners to text fields
+        DocumentListener startTextFieldListener = new DocumentListener() {
+            public void update(DocumentEvent e) {
+                // Handle start time input here
+                System.out.println("Start Time Updated: " + startTextField.getText());
+                startTime = Integer.parseInt(startTextField.getText());
+                startTimeEntered = true;
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                update(e);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                update(e);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                update(e);
+            }
+        };
+        startTextField.getDocument().addDocumentListener(startTextFieldListener);
+
+        DocumentListener endTextFieldListener = new DocumentListener() {
+            public void update(DocumentEvent e) {
+                // Handle end time input here
+                System.out.println("End Time Updated: " + endTextField.getText());
+                endTime = Integer.parseInt(endTextField.getText());
+                endTimeEntered = true;
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                update(e);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                update(e);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                update(e);
+            }
+        };
+        endTextField.getDocument().addDocumentListener(endTextFieldListener);
+
+        // Add components to the panel
+        panel.add(startLabel);
+        panel.add(startTextField);
+        panel.add(endLabel);
+        panel.add(endTextField);
+
+        return panel;
     }
 
 
@@ -193,12 +276,19 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
                 playlistModel.addElement(newName); // Add new elements
             }
         }
+        else if(evt.getNewValue().equals("fail")){
+            showMessage("");
+        }
     }
     private void showMessage(String message) {
         if (message.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "You need to choose a playlist first or the playlist you chose is empty!");
-        } else {
-            JOptionPane.showMessageDialog(null, "Playlist is split to: " + message);
+            JOptionPane.showMessageDialog(this, "You need to choose a playlist first or the playlist you chose is empty!", "Error",JOptionPane.ERROR_MESSAGE);
+        }
+        else if(message.equals("input error")){
+            JOptionPane.showMessageDialog(this, "You need to enter the interval!", "Error",JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Playlist is split to: " + message, "Success", JOptionPane.PLAIN_MESSAGE);
         }
     }
 }

@@ -143,6 +143,51 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         return trackIds;
     }
 
+
+    /**
+     * Retrieves a list of songs from a given playlist that fall within a specified duration interval.
+     *
+     * @param playlistId The ID of the Spotify playlist.
+     * @param startTime The start time of the interval in seconds.
+     * @param endTime The end time of the interval in seconds.
+     * @return A list of song ids, where each song's duration falls within the specified interval.
+     */
+    public List<String> getSongInterval(String playlistId, int startTime, int endTime) {
+        String accessToken = SpotifyAuth.getAccessToken(); // Assuming SpotifyAuth is your class for handling authentication
+        String url = "https://api.spotify.com/v1/playlists/" + playlistId + "/tracks";
+        List<String> matchingSongs = new ArrayList<>();
+
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Authorization", "Bearer " + accessToken)
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser.parse(response.body());
+            JSONArray items = (JSONArray) jsonObject.get("items");
+
+            for (Object item : items) {
+                JSONObject itemObject = (JSONObject) item;
+                JSONObject track = (JSONObject) itemObject.get("track");
+                long durationMs = (long) track.get("duration_ms");
+                int durationSeconds = (int) (durationMs / 1000);
+
+                if (durationSeconds >= startTime && durationSeconds <= endTime) {
+                    String trackId = (String) track.get("id");
+                    matchingSongs.add(trackId);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return matchingSongs;
+    }
+
     /**
      * Retrieves a list of {@link entity.Song} objects for a given playlist ID,
      * including information about the song name, artists, and their popularity.
