@@ -10,18 +10,14 @@ public class SplitViewModel extends ViewModel {
 
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    public static final String SPLIT_BY_MONTH = "Split by month";
-
-    public static final String SPLIT_BY_DAY = "Split by day";
-
-    public static final String SPLIT_BY_YEAR = "Split by year";
+    public static final String SPLIT_BY_LENGTH = "Split by length";
 
     public static final String SPLIT_BY_ARTISTS = "Split by artists";
 
     public SplitViewModel(){super("Split Playlist");};
 
     public void firePropertyChanged(){
-
+        support.firePropertyChange("fail to split", null, "fail");
     }
     public void addPropertyChangeListener(PropertyChangeListener listener){
         support.addPropertyChangeListener(listener);

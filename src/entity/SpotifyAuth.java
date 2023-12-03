@@ -4,9 +4,9 @@ public final class SpotifyAuth {
 
     private static String accessToken = "";
     private static String refreshToken = "";
-    private final static String scope = "playlist-modify-public%20playlist-modify-private%20user-read-email%20user-read-private%20user-top-read%20streaming%20user-modify-playback-state";
-    private final static String CLIENT_ID = "84e604e1f851429db4c89831cf8d03a4";
-    private final static String CLIENT_SECRET = "0e5d1d3db56048cfa18fb51e75467668";
+    private final static String SCOPE = "playlist-modify-public%20playlist-modify-private%20user-read-email%20user-read-private%20user-top-read";
+    private static String clientId = "500e6bb5329243e484a3aa96f28b043f";
+    private static String clientSecret = "";
 
     private SpotifyAuth() {}
 
@@ -17,14 +17,15 @@ public final class SpotifyAuth {
         return refreshToken;
     }
     public static String getScope() {
-        return scope;
+        return SCOPE;
     }
     public static String getClientId() {
-        return CLIENT_ID;
+        return clientId;
     }
     public static String getClientSecret() {
-        return CLIENT_SECRET;
+        return clientSecret;
     }
+    public static void setClientSecret(String newClientSecret) {clientSecret = newClientSecret;}
     public static void setAccessToken(String newAccessToken) {
         accessToken = newAccessToken;
     }
