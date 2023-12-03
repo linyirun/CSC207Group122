@@ -45,7 +45,9 @@ public class HomeInteractor implements HomeInputBoundary{
                 List<String> listNames = new ArrayList<>();
                 listNames.addAll(playlistNames);
                 presenter.prepareSuccessView(new HomeOutputData("Spot To YT", listNames));
-        } else {
+        }
+
+          else {
             presenter.prepareFailView("Event source not defined");
         }
     }

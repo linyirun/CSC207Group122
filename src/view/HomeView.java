@@ -4,6 +4,8 @@ import entity.Song;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.home.HomeController;
 import interface_adapter.home.HomeViewModel;
+import java.awt.Desktop;
+import java.net.URI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,10 +15,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+import use_case.SpotifyPlayer.WebPlaybackInteractor;
 
 public class HomeView extends JPanel implements ActionListener, PropertyChangeListener {
     public final String viewName = "Home";
@@ -32,6 +38,8 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private final JButton artistsPlaylistMaker;
 
     private final JButton spotifyToYoutube;
+
+    private final JButton listen;
     private final JLabel profile;
     private final JLabel profileText;
     private final JLabel welcome;
@@ -48,8 +56,12 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private Map<String, String> SongToLyrics;
 
     private JLabel titleLabel;
+    private WebPlaybackInteractor interactor;
+
+    private String selectedSong = "";
 
     public HomeView(HomeController homeController, HomeViewModel homeViewModel, ViewManagerModel viewManagerModel) {
+        // testing webplayer
         this.homeController = homeController;
         this.homeViewModel = homeViewModel;
         this.viewManagerModel = viewManagerModel;
@@ -58,6 +70,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         this.SongToLyrics = new HashMap<String, String>();
 
         homeViewModel.addPropertyChangeListener(this);
+        homeController.StartServer();
 
         // Need actionListeners from the other views, allows us to check if we change back to home
         viewManagerModel.addPropertyChangeListener(this);
@@ -83,11 +96,13 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         artistsPlaylistMaker = createStyledButton(HomeViewModel.ARTISTS_PLAYLIST_MAKER_NAME);
         mergePlaylist = createStyledButton(HomeViewModel.MERGE_PLAYLIST_NAME);
         spotifyToYoutube = createStyledButton(HomeViewModel.SPOTIFY_TO_YT_NAME);
+        listen = createStyledButton(HomeViewModel.LISTEN);
      
         buttonsPanel.add(mergePlaylist);
         buttonsPanel.add(splitPlaylist);
         buttonsPanel.add(artistsPlaylistMaker);
         buttonsPanel.add(spotifyToYoutube);
+        buttonsPanel.add(listen);
         buttonsPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Add some spacing
 
         add(buttonsPanel, BorderLayout.WEST);
@@ -204,10 +219,18 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 if (evt.getSource().equals(button)) {
-                    homeController.execute(text);
-                }
+                    if (Objects.equals(text, "Listen")) {
+                        if (!Objects.equals(selectedSong, "")) {
+                            String playListId = playlistNameToIDMap.get(playlistsList.getSelectedValue());
+                            homeController.webPlayBack(selectedSong, playListId);
+
+                        }
+                    }
+                    else {
+                        homeController.execute(text);
+                    }
             }
-        });
+        }});
 
         return button;
     }
@@ -256,6 +279,8 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
                 currentLine = "";
             }
         }
+        lyricsModel.addElement(currentLine);
+
     }
 
     private void updateSongs(String playlistName) {
@@ -277,7 +302,18 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
 
     private void actionOnPressSong(String songName) {
-        System.out.println(songName);
+        this.selectedSong = songName;
+//        String playListId = playlistNameToIDMap.get(playlistsList.getSelectedValue());
+//        System.out.println(playListId);
+//        System.out.println();
+//        homeController.webPlayBack(songName, playListId);
+//
+//        try {
+//            Desktop.getDesktop().browse(new URI("http://localhost:3000"));
+//        }
+//        catch (Exception e) {
+//            System.out.println("cannot open localhost");
+//        }
         String lyrics = "";
         if (SongToLyrics.containsKey(songName)) {
             lyrics = SongToLyrics.get(songName);

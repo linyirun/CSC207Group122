@@ -2,7 +2,6 @@ package app;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
 
 import data_access.LyricsDataAccessObject;
@@ -16,15 +15,12 @@ import interface_adapter.loginOAuth.LoginOAuthViewModel;
 import interface_adapter.merge_playlists.MergeViewModel;
 import interface_adapter.playlists.PlaylistsViewModel;
 import interface_adapter.profile.ProfileViewModel;
-import interface_adapter.split_playlist.SplitState;
 import interface_adapter.split_playlist.SplitViewModel;
 import interface_adapter.home.HomeViewModel;
-import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubePresenter;
 import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeViewModel;
 import use_case.GeniusAuth.GeniusInteractor;
 import view.*;
 
-import use_case.Lyrics.LyricsInteractor;
 public class Main {
     public static void main(String[] args) {
         // Build the main program window, the main panel containing the
