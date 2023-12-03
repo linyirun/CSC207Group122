@@ -70,7 +70,7 @@ public class SplitInteractor implements SplitInputBoundary{
         }
     }
 
-    private String getUserid(){
+    public String getUserid(){
         try{
             return userDataAccessObject.getUserId();
         }
