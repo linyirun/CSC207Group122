@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MergeInteractorTest {
 
-    private MergeDataAccessInterface mergeDAO;
+    private MockMergeDAO mergeDAO;
     private MockMergePresenter mockMergePresenter;
     private MergeInteractor mergeInteractor;
 
@@ -26,6 +26,84 @@ class MergeInteractorTest {
 
     @Test
     void mergePlaylists() {
+        // Merge playlist 1 and playlist 2 into new cases
+        List<String> playlists = new ArrayList<>();
+        playlists.add("Playlist 1");
+        playlists.add("Playlist 2");
+        MergeInputData mergeInputData = new MergeInputData(playlists, "New Playlist", false);
+
+        mergeInteractor.mergePlaylists(mergeInputData);
+
+        Set<Song> newPlaylistSongs = new HashSet<>(mergeDAO.getSongs("playlistid3"));
+
+        Set<Song> expectedPlaylistSongs = new HashSet<>();
+        expectedPlaylistSongs.add(mergeDAO.song1);
+        expectedPlaylistSongs.add(mergeDAO.song2);
+        expectedPlaylistSongs.add(mergeDAO.song3);
+
+        assertEquals(newPlaylistSongs, expectedPlaylistSongs);
+
+    }
+
+    @Test
+    void mergePlaylistsWithInstrumentalNormalTempo() {
+        // Merge playlist 1 and playlist 2 into new cases
+        List<String> playlists = new ArrayList<>();
+        playlists.add("Playlist 1");
+        playlists.add("Playlist 2");
+        MergeInputData mergeInputData = new MergeInputData(playlists, "New Playlist", false);
+
+        mergeInputData.setInstrumentalChoice(MergeInputData.INSTRUMENTAL_CHOICE);
+        mergeInputData.setTempoChoice(MergeInputData.NORMAL_CHOICE);
+        mergeInteractor.mergePlaylists(mergeInputData);
+
+        Set<Song> newPlaylistSongs = new HashSet<>(mergeDAO.getSongs("playlistid3"));
+
+        Set<Song> expectedPlaylistSongs = new HashSet<>();
+        expectedPlaylistSongs.add(mergeDAO.song1);
+
+        assertEquals(newPlaylistSongs, expectedPlaylistSongs);
+
+    }
+    @Test
+    void mergePlaylistsWithVocalAndSad() {
+        // Merge playlist 1 and playlist 2 into new cases
+        List<String> playlists = new ArrayList<>();
+        playlists.add("Playlist 1");
+        playlists.add("Playlist 2");
+        MergeInputData mergeInputData = new MergeInputData(playlists, "New Playlist", false);
+
+        mergeInputData.setInstrumentalChoice(MergeInputData.VOCAL_CHOICE);
+        mergeInputData.setValenceChoice(MergeInputData.SAD_CHOICE);
+        mergeInteractor.mergePlaylists(mergeInputData);
+
+        Set<Song> newPlaylistSongs = new HashSet<>(mergeDAO.getSongs("playlistid3"));
+
+        Set<Song> expectedPlaylistSongs = new HashSet<>();
+        expectedPlaylistSongs.add(mergeDAO.song2);
+
+        assertEquals(newPlaylistSongs, expectedPlaylistSongs);
+
+    }
+
+    @Test
+    void mergePlaylistsWithFastAndHappy() {
+        // Merge playlist 1 and playlist 2 into new cases
+        List<String> playlists = new ArrayList<>();
+        playlists.add("Playlist 1");
+        playlists.add("Playlist 2");
+        MergeInputData mergeInputData = new MergeInputData(playlists, "New Playlist", false);
+
+        mergeInputData.setInstrumentalChoice(MergeInputData.VOCAL_CHOICE);
+        mergeInputData.setValenceChoice(MergeInputData.HAPPY_CHOICE);
+        mergeInputData.setTempoChoice(MergeInputData.FAST_CHOICE);
+        mergeInteractor.mergePlaylists(mergeInputData);
+
+        Set<Song> newPlaylistSongs = new HashSet<>(mergeDAO.getSongs("playlistid3"));
+
+        Set<Song> expectedPlaylistSongs = new HashSet<>();
+
+        assertEquals(newPlaylistSongs, expectedPlaylistSongs);
 
     }
 
@@ -46,7 +124,8 @@ class MergeInteractorTest {
 
     @Test
     void returnHome() {
-
+        mergeInteractor.returnHome();
+        assertTrue(this.mockMergePresenter.outputData.isReturnHome());
     }
 
     private class MockMergePresenter implements MergeOutputBoundary {
@@ -70,9 +149,9 @@ class MergeInteractorTest {
         private Map<String, String> playlistMap;
         private Map<String, List<Song>> playlistMapToSongs;
         private Map<String, Map<String, String>> songIDToAudioFeaturesMap;
-        private Song song1;
-        private Song song2;
-        private Song song3;
+        public Song song1;
+        public Song song2;
+        public Song song3;
 
         private final String USER_ID = "UserID";
         public MockMergeDAO() {
@@ -153,7 +232,7 @@ class MergeInteractorTest {
                 List<Song> newSongList = new ArrayList<>();
                 playlistMap.put("New Playlist", "playlistid3");
                 playlistMapToSongs.put(playlistMap.get(playlistName), newSongList);
-                return playlistName;
+                return playlistMap.get(playlistName);
             }
             return null;
         }
