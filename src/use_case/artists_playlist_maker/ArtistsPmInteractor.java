@@ -73,7 +73,7 @@ public class ArtistsPmInteractor implements ArtistsPmInputBoundary {
         }
     }
 
-    private List<String> filterExistingTracks(List<String> tracks, List<String> existingPlaylists) {
+    List<String> filterExistingTracks(List<String> tracks, List<String> existingPlaylists) {
         Set<String> uniqueTracks = new HashSet<>(tracks);
 
         for (String playlistId : existingPlaylists) {
