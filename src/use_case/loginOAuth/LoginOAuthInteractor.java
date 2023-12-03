@@ -30,6 +30,8 @@ import java.io.InputStream;
 public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
     LoginOAuthUserDataAccessInterface dao;
     LoginOAuthOutputBoundary presenter;
+    HttpServer server;
+
     public String code;
 
 
@@ -115,11 +117,13 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
             presenter.prepareFailViewHTTP(Integer.toString(responseCode), http.getResponseMessage());
         }
         http.disconnect();
+        server.stop(0);
+
     }
     // Methods and classes for creating server to handle redirect
     public void createServer(int port) throws IOException {
         try {
-            HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+            server = HttpServer.create(new InetSocketAddress(port), 0);
             server.createContext("/callback", new LoginOAuthInteractor.CallbackHandler());
             server.start();
             System.out.println("Server is listening on port " + port);
