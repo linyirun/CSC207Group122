@@ -2,7 +2,6 @@ package interface_adapter.home;
 
 import interface_adapter.ViewModel;
 
-import javax.swing.text.View;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -13,18 +12,14 @@ public class HomeViewModel extends ViewModel {
     public static final String MERGE_PLAYLIST_NAME = "Merge Playlist";
     public static final String ARTISTS_PLAYLIST_MAKER_NAME = "Artists Playlist Maker";
     public static final String SPOTIFY_TO_YT_NAME = "Spotify To Youtube";
-    public static final String LISTEN = "Listen";
+
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
     private HomeState state = new HomeState();
 
     public HomeViewModel() {
         super("Home");
     }
-
-    public void setState(HomeState state) {
-        this.state = state;
-    }
-
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     // This is what the Signup Presenter will call to let the ViewModel know
     // to alert the View
@@ -38,5 +33,9 @@ public class HomeViewModel extends ViewModel {
 
     public HomeState getState() {
         return state;
+    }
+
+    public void setState(HomeState state) {
+        this.state = state;
     }
 }

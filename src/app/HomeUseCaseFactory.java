@@ -26,9 +26,7 @@ public class HomeUseCaseFactory {
     private HomeUseCaseFactory() {
     }
 
-    public static HomeView create(
-            ViewManagerModel viewManagerModel, HomeViewModel homeViewModel,ProfileViewModel profileViewModel, SpotifyToYoutubeViewModel spotifyToYoutubeViewModel,
-            HomeUserDataAccessInterface dao, LyricsDataAccessInterface lyricsDao) {
+    public static HomeView create(ViewManagerModel viewManagerModel, HomeViewModel homeViewModel, ProfileViewModel profileViewModel, SpotifyToYoutubeViewModel spotifyToYoutubeViewModel, HomeUserDataAccessInterface dao, LyricsDataAccessInterface lyricsDao) {
 
         try {
             HomeController homeController = createHomeUseCase(viewManagerModel, homeViewModel, profileViewModel, spotifyToYoutubeViewModel, dao, lyricsDao);
@@ -40,10 +38,7 @@ public class HomeUseCaseFactory {
         return null;
     }
 
-    private static HomeController createHomeUseCase(
-            ViewManagerModel viewManagerModel,
-            HomeViewModel homeViewModel, ProfileViewModel profileViewModel, SpotifyToYoutubeViewModel spotifyToYoutubeViewModel,
-            HomeUserDataAccessInterface dao, LyricsDataAccessInterface lyricsDao) throws IOException {
+    private static HomeController createHomeUseCase(ViewManagerModel viewManagerModel, HomeViewModel homeViewModel, ProfileViewModel profileViewModel, SpotifyToYoutubeViewModel spotifyToYoutubeViewModel, HomeUserDataAccessInterface dao, LyricsDataAccessInterface lyricsDao) throws IOException {
         HomeOutputBoundary homePresenter = new HomePresenter(viewManagerModel, homeViewModel, profileViewModel, spotifyToYoutubeViewModel);
 
         HomeInputBoundary homeInteractor = new HomeInteractor(homePresenter, dao);

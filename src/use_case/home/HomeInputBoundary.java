@@ -9,5 +9,6 @@ public interface HomeInputBoundary {
     void execute(HomeInputData data);
 
     Map<String, String> getPlaylistsMap();
+
     List<Song> getSongs(String playlistID);
 }

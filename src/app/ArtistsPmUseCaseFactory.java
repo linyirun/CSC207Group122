@@ -1,6 +1,5 @@
 package app;
 
-import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.artists_playlist_maker.ArtistsPmController;
 import interface_adapter.artists_playlist_maker.ArtistsPmPresenter;
@@ -16,11 +15,18 @@ import java.io.IOException;
 
 public class ArtistsPmUseCaseFactory {
 
+    /**
+     * Prevent instantiation.
+     */
+    private ArtistsPmUseCaseFactory() {
+
+    }
+
     public static ArtistsPlaylistMakerView create(ViewManagerModel viewManagerModel, ArtistsPmViewModel artistsPmViewModel, ArtistsPmUserDataAccessInterface userDataAccessObject) {
 
         try {
             ArtistsPmController artistsPmController = createLoginUseCase(viewManagerModel, artistsPmViewModel, userDataAccessObject);
-            return new ArtistsPlaylistMakerView(artistsPmViewModel, artistsPmController,viewManagerModel);
+            return new ArtistsPlaylistMakerView(artistsPmViewModel, artistsPmController, viewManagerModel);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Could not open user data file.");
         }
@@ -32,8 +38,6 @@ public class ArtistsPmUseCaseFactory {
 
         // Notice how we pass this method's parameters to the Presenter.
         ArtistsPmOutputBoundary outputBoundary = new ArtistsPmPresenter(viewManagerModel, artistsPmViewModel);
-
-        UserFactory userFactory = new UserFactory();
 
         ArtistsPmInputBoundary interactor = new ArtistsPmInteractor(userDataAccessObject, outputBoundary);
 

@@ -21,6 +21,7 @@ public class HomeController {
         this.lyricsInteractor = lyricsInteractor;
         this.WebInteractor = WebInteractor;
     }
+
     public void execute(String button_name) {
         interactor.execute(new HomeInputData(button_name));
     }

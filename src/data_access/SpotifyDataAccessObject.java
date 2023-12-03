@@ -29,8 +29,8 @@ import use_case.loginOAuth.LoginOAuthUserDataAccessInterface;
 import use_case.merge_playlists.MergeDataAccessInterface;
 import use_case.playlists.PlaylistsUserDataAccessInterface;
 import use_case.split_playlist.SplitUserDataAccessInterface;
+import use_case.spotify_to_youtube.SpotifyToYoutubeDataAccessInterfaceForSpotify;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,16 +41,8 @@ import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-
-
-import org.json.simple.parser.ParseException;
-import use_case.spotify_to_youtube.SpotifyToYoutubeDataAccessInterface;
-import use_case.spotify_to_youtube.SpotifyToYoutubeDataAccessInterfaceForSpotify;
-
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.List;
 
 public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface,
         HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface, MergeDataAccessInterface, ArtistsPmUserDataAccessInterface, SpotifyToYoutubeDataAccessInterfaceForSpotify, WebPlaybackDataAccessInterface {
@@ -61,17 +53,17 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
      * @return a set of playlist names
      */
 
-    public Set<String> getPlaylists(){
+    public Set<String> getPlaylists() {
         return getPlaylistMap().keySet();
     }
-          
-     /**
+
+    /**
      * Retrieves a map of playlist names to their corresponding playlist IDs for the authenticated user.
      *
      * @return a map of playlist names to playlist IDs
      */
 
-    public Map<String, String> getPlaylistMap(){
+    public Map<String, String> getPlaylistMap() {
 
         Map<String, String> playlist_map = new HashMap<>();
         try {
@@ -149,8 +141,8 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
      * Retrieves a list of songs from a given playlist that fall within a specified duration interval.
      *
      * @param playlistId The ID of the Spotify playlist.
-     * @param startTime The start time of the interval in seconds.
-     * @param endTime The end time of the interval in seconds.
+     * @param startTime  The start time of the interval in seconds.
+     * @param endTime    The end time of the interval in seconds.
      * @return A list of song ids, where each song's duration falls within the specified interval.
      */
     public List<String> getSongInterval(String playlistId, int startTime, int endTime) {
@@ -160,10 +152,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
 
         try {
             HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .header("Authorization", "Bearer " + accessToken)
-                    .build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Authorization", "Bearer " + accessToken).build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
@@ -251,9 +240,9 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
      * Retrieves the user ID of the authenticated user.
      *
      * @return the user ID
-     * @throws IOException            if an I/O error occurs
-     * @throws InterruptedException   if the operation is interrupted
-     * @throws ParseException         if an error occurs during JSON parsing
+     * @throws IOException          if an I/O error occurs
+     * @throws InterruptedException if the operation is interrupted
+     * @throws ParseException       if an error occurs during JSON parsing
      */
 
     public String getUserId() throws IOException, InterruptedException, ParseException {
@@ -270,9 +259,9 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
      * Retrieves the display name of the authenticated user's account.
      *
      * @return the display name
-     * @throws IOException            if an I/O error occurs
-     * @throws InterruptedException   if the operation is interrupted
-     * @throws ParseException         if an error occurs during JSON parsing
+     * @throws IOException          if an I/O error occurs
+     * @throws InterruptedException if the operation is interrupted
+     * @throws ParseException       if an error occurs during JSON parsing
      */
 
     public String getAccountName() throws IOException, InterruptedException, ParseException {
@@ -288,16 +277,14 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
     }
 
     /**
-    
      * Creates a new playlist for the authenticated user with the specified name.
      *
      * @param playlistName the name of the new playlist
      * @param userId       the ID of the user for whom the playlist is created
      * @return the ID of the newly created playlist
-     * @throws IOException            if an I/O error occurs
-     * @throws InterruptedException   if the operation is interrupted
-     * @throws ParseException         if an error occurs during JSON parsing
-
+     * @throws IOException          if an I/O error occurs
+     * @throws InterruptedException if the operation is interrupted
+     * @throws ParseException       if an error occurs during JSON parsing
      */
     public String createPlaylist(String playlistName, String userId) throws IOException, InterruptedException, ParseException {
         String url = "https://api.spotify.com/v1" + "/users/" + userId + "/playlists";
@@ -345,9 +332,9 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
      * @param searchQuery the search query for top artists
      * @param limit       the maximum number of artists to retrieve
      * @return a list of top artist names
-     * @throws IOException            if an I/O error occurs
-     * @throws InterruptedException   if the operation is interrupted
-     * @throws ParseException         if an error occurs during JSON parsing
+     * @throws IOException          if an I/O error occurs
+     * @throws InterruptedException if the operation is interrupted
+     * @throws ParseException       if an error occurs during JSON parsing
      */
 
     @Override
@@ -415,7 +402,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
     }
 
     @Override
-    public Map<String, List<String>> getUserTopTracksAndArtists() throws ParseException, IOException, InterruptedException{
+    public Map<String, List<String>> getUserTopTracksAndArtists() throws ParseException, IOException, InterruptedException {
         Map<String, List<String>> topTracksAndArtists = new HashMap<>();
 
         // first fetch the top 10 user tracks
@@ -458,7 +445,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
      * @return List of (Map of String to String): map of audio features corresponding to each song
      */
     @Override
-    public List<Map<String, String>> getSongsAudioFeatures(List<String> songIds)  {
+    public List<Map<String, String>> getSongsAudioFeatures(List<String> songIds) {
         String token = SpotifyAuth.getAccessToken();
 
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -466,10 +453,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         // Build the request
         String trackIdsParam = String.join(",", songIds);
         String apiUrl = "https://api.spotify.com/v1/audio-features/?ids=" + URLEncoder.encode(trackIdsParam, StandardCharsets.UTF_8);
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .header("Authorization", "Bearer " + token)
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(apiUrl)).header("Authorization", "Bearer " + token).build();
 
         // Send the request and handle the response
         try {
@@ -488,8 +472,6 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
             features.add("tempo");
 
             if (response.statusCode() == 200) {
-
-
 
 
                 // Process the response

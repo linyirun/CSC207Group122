@@ -1,11 +1,10 @@
 package interface_adapter.loginOAuth;
 
+import interface_adapter.ViewManagerModel;
+import interface_adapter.home.HomeState;
+import interface_adapter.home.HomeViewModel;
 import use_case.loginOAuth.LoginOAuthOutputBoundary;
 import use_case.loginOAuth.LoginOAuthOutputData;
-import interface_adapter.home.HomeViewModel;
-import interface_adapter.home.HomeState;
-import interface_adapter.ViewManagerModel;
-import view.HomeView;
 
 public class LoginOAuthPresenter implements LoginOAuthOutputBoundary {
     ViewManagerModel viewManagerModel;
@@ -18,6 +17,7 @@ public class LoginOAuthPresenter implements LoginOAuthOutputBoundary {
         this.homeViewModel = homeViewModel;
 
     }
+
     @Override
     public void prepareSuccessView(LoginOAuthOutputData data) {
         HomeState homeState = homeViewModel.getState();
@@ -36,6 +36,7 @@ public class LoginOAuthPresenter implements LoginOAuthOutputBoundary {
         this.loginOAuthViewModel.setState(loginOAuthState);
         this.loginOAuthViewModel.firePropertyChangedError();
     }
+
     @Override
     public void prepareFailViewDesktop(String error) {
         LoginOAuthState loginOAuthState = loginOAuthViewModel.getState();

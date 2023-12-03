@@ -7,9 +7,6 @@ public class SpotifyToYoutubeState {
     private boolean isConnectedToYT = false;
     private String msg;
 
-    public SpotifyToYoutubeState(SpotifyToYoutubeState copy) {
-        this.playlistNames = copy.playlistNames;
-    }
 
     public SpotifyToYoutubeState() {
     }

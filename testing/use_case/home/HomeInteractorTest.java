@@ -26,6 +26,7 @@ class HomeInteractorTest {
 
         homeInteractor = new HomeInteractor(mockPresenter, mockDao);
 
+
     }
 
     @Test

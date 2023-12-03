@@ -3,36 +3,26 @@ package use_case.loginOAuth;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-
-import java.awt.*;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.*;
-
-import interface_adapter.loginOAuth.LoginOAuthController;
-
-import com.sun.net.httpserver.HttpServer;
 import entity.SpotifyAuth;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import view.LoginOAuthView;
 
-import javax.swing.*;
-import java.io.BufferedReader;
+import java.awt.*;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.InetSocketAddress;
-import java.util.Base64;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 
 public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
+    public String code;
     LoginOAuthUserDataAccessInterface dao;
     LoginOAuthOutputBoundary presenter;
     HttpServer server;
-
-    public String code;
 
 
     public LoginOAuthInteractor(LoginOAuthUserDataAccessInterface dao, LoginOAuthOutputBoundary presenter) {
@@ -41,8 +31,7 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
     }
 
     public void execute() throws IOException, InterruptedException {
-        URL url1 = new URL("https://accounts.spotify.com/authorize?client_id=" + SpotifyAuth.getClientId() + "&response_type" +
-                "=code&scope=" + SpotifyAuth.getScope() + "&redirect_uri=http://localhost:8080/callback") ;
+        URL url1 = new URL("https://accounts.spotify.com/authorize?client_id=" + SpotifyAuth.getClientId() + "&response_type" + "=code&scope=" + SpotifyAuth.getScope() + "&redirect_uri=http://localhost:8080/callback");
         HttpURLConnection http1 = (HttpURLConnection) url1.openConnection();
         http1.setRequestMethod("GET");
         int responseCode1 = http1.getResponseCode();
@@ -78,8 +67,7 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
         }
 
         System.out.println(code);
-        URL url = new URL("https://accounts.spotify.com/api/token?grant_type=authorization_code&code=" +
-                code + "&redirect_uri=http://localhost:8080/callback");
+        URL url = new URL("https://accounts.spotify.com/api/token?grant_type=authorization_code&code=" + code + "&redirect_uri=http://localhost:8080/callback");
         HttpURLConnection http = (HttpURLConnection) url.openConnection();
         String clientIDAndSecret = SpotifyAuth.getClientId() + ":" + SpotifyAuth.getClientSecret();
         String clientBase64 = new String(Base64.getEncoder().encode(clientIDAndSecret.getBytes()));
@@ -96,8 +84,7 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject;
             try {
-                jsonObject = (JSONObject) jsonParser.parse(
-                        new InputStreamReader(inputStream, "UTF-8"));
+                jsonObject = (JSONObject) jsonParser.parse(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
                 System.out.println(jsonObject.toJSONString());
                 SpotifyAuth.setAccessToken((String) jsonObject.get("access_token"));
                 SpotifyAuth.setRefreshToken((String) jsonObject.get("refresh_token"));
@@ -108,8 +95,7 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
             System.out.println(SpotifyAuth.getRefreshToken());
             try {
                 presenter.prepareSuccessView(new LoginOAuthOutputData(dao.getAccountName()));
-            }
-            catch (ParseException e) {
+            } catch (ParseException e) {
                 System.out.println("Error while getting acccount name");
             }
 
@@ -120,6 +106,7 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
         server.stop(0);
 
     }
+
     // Methods and classes for creating server to handle redirect
     public void createServer(int port) throws IOException {
         try {
@@ -133,7 +120,7 @@ public class LoginOAuthInteractor implements LoginOAuthInputBoundary {
         }
     }
 
-     class CallbackHandler implements HttpHandler {
+    class CallbackHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
 

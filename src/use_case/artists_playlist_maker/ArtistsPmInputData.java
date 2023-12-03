@@ -20,7 +20,7 @@ public class ArtistsPmInputData {
      * @param selectedArtists the list of selected artists
      * @param numberOfSongs   the number of songs for the playlist
      */
-    public ArtistsPmInputData(String artistName, List<String> selectedArtists, int numberOfSongs, boolean includeInPlaylist){
+    public ArtistsPmInputData(String artistName, List<String> selectedArtists, int numberOfSongs, boolean includeInPlaylist) {
         this.artistName = artistName;
         this.selectedArtists = selectedArtists;
         this.numberOfSongs = numberOfSongs;

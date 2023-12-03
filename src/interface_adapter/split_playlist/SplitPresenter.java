@@ -8,10 +8,12 @@ public class SplitPresenter implements SplitOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
     private final SplitViewModel splitViewModel;
-    public SplitPresenter(ViewManagerModel viewManagerModel, SplitViewModel splitViewModel){
+
+    public SplitPresenter(ViewManagerModel viewManagerModel, SplitViewModel splitViewModel) {
         this.splitViewModel = splitViewModel;
         this.viewManagerModel = viewManagerModel;
     }
+
     @Override
     public void prepareSuccessView(SplitOutputData response) {
         SplitState state = new SplitState();

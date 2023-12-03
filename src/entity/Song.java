@@ -1,6 +1,5 @@
 package entity;
 
-import java.util.List;
 import java.util.Map;
 
 public class Song {
@@ -9,7 +8,7 @@ public class Song {
 
     private final String name;
 
-    private Map<String, Long> artists;    // name : popularity
+    private final Map<String, Long> artists;    // name : popularity
 
     public Song(String id, String name, Map<String, Long> artists) {
         this.id = id;

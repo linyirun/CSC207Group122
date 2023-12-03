@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MergeController {
 
-    private MergeInputBoundary mergeUseCaseInteractor;
+    private final MergeInputBoundary mergeUseCaseInteractor;
 
     public MergeController(MergeInputBoundary mergeUseCaseInteractor) {
         this.mergeUseCaseInteractor = mergeUseCaseInteractor;
@@ -16,6 +16,7 @@ public class MergeController {
     public void mergePlaylists(MergeInputData data) {
         mergeUseCaseInteractor.mergePlaylists(data);
     }
+
     public void returnHome() {
         mergeUseCaseInteractor.returnHome();
     }

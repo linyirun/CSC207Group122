@@ -7,6 +7,7 @@ public class HomeInputData {
         this.button_name = name;
 
     }
+
     public String getButtonName() {
         return this.button_name;
     }
