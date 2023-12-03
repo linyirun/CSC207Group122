@@ -12,10 +12,12 @@ import java.util.Map;
 public class HomeController {
     HomeInputBoundary interactor;
     LyricsInputBoundary lyricsInteractor;
+
     public HomeController(HomeInputBoundary interactor, LyricsInputBoundary lyricsInteractor) {
         this.interactor = interactor;
         this.lyricsInteractor = lyricsInteractor;
     }
+
     public void execute(String button_name) {
         interactor.execute(new HomeInputData(button_name));
     }

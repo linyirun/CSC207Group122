@@ -7,8 +7,8 @@ import use_case.merge_playlists.MergeOutputData;
 
 public class MergePresenter implements MergeOutputBoundary {
 
-    private MergeViewModel mergeViewModel;
-    private ViewManagerModel viewManagerModel;
+    private final MergeViewModel mergeViewModel;
+    private final ViewManagerModel viewManagerModel;
 
     public MergePresenter(MergeViewModel mergeViewModel, ViewManagerModel viewManagerModel) {
         this.mergeViewModel = mergeViewModel;

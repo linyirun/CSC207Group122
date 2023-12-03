@@ -1,8 +1,6 @@
 package interface_adapter.spotfiy_to_youtube;
 
 import interface_adapter.ViewModel;
-import interface_adapter.split_playlist.SplitState;
-import view.SpotifyToYoutubeView;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

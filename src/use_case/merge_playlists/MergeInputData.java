@@ -31,14 +31,12 @@ public class MergeInputData {
     public static final double FAST_THRESHOLD = 130.0d;
 
 
-
-
     // Need the ids of the playlists that the user wants to merge
-    private List<String> selectedPlaylistNames;
-    private String playlistName;
+    private final List<String> selectedPlaylistNames;
+    private final String playlistName;
 
     // if the user wants to return to home
-    private boolean returnHome;
+    private final boolean returnHome;
 
     private int instrumentalChoice = ANY;
     private int valenceChoice = ANY;

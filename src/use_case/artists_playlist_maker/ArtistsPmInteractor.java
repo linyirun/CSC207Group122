@@ -57,7 +57,7 @@ public class ArtistsPmInteractor implements ArtistsPmInputBoundary {
 
             List<String> topTracks = dao.getArtistsTopTracks(selectedArtists, inputData.getNumberOfSongs());
             List<String> newTracks = topTracks;
-            if (!includeInPlaylist){
+            if (!includeInPlaylist) {
                 newTracks = filterExistingTracks(topTracks, new ArrayList<>(dao.getPlaylistMap().values()));
             }
 

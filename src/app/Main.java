@@ -1,30 +1,23 @@
 package app;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-
 import data_access.LyricsDataAccessObject;
 import data_access.SpotifyDataAccessObject;
 import data_access.YouTubeDataAccessObject;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.artists_playlist_maker.ArtistsPmViewModel;
-import data_access.FileUserDataAccessObject;
-import entity.UserFactory;
+import interface_adapter.home.HomeViewModel;
 import interface_adapter.loginOAuth.LoginOAuthViewModel;
 import interface_adapter.merge_playlists.MergeViewModel;
 import interface_adapter.playlists.PlaylistsViewModel;
 import interface_adapter.profile.ProfileViewModel;
-import interface_adapter.split_playlist.SplitState;
 import interface_adapter.split_playlist.SplitViewModel;
-import interface_adapter.home.HomeViewModel;
-import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubePresenter;
 import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeViewModel;
 import use_case.GeniusAuth.GeniusInteractor;
 import view.*;
 
-import use_case.Lyrics.LyricsInteractor;
+import javax.swing.*;
+import java.awt.*;
+
 public class Main {
     public static void main(String[] args) {
         // Build the main program window, the main panel containing the
@@ -56,16 +49,9 @@ public class Main {
         ArtistsPmViewModel artistsPmViewModel = new ArtistsPmViewModel();
         ProfileViewModel profileViewModel = new ProfileViewModel();
         SpotifyToYoutubeViewModel spotifyToYoutubeViewModel = new SpotifyToYoutubeViewModel();
-
-        FileUserDataAccessObject userDataAccessObject;
         SpotifyDataAccessObject spotifyDataAccessObject;
         YouTubeDataAccessObject youTubeDataAccessObject;
         LyricsDataAccessObject lyricsDataAccessObject;
-        try {
-            userDataAccessObject = new FileUserDataAccessObject("./users.csv", new UserFactory());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
         spotifyDataAccessObject = new SpotifyDataAccessObject();
 
@@ -75,7 +61,7 @@ public class Main {
 
         LoginOAuthView loginOAuthView = LoginOAuthUseCaseFactory.create(viewManagerModel, loginOAuthViewModel, homeViewModel, spotifyDataAccessObject);
         views.add(loginOAuthView, loginOAuthView.viewName);
-        SplitView splitView = SplitUseCaseFactory.create(viewManagerModel, splitViewModel, playlistsViewModel,spotifyDataAccessObject, spotifyDataAccessObject);
+        SplitView splitView = SplitUseCaseFactory.create(viewManagerModel, splitViewModel, playlistsViewModel, spotifyDataAccessObject, spotifyDataAccessObject);
         views.add(splitView, splitView.viewName);
         HomeView homeView = HomeUseCaseFactory.create(viewManagerModel, homeViewModel, profileViewModel, spotifyToYoutubeViewModel, spotifyDataAccessObject, lyricsDataAccessObject);
         views.add(homeView, homeView.viewName);
@@ -87,7 +73,7 @@ public class Main {
         ProfileView profileView = ProfileViewFactory.create(viewManagerModel, profileViewModel);
         views.add(profileView, profileView.viewName);
 
-        SpotifyToYoutubeView spotifyToYoutubeView = SpotifyToYoutubeUseCaseFactory.create(viewManagerModel, spotifyToYoutubeViewModel,youTubeDataAccessObject, spotifyDataAccessObject);
+        SpotifyToYoutubeView spotifyToYoutubeView = SpotifyToYoutubeUseCaseFactory.create(viewManagerModel, spotifyToYoutubeViewModel, youTubeDataAccessObject, spotifyDataAccessObject);
         views.add(spotifyToYoutubeView, spotifyToYoutubeView.viewName);
 
         // temporary - remove after factory is implemented

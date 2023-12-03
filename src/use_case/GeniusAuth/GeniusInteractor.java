@@ -4,15 +4,13 @@ import entity.GeniusAuth;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 public class GeniusInteractor {
@@ -39,8 +37,7 @@ public class GeniusInteractor {
                 JSONParser jsonParser = new JSONParser();
                 JSONObject jsonObject;
                 try {
-                    jsonObject = (JSONObject) jsonParser.parse(
-                            new InputStreamReader(inputStream, "UTF-8"));
+                    jsonObject = (JSONObject) jsonParser.parse(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
                     System.out.println(jsonObject.toJSONString());
                     GeniusAuth.setAccessToken((String) jsonObject.get("access_token"));
                     System.out.println(GeniusAuth.getAccessToken());
@@ -51,10 +48,9 @@ public class GeniusInteractor {
             } else {
                 System.out.println("Token request failed: " + responseCode);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (IOException e) {
-                e.printStackTrace();
-            }
     }
 
 }

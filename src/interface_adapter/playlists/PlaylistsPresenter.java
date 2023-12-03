@@ -9,7 +9,7 @@ public class PlaylistsPresenter implements PlaylistsOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final PlaylistsViewModel playlistsViewModel;
 
-    public PlaylistsPresenter(ViewManagerModel viewManagerModel, PlaylistsViewModel playlistsViewModel){
+    public PlaylistsPresenter(ViewManagerModel viewManagerModel, PlaylistsViewModel playlistsViewModel) {
         this.playlistsViewModel = playlistsViewModel;
         this.viewManagerModel = viewManagerModel;
     }

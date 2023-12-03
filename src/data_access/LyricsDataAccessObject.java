@@ -8,7 +8,6 @@ import org.json.simple.parser.ParseException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import use_case.Lyrics.LyricsDataAccessInterface;
 
@@ -18,14 +17,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 public class LyricsDataAccessObject implements LyricsDataAccessInterface {
 
     @Override
-    public String getLyrics(String songName){
-        try{
+    public String getLyrics(String songName) {
+        try {
             // Split the string using '|'
             String[] parts = songName.split("\\|");
 
@@ -39,7 +39,7 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
             Matcher matcher = pattern.matcher(song);
 
             // Replace content inside brackets with an empty string
-            song= matcher.replaceAll("");
+            song = matcher.replaceAll("");
 
             System.out.println(song);
             for (int i = 0; i < artists.length; i++) {
@@ -50,7 +50,7 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
             String tokenUrl = "https://api.genius.com/search?q=";
             String access_token = GeniusAuth.getAccessToken();
 
-            String encodedSearchTerm = URLEncoder.encode(song, "UTF-8");
+            String encodedSearchTerm = URLEncoder.encode(song, StandardCharsets.UTF_8);
             String searchParam = tokenUrl + encodedSearchTerm;
 
             HttpURLConnection connection = (HttpURLConnection) new URL(searchParam).openConnection();
@@ -67,8 +67,7 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
 
                 try {
                     String url = "";
-                    jsonObject = (JSONObject) jsonParser.parse(
-                            new InputStreamReader(inputStream, "UTF-8"));
+                    jsonObject = (JSONObject) jsonParser.parse(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
                     //System.out.println(jsonObject.toJSONString());
                     JSONArray hits = (JSONArray) ((JSONObject) jsonObject.get("response")).get("hits");
                     boolean stoploop = false;
@@ -105,7 +104,6 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
                     return lyrics;
 
 
-
                 } catch (ParseException e) {
                     System.out.println("InputStream could not be parsed into JSON object");
                     return null;
@@ -115,18 +113,15 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
                 System.out.println("Token request failed: " + responseCode);
                 return null;
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return "Could not find lyrics";
         }
     }
 
-    private String request(String url){
+    private String request(String url) {
         try {
-            Connection connection = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0")
-                    .referrer("http://www.google.com")
-                    .followRedirects(true);
+            Connection connection = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64; rv:5.0) Gecko/20100101 Firefox/5.0").referrer("http://www.google.com").followRedirects(true);
             Document doc = connection.get();
 
             if (connection.response().statusCode() == 200) {
@@ -138,13 +133,11 @@ public class LyricsDataAccessObject implements LyricsDataAccessInterface {
 
                 return lyrics;
 
-            }
-            else{
+            } else {
                 System.out.println("error");
                 return null;
             }
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e);
             return null;
         }
