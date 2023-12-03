@@ -203,7 +203,6 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Authorization", "Bearer " + accessToken).build();
-
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             JSONParser parser = new JSONParser();
@@ -217,25 +216,18 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
 
                 Map<String, Long> artists = new HashMap<>();
                 JSONArray artistsArray = (JSONArray) track.get("artists");
+
                 for (Object artist : artistsArray) {
-                    JSONObject JasonArtist = (JSONObject) artist;
+                    JSONObject jsonArtist = (JSONObject) artist;
+                    String artistName = (String) jsonArtist.get("name");
+                    Long popularity = (Long) jsonArtist.get("popularity");
 
-                    String artistId = (String) JasonArtist.get("id");
-                    // Fetching artist details
-                    String artistUrl = "https://api.spotify.com/v1/artists/" + artistId;
-                    HttpRequest artistRequest = HttpRequest.newBuilder().uri(URI.create(artistUrl)).header("Authorization", "Bearer " + accessToken).build();
-                    HttpResponse<String> artistResponse = client.send(artistRequest, HttpResponse.BodyHandlers.ofString());
-                    JSONObject artistDetails = (JSONObject) parser.parse(artistResponse.body());
-
-                    String artistName = (String) artistDetails.get("name");
-                    Long popularity = (Long) artistDetails.get("popularity");
-
-                    //add to the map
+                    // Add to the map
                     artists.put(artistName, popularity);
                 }
+
                 Song song = new Song(songId, name, artists);
                 songsInPlaylist.add(song);
-//                System.out.println(name);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -244,6 +236,7 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
         }
         return songsInPlaylist;
     }
+
 
     /**
      * Retrieves the user ID of the authenticated user.
