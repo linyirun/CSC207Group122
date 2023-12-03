@@ -1,9 +1,9 @@
 package app;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeController;
-import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubePresenter;
-import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeViewModel;
+import interface_adapter.spotify_to_youtube.SpotifyToYoutubeController;
+import interface_adapter.spotify_to_youtube.SpotifyToYoutubePresenter;
+import interface_adapter.spotify_to_youtube.SpotifyToYoutubeViewModel;
 import use_case.spotify_to_youtube.*;
 import view.SpotifyToYoutubeView;
 

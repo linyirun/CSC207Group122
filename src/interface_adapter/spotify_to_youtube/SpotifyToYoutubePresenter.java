@@ -1,4 +1,4 @@
-package interface_adapter.spotfiy_to_youtube;
+package interface_adapter.spotify_to_youtube;
 
 import interface_adapter.ViewManagerModel;
 import use_case.spotify_to_youtube.SpotifyToYoutubeOutputBoundary;

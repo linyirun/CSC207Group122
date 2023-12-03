@@ -5,7 +5,7 @@ import interface_adapter.home.HomeController;
 import interface_adapter.home.HomePresenter;
 import interface_adapter.home.HomeViewModel;
 import interface_adapter.profile.ProfileViewModel;
-import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeViewModel;
+import interface_adapter.spotify_to_youtube.SpotifyToYoutubeViewModel;
 import use_case.Lyrics.LyricsDataAccessInterface;
 import use_case.Lyrics.LyricsInputBoundary;
 import use_case.Lyrics.LyricsInteractor;
