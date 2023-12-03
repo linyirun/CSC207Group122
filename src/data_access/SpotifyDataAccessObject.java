@@ -220,7 +220,15 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
                 for (Object artist : artistsArray) {
                     JSONObject jsonArtist = (JSONObject) artist;
                     String artistName = (String) jsonArtist.get("name");
-                    Long popularity = (Long) jsonArtist.get("popularity");
+                    String artistId = (String) jsonArtist.get("id");
+
+                    // Make an additional request to get artist details
+                    String artistUrl = "https://api.spotify.com/v1/artists/" + artistId;
+                    HttpRequest artistRequest = HttpRequest.newBuilder().uri(URI.create(artistUrl)).header("Authorization", "Bearer " + accessToken).build();
+                    HttpResponse<String> artistResponse = client.send(artistRequest, HttpResponse.BodyHandlers.ofString());
+
+                    JSONObject artistDetails = (JSONObject) parser.parse(artistResponse.body());
+                    Long popularity = (Long) artistDetails.get("popularity");
 
                     // Add to the map
                     artists.put(artistName, popularity);
