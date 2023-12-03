@@ -6,18 +6,13 @@ public class SplitInputData {
 
     private String playlistName;
 
-    private String byTime;
 
-    public SplitInputData(String givenPlaylistName, String givenbyTime){
+    public SplitInputData(String givenPlaylistName){
         this.playlistName = givenPlaylistName;
-        this.byTime = givenbyTime;
     }
 
     public String getPlaylistName(){
         return playlistName;
     }
 
-    public String getByTime(){
-        return byTime;
-    }
 }

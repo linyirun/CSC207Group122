@@ -145,7 +145,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
                 } else if (evt.getSource().equals(getPlaylist)) {
                     playlistsController.execute();
                 } else if (evt.getSource().equals(splitByArtists)) {
-                    SplitInputData inputData = new SplitInputData(selectedPlaylistName, splitViewModel.SPLIT_BY_ARTISTS);
+                    SplitInputData inputData = new SplitInputData(selectedPlaylistName);
                     splitController.execute(inputData);
                     playlistsController.execute();
                     String splitPlaylists = splitViewModel.toString();
