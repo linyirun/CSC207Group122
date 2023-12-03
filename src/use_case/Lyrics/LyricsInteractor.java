@@ -1,6 +1,7 @@
 package use_case.Lyrics;
 
 public class LyricsInteractor implements LyricsInputBoundary {
+  
     LyricsDataAccessInterface dao;
     LyricsOutputBoundary presenter;
 

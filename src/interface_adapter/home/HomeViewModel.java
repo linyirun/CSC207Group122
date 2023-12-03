@@ -12,7 +12,9 @@ public class HomeViewModel extends ViewModel {
     public static final String MERGE_PLAYLIST_NAME = "Merge Playlist";
     public static final String ARTISTS_PLAYLIST_MAKER_NAME = "Artists Playlist Maker";
     public static final String SPOTIFY_TO_YT_NAME = "Spotify To Youtube";
+
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
     private HomeState state = new HomeState();
 
     public HomeViewModel() {

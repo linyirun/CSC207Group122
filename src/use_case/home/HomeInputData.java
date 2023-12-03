@@ -5,6 +5,7 @@ public class HomeInputData {
 
     public HomeInputData(String name) {
         this.button_name = name;
+
     }
 
     public String getButtonName() {

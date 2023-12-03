@@ -35,12 +35,14 @@ public class HomeInteractor implements HomeInputBoundary {
                 presenter.prepareFailView("Problem when fetching user data");
             }
         } else if (button_name.equals(HomeViewModel.SPOTIFY_TO_YT_NAME)) {
+
             Set<String> playlistNames = dao.getPlaylistMap().keySet();
             // Convert this to a list
             List<String> listNames = new ArrayList<>();
             listNames.addAll(playlistNames);
             presenter.prepareSuccessView(new HomeOutputData("Spot To YT", listNames));
         } else {
+
             presenter.prepareFailView("Event source not defined");
         }
     }
