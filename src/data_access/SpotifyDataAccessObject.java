@@ -22,6 +22,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import use_case.SpotifyPlayer.WebPlaybackDataAccessInterface;
 import use_case.artists_playlist_maker.ArtistsPmUserDataAccessInterface;
 import use_case.home.HomeUserDataAccessInterface;
 import use_case.loginOAuth.LoginOAuthUserDataAccessInterface;
@@ -52,7 +53,7 @@ import java.util.*;
 import java.util.List;
 
 public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface, SplitUserDataAccessInterface,
-        HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface, MergeDataAccessInterface, ArtistsPmUserDataAccessInterface, SpotifyToYoutubeDataAccessInterfaceForSpotify {
+        HomeUserDataAccessInterface, LoginOAuthUserDataAccessInterface, MergeDataAccessInterface, ArtistsPmUserDataAccessInterface, SpotifyToYoutubeDataAccessInterfaceForSpotify, WebPlaybackDataAccessInterface {
           
     /**
      * Retrieves the set of playlist names available to the authenticated user.
