@@ -22,8 +22,6 @@ public class MergePresenter implements MergeOutputBoundary {
             viewManagerModel.setActiveView("Home");
             viewManagerModel.firePropertyChanged();
         }
-
-        // Update the state of the selected playlists
     }
 
     public void prepareFailView(String error) {
