@@ -49,7 +49,9 @@ public class WebPlaybackInteractor implements WebPlaybackInputBoundary {
                     this.currentSongId = entity.getId();
                 }
             }
-            String reactAppPath = "/Users/arjunsohal/IdeaProjects/TuneTransit/public/spotifyplayer";
+            String currentWorkingDirectory = System.getProperty("user.dir");
+
+            String reactAppPath = currentWorkingDirectory + "/public/spotifyplayer";
 
             ProcessBuilder processBuilder = new ProcessBuilder("npm", "start");
             processBuilder.directory(new File(reactAppPath));
