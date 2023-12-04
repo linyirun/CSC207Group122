@@ -42,34 +42,33 @@ public class WebPlaybackInteractor implements WebPlaybackInputBoundary {
             String song = parts[0].trim();
             for (Song entity : dao.getSongs(playlistId)) {
                 System.out.println(entity.getName());
-                if (song.equals(entity.getName())){
+                if (song.equals(entity.getName())) {
                     System.out.println(entity.getId());
                     this.currentSongId = entity.getId();
                 }
-            }
-            if (this.currentSongId == null) {
-                throw new NoSuchElementException();
-            }
-            String currentWorkingDirectory = System.getProperty("user.dir");
+                if (this.currentSongId == null) {
+                    throw new NoSuchElementException();
+                }
+                String currentWorkingDirectory = System.getProperty("user.dir");
 
-            String reactAppPath = currentWorkingDirectory + "/public/spotifyplayer";
+                String reactAppPath = currentWorkingDirectory + "/public/spotifyplayer";
 
-            ProcessBuilder processBuilder = new ProcessBuilder("npm", "start");
-            processBuilder.directory(new File(reactAppPath));
+                ProcessBuilder processBuilder = new ProcessBuilder("npm", "start");
+                processBuilder.directory(new File(reactAppPath));
 
-            Process process = processBuilder.start();
-            Thread.sleep(3000);
-            try {
-                Desktop.getDesktop().browse(new URI("http://localhost:3000"));
+                Process process = processBuilder.start();
+                Thread.sleep(2000);
+                try {
+                    Desktop.getDesktop().browse(new URI("http://localhost:3000"));
+                } catch (Exception e) {
+                    System.out.println("cannot open localhost");
+                }
             }
-            catch (Exception e) {
-                System.out.println("cannot open localhost");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
     public void StartServer () {
         try {

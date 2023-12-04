@@ -1,9 +1,9 @@
 package view;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeController;
-import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeState;
-import interface_adapter.spotfiy_to_youtube.SpotifyToYoutubeViewModel;
+import interface_adapter.spotify_to_youtube.SpotifyToYoutubeController;
+import interface_adapter.spotify_to_youtube.SpotifyToYoutubeState;
+import interface_adapter.spotify_to_youtube.SpotifyToYoutubeViewModel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

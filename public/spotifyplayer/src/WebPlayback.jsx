@@ -20,54 +20,59 @@ function WebPlayback(props) {
     const [current_track, setTrack] = useState(track);
 
     useEffect(() => {
+        try {
+            const script = document.createElement("script");
+            script.src = "https://sdk.scdn.co/spotify-player.js";
+            script.async = true;
 
-        const script = document.createElement("script");
-        script.src = "https://sdk.scdn.co/spotify-player.js";
-        script.async = true;
+            document.body.appendChild(script);
 
-        document.body.appendChild(script);
+            window.onSpotifyWebPlaybackSDKReady = async () => {
+                    const player = new window.Spotify.Player({
+                        name: 'Web Playback SDK',
+                        getOAuthToken: cb => {
+                            cb(props.token);
+                        },
+                        volume: 0.5
+                    });
 
-        window.onSpotifyWebPlaybackSDKReady = () => {
+                    setPlayer(player);
 
-            const player = new window.Spotify.Player({
-                name: 'Web Playback SDK',
-                getOAuthToken: cb => { cb(props.token); },
-                volume: 0.5
-            });
+                    player.addListener('ready', async ({device_id}) => {
+                        console.log('Ready with Device ID', device_id);
+                        const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
+                            {
+                                method: "PUT",
+                                headers: {"Authorization": `Bearer ${props.token}`, "Content-Type": "application/json"},
+                                body: JSON.stringify({uris: [`spotify:track:${props.song}`], device_id: device_id,})
+                            })
+                        console.log(response);
+                        console.log(player)
+                        setPlayer(player);
+                        setTimeout(1000);
+                        player.getCurrentState().then(state => {
+                            console.log(state)
+                            if (!state) {
+                                console.error('User is not playing music through the Web Playback SDK');
+                                return;
+                            }
 
-            setPlayer(player);
+                            setTrack(state.track_window.current_track);
+                        });
 
-            player.addListener('ready', async ({ device_id }) => {
-                console.log('Ready with Device ID', device_id);
-                const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
-                    {
-                        method: "PUT",
-                        headers: {"Authorization": `Bearer ${props.token}`, "Content-Type": "application/json"},
-                        body: JSON.stringify({uris: [`spotify:track:${props.song}`], device_id: device_id,})
-                    })
-                console.log(response);
-                console.log(player)
-                setPlayer(player);
-                player.getCurrentState().then(state => {
-                    if (!state) {
-                        console.error('User is not playing music through the Web Playback SDK');
-                        return;
-                    }
+                    });
 
-                    setTrack(state.track_window.current_track);
-                });
+                    player.addListener('not_ready', ({device_id}) => {
+                        console.log('Device ID has gone offline', device_id);
+                    });
 
-            });
+                    player.connect();
 
-            player.addListener('not_ready', ({ device_id }) => {
-                console.log('Device ID has gone offline', device_id);
-            });
-
-            console.log(player);
-            player.connect();
-
-        };
-    }, []);
+                }}
+        catch (err) {
+            console.log(err)
+        }
+        }, []);
 
     if (!is_active) {
         return (

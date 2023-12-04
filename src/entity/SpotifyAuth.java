@@ -6,7 +6,7 @@ public final class SpotifyAuth {
     private static String accessToken = "";
     private static String refreshToken = "";
     private static final String clientId = "4d0a07bc89114f82a9e2df1d6550f90b";
-    private static String clientSecret = "8183f90d8a3e4b3ab2283ebe2e69a2d1";
+    private static String clientSecret = "";
 
     private SpotifyAuth() {
     }
