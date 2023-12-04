@@ -76,5 +76,6 @@ public class LoginOAuthViewTest {
         public void addPropertyChangeListener(PropertyChangeListener listener) {
             support.addPropertyChangeListener(listener);
         }
+
     }
 }
