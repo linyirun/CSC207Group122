@@ -45,7 +45,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     private final JLabel welcome;
 
     private final DefaultListModel<String> playlistsModel;
-    private final JList<String> playlistsList;
+    final JList<String> playlistsList;
     private DefaultListModel<String> songsModel;
     private JList<String> songsList;
 
@@ -70,7 +70,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         this.SongToLyrics = new HashMap<String, String>();
 
         homeViewModel.addPropertyChangeListener(this);
-        homeController.StartServer();
+//        homeController.StartServer();
 
         // Need actionListeners from the other views, allows us to check if we change back to home
         viewManagerModel.addPropertyChangeListener(this);
@@ -283,7 +283,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
     }
 
-    private void updateSongs(String playlistName) {
+    final void updateSongs(String playlistName) {
         String playlistID = playlistNameToIDMap.get(playlistName);
         songsModel.clear();
         List<Song> songs = homeController.getSongs(playlistID);
@@ -301,7 +301,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     }
 
 
-    private void actionOnPressSong(String songName) {
+    void actionOnPressSong(String songName) {
         this.selectedSong = songName;
 //        String playListId = playlistNameToIDMap.get(playlistsList.getSelectedValue());
 //        System.out.println(playListId);

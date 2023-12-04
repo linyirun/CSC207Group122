@@ -1,4 +1,4 @@
-package use_case.split_playlists;
+package use_case.split_playlist;
 import entity.Song;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeAll;

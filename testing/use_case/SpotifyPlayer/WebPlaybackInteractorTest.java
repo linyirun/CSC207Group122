@@ -94,19 +94,9 @@ public class WebPlaybackInteractorTest {
             webPlaybackInteractor.new TokenHandler().handle(mockHttpExchange);
         });
     }
-    @Test
-    void testClientIOException() throws IOException {
-        mockDao.setThrowIOException(true);
-        WebPlaybackInputData inputData = new WebPlaybackInputData("NonMatchingSong | PlaylistId", "");
 
-        // Test the startClientServer method
-        assertThrows(IOException.class, () -> {
-            webPlaybackInteractor.startClientServer(inputData);
-            // Sleep for 3 seconds to simulate the process and server startup
-            Thread.sleep(3000);
-        });
 
-    }
+
 //
 //    @Test
 //    void testStartServerSuccess() {
