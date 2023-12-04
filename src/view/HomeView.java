@@ -71,7 +71,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
         homeViewModel.addPropertyChangeListener(this);
         // TODO: This line had to  be commented for tests to run, uncomment if running the actual program!
-        //homeController.StartServer();
+        homeController.StartServer();
 
         // Need actionListeners from the other views, allows us to check if we change back to home
         viewManagerModel.addPropertyChangeListener(this);
