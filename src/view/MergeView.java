@@ -26,17 +26,17 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
     private JScrollPane playlistScrollPane;
     private String selectedPlaylistName;
 
-    private DefaultListModel<String> playlistsModel;
+    DefaultListModel<String> playlistsModel;
     private JList<String> playlistsList;
-    private DefaultListModel<String> selectedPlaylistsModel;
-    private JList<String> selectedPlaylistsList;
+    DefaultListModel<String> selectedPlaylistsModel;
+    JList<String> selectedPlaylistsList;
 
 
     private final JButton getPlaylistButton;
 
-    private final JButton mergeButton;
+    final JButton mergeButton;
 
-    private final JButton homeButton;
+    final JButton homeButton;
     private final JButton refreshButton;
     private final JButton clearPlaylistsButton;
     private final JButton deletePlaylistButton;
@@ -44,14 +44,14 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
     // RadioButtons for the filters, along with the group that they belong in
 
     private final ButtonGroup instrumentalButtonGroup;
-    private final JRadioButton instrumentalRadioButton;
+    final JRadioButton instrumentalRadioButton;
     private final JRadioButton vocalRadioButton;
     private final JRadioButton noneInstrumentalRadioButton;
 
 
     private final ButtonGroup valenceButtonGroup;
     private final JRadioButton noneValenceRadioButton;
-    private final JRadioButton sadValenceRadioButton;
+    final JRadioButton sadValenceRadioButton;
     private final JRadioButton neutralValenceRadioButton;
     private final JRadioButton happyValenceRadioButton;
 
@@ -59,7 +59,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
     private final ButtonGroup tempoButtonGroup;
     private final JRadioButton noneTempoRadioButton;
 //    private final JRadioButton verySlowTempoRadioButton;
-    private final JRadioButton slowTempoRadioButton;
+    final JRadioButton slowTempoRadioButton;
     private final JRadioButton normalTempoRadioButton;
     private final JRadioButton fastTempoRadioButton;
 //    private final JRadioButton veryFastTempoRadioButton; // uncomment to add very slow and very fast buttons
@@ -284,7 +284,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
 
     }
 
-    private void refresh() {
+    void refresh() {
         selectedPlaylistsModel.clear();
         List<String> playlistNames = mergeController.getPlaylists();
         displayPlaylists(playlistNames);
@@ -297,7 +297,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         }
     }
 
-    private void mergePlaylists() {
+    void mergePlaylists() {
         List<String> selectedPlaylists = new ArrayList<>();
         for (int i = 0; i < selectedPlaylistsModel.getSize(); i++) {
             selectedPlaylists.add(selectedPlaylistsModel.getElementAt(i));
@@ -324,7 +324,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
 
     }
 
-    private MergeInputData createMergeInputData(List<String> selectedPlaylists, String givenName) {
+    MergeInputData createMergeInputData(List<String> selectedPlaylists, String givenName) {
         // get the options selected from the filters
         int instrumentalChoice = MergeInputData.ANY;
         if (instrumentalRadioButton.isSelected()) instrumentalChoice = MergeInputData.INSTRUMENTAL_CHOICE;
@@ -347,7 +347,7 @@ public class MergeView extends JPanel implements ActionListener, PropertyChangeL
         return mergeInputData;
     }
 
-    private void deleteSelectedPlaylist() {
+    void deleteSelectedPlaylist() {
         int selectedIndex = selectedPlaylistsList.getSelectedIndex();
         if (selectedIndex != -1) {
             selectedPlaylistsModel.remove(selectedIndex);

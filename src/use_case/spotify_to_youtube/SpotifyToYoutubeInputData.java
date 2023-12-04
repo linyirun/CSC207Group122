@@ -14,4 +14,7 @@ public class SpotifyToYoutubeInputData {
     }
 
 
+    public List<String> getSelectedPlaylists() {
+        return selectedPlaylists;
+    }
 }
