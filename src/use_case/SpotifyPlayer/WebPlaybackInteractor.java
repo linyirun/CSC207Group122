@@ -20,23 +20,21 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 import static entity.SpotifyAuth.getAccessToken;
 import static entity.SpotifyAuth.setAccessToken;
 
 public class WebPlaybackInteractor implements WebPlaybackInputBoundary {
-    String currentSongId;
+    String currentSongId = null;
 
     WebPlaybackDataAccessInterface dao;
 
     public WebPlaybackInteractor (WebPlaybackDataAccessInterface dao) {
         this.dao = dao;
     }
-    public void startClientServer(WebPlaybackInputData data) {
+    public void startClientServer(WebPlaybackInputData data) throws NoSuchElementException{
         try {
             String currentSong = data.getCurrentSong();
             String playlistId = data.getPlaylistId();
@@ -48,6 +46,9 @@ public class WebPlaybackInteractor implements WebPlaybackInputBoundary {
                     System.out.println(entity.getId());
                     this.currentSongId = entity.getId();
                 }
+            }
+            if (this.currentSongId == null) {
+                throw new NoSuchElementException();
             }
             String currentWorkingDirectory = System.getProperty("user.dir");
 
@@ -64,10 +65,8 @@ public class WebPlaybackInteractor implements WebPlaybackInputBoundary {
             catch (Exception e) {
                 System.out.println("cannot open localhost");
             }
-
         } catch (IOException e) {
             e.printStackTrace();
-
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -92,15 +91,10 @@ public class WebPlaybackInteractor implements WebPlaybackInputBoundary {
         }
     }
 
-    // Custom handler for the "/hello" endpoint
      class TokenHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
             // Set the response headers
-            System.out.println(exchange.getRequestMethod());
-            System.out.println(exchange.getRequestBody());
-            System.out.println(exchange.getRequestURI());
-            System.out.println(exchange.getRequestHeaders());
             exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
             exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, OPTIONS");
             exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "*");
