@@ -10,7 +10,8 @@ import use_case.artists_playlist_maker.ArtistsPmInputData;
 import java.io.IOException;
 import java.util.List;
 
-public class ArtistsPmController {
+public class
+ArtistsPmController {
     ArtistsPmInputBoundary interactor;
 
     /**

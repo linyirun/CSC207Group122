@@ -42,11 +42,9 @@ public class GeniusInteractor {
                     GeniusAuth.setAccessToken((String) jsonObject.get("access_token"));
                     System.out.println(GeniusAuth.getAccessToken());
                 } catch (ParseException e) {
-                    System.out.println("InputStream could not be parsed into JSON object");
                 }
 
             } else {
-                System.out.println("Token request failed: " + responseCode);
             }
         } catch (IOException e) {
             e.printStackTrace();

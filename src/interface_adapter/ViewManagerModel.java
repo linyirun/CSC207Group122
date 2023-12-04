@@ -12,6 +12,10 @@ public class ViewManagerModel {
         this.activeViewName = activeView;
     }
 
+    public String getActiveViewName() {
+        return activeViewName;
+    }
+
     public void firePropertyChanged() {
         support.firePropertyChange("view", null, this.activeViewName);
     }
@@ -19,4 +23,6 @@ public class ViewManagerModel {
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
+
+
 }

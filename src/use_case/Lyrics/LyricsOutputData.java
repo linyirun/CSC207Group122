@@ -4,7 +4,7 @@ public class LyricsOutputData {
 
     private String lyrics;
 
-    public void LyricsOutputData(String lyrics) {
+    public LyricsOutputData(String lyrics) {
         this.lyrics = lyrics;
     }
 

@@ -32,7 +32,7 @@ public class SpotifyToYoutubeView extends JPanel implements ActionListener, Prop
 
     private DefaultListModel<String> playlistsModel;
     private JList<String> playlistsList;
-    private DefaultListModel<String> selectedPlaylistsModel;
+    DefaultListModel<String> selectedPlaylistsModel;
     private JList<String> selectedPlaylistsList;
 
     public SpotifyToYoutubeView(SpotifyToYoutubeViewModel spotifyToYoutubeViewModel, SpotifyToYoutubeController spotifyToYoutubeController, ViewManagerModel viewManagerModel) {
@@ -97,7 +97,7 @@ public class SpotifyToYoutubeView extends JPanel implements ActionListener, Prop
         deletePlaylistButton.addActionListener(e -> deleteSelectedPlaylist());
     }
 
-    private void convertPlaylists() {
+    void convertPlaylists() {
         if (!spotifyToYoutubeViewModel.getState().getIsConnectedToYT()) {
             JOptionPane.showMessageDialog(this, "Please connect to Youtube first");
             return;
@@ -134,13 +134,13 @@ public class SpotifyToYoutubeView extends JPanel implements ActionListener, Prop
         viewManagerModel.firePropertyChanged();
     }
 
-    private void connectToYT() {
+    void connectToYT() {
         if (!spotifyToYoutubeViewModel.getState().getIsConnectedToYT()) {
             spotifyToYoutubeController.execute(null, null, false);
         }
     }
 
-    private void handlePlaylistSelection(ListSelectionEvent e) {
+    void handlePlaylistSelection(ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
             String selectedPlaylist = playlistsList.getSelectedValue();
             if (selectedPlaylist != null && !selectedPlaylistsModel.contains(selectedPlaylist)) {
@@ -149,11 +149,11 @@ public class SpotifyToYoutubeView extends JPanel implements ActionListener, Prop
         }
     }
 
-    private void clearSelectedPlaylists() {
+    void clearSelectedPlaylists() {
         selectedPlaylistsModel.clear();
     }
 
-    private void deleteSelectedPlaylist() {
+    void deleteSelectedPlaylist() {
         int selectedIndex = selectedPlaylistsList.getSelectedIndex();
         if (selectedIndex != -1) {
             selectedPlaylistsModel.remove(selectedIndex);

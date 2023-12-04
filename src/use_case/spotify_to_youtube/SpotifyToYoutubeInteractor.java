@@ -97,7 +97,7 @@ public class SpotifyToYoutubeInteractor implements SpotifyToYoutubeInputBoundary
             e.printStackTrace();
             presenter.prepareFailView(new SpotifyToYoutubeOutputData("Could not send http request", true));
         }
-        createServer(8000);
+        createServer(8888);
 
         synchronized (this) {
 

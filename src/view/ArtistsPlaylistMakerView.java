@@ -21,11 +21,13 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
 
     public final String viewName = "Artists Playlist Maker";
 
-    private JCheckBox includeInPlaylistCheckBox;
+    JCheckBox includeInPlaylistCheckBox;
     private JButton enterButton, createPlaylistButton, clearSelectionButton, deleteArtistButton;
-    private JTextField searchField;
-    private JList<String> searchResultsList, selectedArtistsList;
-    private DefaultListModel<String> searchResultsModel, selectedArtistsModel;
+    JTextField searchField;
+    JList<String> searchResultsList;
+    private JList<String> selectedArtistsList;
+    DefaultListModel<String> searchResultsModel;
+    DefaultListModel<String> selectedArtistsModel;
     private final ArtistsPmViewModel artistsPmViewModel;
 
     private JButton backButton;
@@ -141,13 +143,13 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
         viewManagerModel.firePropertyChanged();
     }
 
-    private void searchButtonClicked() {
+    void searchButtonClicked() {
         String searchTerm = searchField.getText();
         List<String> searchResults = artistsPmController.showTopArtists(searchTerm);
         displaySearchResults(searchResults);
     }
 
-    private void handleSearchResultsSelection() {
+    void handleSearchResultsSelection() {
         if (!searchResultsList.getValueIsAdjusting()) {
             String selectedArtist = searchResultsList.getSelectedValue();
 
@@ -158,7 +160,7 @@ public class ArtistsPlaylistMakerView extends JPanel implements ActionListener, 
     }
 
 
-    private void createPlaylistButtonClicked() {
+    void createPlaylistButtonClicked() {
         List<String> selectedArtists = getSelectedArtists();
 
         if (selectedArtists.isEmpty()) {
