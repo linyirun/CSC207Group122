@@ -28,16 +28,18 @@ function WebPlayback(props) {
         document.body.appendChild(script);
 
         window.onSpotifyWebPlaybackSDKReady = () => {
-
+        if (player == undefined) {
             const player = new window.Spotify.Player({
                 name: 'Web Playback SDK',
-                getOAuthToken: cb => { cb(props.token); },
+                getOAuthToken: cb => {
+                    cb(props.token);
+                },
                 volume: 0.5
             });
 
             setPlayer(player);
 
-            player.addListener('ready', async ({ device_id }) => {
+            player.addListener('ready', async ({device_id}) => {
                 console.log('Ready with Device ID', device_id);
                 const response = await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`,
                     {
@@ -59,14 +61,14 @@ function WebPlayback(props) {
 
             });
 
-            player.addListener('not_ready', ({ device_id }) => {
+            player.addListener('not_ready', ({device_id}) => {
                 console.log('Device ID has gone offline', device_id);
             });
 
             console.log(player);
             player.connect();
 
-        };
+        }};
     }, []);
 
     if (!is_active) {
