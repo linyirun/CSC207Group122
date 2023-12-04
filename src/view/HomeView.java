@@ -70,7 +70,8 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         this.SongToLyrics = new HashMap<String, String>();
 
         homeViewModel.addPropertyChangeListener(this);
-//        homeController.StartServer();
+        // TODO: This line had to  be commented for tests to run, uncomment if running the actual program!
+        //homeController.StartServer();
 
         // Need actionListeners from the other views, allows us to check if we change back to home
         viewManagerModel.addPropertyChangeListener(this);
