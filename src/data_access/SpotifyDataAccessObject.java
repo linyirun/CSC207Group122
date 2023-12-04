@@ -180,12 +180,61 @@ public class SpotifyDataAccessObject implements PlaylistsUserDataAccessInterface
 
     /**
      * Retrieves a list of {@link entity.Song} objects for a given playlist ID,
-     * including information about the song name, artists, and their popularity.
+     * including information about the song name, artists.
      *
      * @param playlistID the ID of the playlist
      * @return a list of Song objects
      */
     public List<Song> getSongs(String playlistID) {
+        String accessToken = SpotifyAuth.getAccessToken();
+        String url = "https://api.spotify.com/v1/playlists/" + playlistID + "/tracks";
+        List<Song> songsInPlaylist = new ArrayList<>();
+
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("Authorization", "Bearer " + accessToken).build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            JSONParser parser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) parser.parse(response.body());
+            JSONArray tracks = (JSONArray) jsonObject.get("items");
+
+            for (Object o : tracks) {
+                JSONObject track = (JSONObject) ((JSONObject) o).get("track");
+                String name = (String) track.get("name");
+                String songId = (String) track.get("id");
+
+                Map<String, Long> artists = new HashMap<>();
+                JSONArray artistsArray = (JSONArray) track.get("artists");
+
+                for (Object artist : artistsArray) {
+                    JSONObject jsonArtist = (JSONObject) artist;
+                    String artistName = (String) jsonArtist.get("name");
+                    String artistId = (String) jsonArtist.get("id");
+
+                    // Add to the map
+                    artists.put(artistName, (long) 0);
+                }
+
+                Song song = new Song(songId, name, artists);
+                songsInPlaylist.add(song);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return songsInPlaylist;
+    }
+
+    /**
+     * Retrieves a list of {@link entity.Song} objects for a given playlist ID,
+     * including information about the song name, artists, and their popularity.
+     *
+     * @param playlistID the ID of the playlist
+     * @return a list of Song objects
+     */
+    public List<Song> getSongsWithPopularity(String playlistID) {
         String accessToken = SpotifyAuth.getAccessToken();
         String url = "https://api.spotify.com/v1/playlists/" + playlistID + "/tracks";
         List<Song> songsInPlaylist = new ArrayList<>();

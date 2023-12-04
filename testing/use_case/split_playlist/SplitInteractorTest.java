@@ -1,4 +1,4 @@
-package use_case.split_playlists;
+package use_case.split_playlist;
 import entity.Song;
 import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeAll;
@@ -87,6 +87,22 @@ public class SplitInteractorTest {
         };
 
         public List<Song> getSongs(String playlistID){
+            HashMap<String, Long> artistsSong1 = new HashMap<>();
+            artistsSong1.put("Raymond", (long) 90);
+            artistsSong1.put("Richard", (long) 20);
+            Song song1 = new Song("song1Id", "song1",artistsSong1);
+
+            HashMap<String, Long> artistsSong2 = new HashMap<>();
+            artistsSong2.put("Bill", (long) 90);
+            Song song2 = new Song("song2Id", "song2",artistsSong2);
+
+            List<Song> retured = new ArrayList<>();
+            retured.add(song1);
+            retured.add(song2);
+            return retured;
+        };
+
+        public List<Song> getSongsWithPopularity(String playlistID){
             HashMap<String, Long> artistsSong1 = new HashMap<>();
             artistsSong1.put("Raymond", (long) 90);
             artistsSong1.put("Richard", (long) 20);
