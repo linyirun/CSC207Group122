@@ -4,9 +4,9 @@ public final class YoutubeAuth {
 
     private static final String scope = "https://www.googleapis.com/auth/youtube.force-ssl";
     private static final String CLIENT_ID = "1016234743626-p2864temak6gu1l6auk5h1uag4ran75j.apps.googleusercontent.com";
-    private static final String CLIENT_SECRET = "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";
-    private static final String redirectURI = "http://localhost:8000/callback";
-    private static final String API_KEY = "AIzaSyB5ggh5wXkShs4ZK1TYZ459BQSbb8WPv5o";
+    private static final String CLIENT_SECRET = "";
+    private static final String redirectURI = "http://localhost:8888/callback";
+    private static final String API_KEY = "";
     private static String accessToken = "";
     private static String refreshToken = "";
 
