@@ -35,15 +35,17 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
 
     private JButton getPlaylist;
     private JScrollPane playlistScrollPane;
-    private DefaultListModel<String> playlistModel;
-    private JList<String> playlistList;
+    DefaultListModel<String> playlistModel;
+    JList<String> playlistList;
     private String selectedPlaylistName;
-    private JButton splitByLength;
+    JButton splitByLength;
     private JButton splitByArtists;
 
     private String endTime;
 
     private String startTime;
+
+    ActionListener buttonActionListener;
 
     public SplitView(SplitController splitController, SplitViewModel splitViewModel,
                      PlaylistsController playlistsController, PlaylistsViewModel playlistsViewModel, ViewManagerModel viewManagerModel) {
@@ -72,7 +74,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
         add(createButtonsPanel(), BorderLayout.EAST);
     }
 
-    private JPanel createPlaylistPanel() {
+    final JPanel createPlaylistPanel() {
         JPanel playlistPanel = new JPanel(new BorderLayout());
         playlistPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -134,7 +136,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
         buttonsPanel.add(getPlaylist, BorderLayout.SOUTH);
 
         // Action Listeners for Buttons
-        ActionListener buttonActionListener = new ActionListener() {
+        buttonActionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 if (evt.getSource().equals(backButton)) {
@@ -301,7 +303,7 @@ public class SplitView extends JPanel implements ActionListener, PropertyChangeL
             showMessage("");
         }
     }
-    private void showMessage(String message) {
+    final void showMessage(String message) {
         if (message.isEmpty()) {
             JOptionPane.showMessageDialog(this, "You need to choose a playlist first or the playlist you chose is empty!", "Error",JOptionPane.ERROR_MESSAGE);
         }
